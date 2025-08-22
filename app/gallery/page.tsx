@@ -6,6 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { X, ZoomIn, Heart, Share2 } from 'lucide-react';
 
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = 'force-dynamic';
+
 const categories = ['All', 'Dishes', 'Events', 'Behind the Scenes', 'Restaurants', 'Desserts'];
 
 const galleryImages = [
