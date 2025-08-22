@@ -1,8 +1,8 @@
-import nodemailer from 'nodemailer';
+import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransporter({
+const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
-  port: parseInt(process.env.EMAIL_SERVER_PORT || '587'),
+  port: parseInt(process.env.EMAIL_SERVER_PORT || "587"),
   secure: false, // true for 465, false for other ports
   auth: {
     user: process.env.EMAIL_SERVER_USER,
@@ -27,15 +27,18 @@ export async function sendEmail({ to, subject, html, text }: EmailOptions) {
       text,
     });
 
-    console.log('Email sent:', info.messageId);
+    console.log("Email sent:", info.messageId);
     return { success: true, messageId: info.messageId };
   } catch (error) {
-    console.error('Email sending failed:', error);
+    console.error("Email sending failed:", error);
     return { success: false, error };
   }
 }
 
-export function generateVerificationEmailHTML(username: string, verificationUrl: string) {
+export function generateVerificationEmailHTML(
+  username: string,
+  verificationUrl: string
+) {
   return `
     <!DOCTYPE html>
     <html>
@@ -77,7 +80,10 @@ export function generateVerificationEmailHTML(username: string, verificationUrl:
   `;
 }
 
-export function generatePasswordResetEmailHTML(username: string, resetUrl: string) {
+export function generatePasswordResetEmailHTML(
+  username: string,
+  resetUrl: string
+) {
   return `
     <!DOCTYPE html>
     <html>

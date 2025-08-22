@@ -1,71 +1,93 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Utensils, Camera, Users, Lightbulb, Check, ArrowRight } from 'lucide-react';
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import {
+  Utensils,
+  Camera,
+  Users,
+  Lightbulb,
+  Check,
+  ArrowRight,
+} from "lucide-react";
+import Link from "next/link";
 
 const services = [
   {
     icon: Utensils,
-    title: 'Premium Catering',
-    description: 'Exquisite culinary experiences tailored for your special events, from intimate gatherings to grand celebrations.',
-    image: 'https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=800',
+    title: "Premium Catering",
+    description:
+      "Exquisite culinary experiences tailored for your special events, from intimate gatherings to grand celebrations.",
+    image:
+      "https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&w=800",
     features: [
-      'Custom menu design and planning',
-      'Professional chef and service staff',
-      'Full-service setup and cleanup',
-      'Dietary restriction accommodations',
-      'Event coordination and timing',
+      "Custom menu design and planning",
+      "Professional chef and service staff",
+      "Full-service setup and cleanup",
+      "Dietary restriction accommodations",
+      "Event coordination and timing",
     ],
-    pricing: 'Starting at $75 per person',
+    pricing: "Starting at $75 per person",
     popular: true,
   },
   {
     icon: Camera,
-    title: 'Food Photography',
-    description: 'Stunning visual storytelling that makes your dishes irresistible and your brand unforgettable.',
-    image: 'https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=800',
+    title: "Food Photography",
+    description:
+      "Stunning visual storytelling that makes your dishes irresistible and your brand unforgettable.",
+    image:
+      "https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=800",
     features: [
-      'Professional food styling',
-      'High-resolution digital images',
-      'Social media optimized content',
-      'Menu and marketing photography',
-      'Brand consistency guidelines',
+      "Professional food styling",
+      "High-resolution digital images",
+      "Social media optimized content",
+      "Menu and marketing photography",
+      "Brand consistency guidelines",
     ],
-    pricing: 'Starting at $500 per session',
+    pricing: "Starting at $500 per session",
     popular: false,
   },
   {
     icon: Users,
-    title: 'Event Promotion',
-    description: 'Strategic marketing and promotion services to ensure your culinary events reach the right audience.',
-    image: 'https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800',
+    title: "Event Promotion",
+    description:
+      "Strategic marketing and promotion services to ensure your culinary events reach the right audience.",
+    image:
+      "https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=800",
     features: [
-      'Social media campaign management',
-      'Influencer partnership coordination',
-      'Community outreach programs',
-      'Event listing optimization',
-      'Performance analytics and reporting',
+      "Social media campaign management",
+      "Influencer partnership coordination",
+      "Community outreach programs",
+      "Event listing optimization",
+      "Performance analytics and reporting",
     ],
-    pricing: 'Starting at $1,200 per campaign',
+    pricing: "Starting at $1,200 per campaign",
     popular: false,
   },
   {
     icon: Lightbulb,
-    title: 'Culinary Consulting',
-    description: 'Expert guidance for restaurants, food brands, and culinary entrepreneurs looking to excel in the industry.',
-    image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800',
+    title: "Culinary Consulting",
+    description:
+      "Expert guidance for restaurants, food brands, and culinary entrepreneurs looking to excel in the industry.",
+    image:
+      "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=800",
     features: [
-      'Menu development and optimization',
-      'Brand strategy and positioning',
-      'Operational efficiency analysis',
-      'Staff training programs',
-      'Market research and insights',
+      "Menu development and optimization",
+      "Brand strategy and positioning",
+      "Operational efficiency analysis",
+      "Staff training programs",
+      "Market research and insights",
     ],
-    pricing: 'Starting at $200 per hour',
+    pricing: "Starting at $200 per hour",
     popular: false,
   },
 ];
@@ -91,8 +113,9 @@ export default function ServicesPage() {
               Our Services
             </h1>
             <p className="text-xl text-red-100 max-w-3xl mx-auto">
-              From intimate catering to large-scale events, we bring culinary excellence 
-              and professional service to every occasion. Let us help you create unforgettable experiences.
+              From intimate catering to large-scale events, we bring culinary
+              excellence and professional service to every occasion. Let us help
+              you create unforgettable experiences.
             </p>
           </motion.div>
         </div>
@@ -109,20 +132,22 @@ export default function ServicesPage() {
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
                 className={`grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? 'lg:grid-flow-col-dense' : ''
+                  index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
                 }`}
               >
                 {/* Content */}
-                <div className={index % 2 === 1 ? 'lg:col-start-2' : ''}>
+                <div className={index % 2 === 1 ? "lg:col-start-2" : ""}>
                   <div className="flex items-center space-x-3 mb-4">
                     <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
                       <service.icon className="h-6 w-6 text-red-600" />
                     </div>
                     {service.popular && (
-                      <Badge className="bg-red-600 text-white">Most Popular</Badge>
+                      <Badge className="bg-red-600 text-white">
+                        Most Popular
+                      </Badge>
                     )}
                   </div>
-                  
+
                   <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                     {service.title}
                   </h3>
@@ -132,7 +157,10 @@ export default function ServicesPage() {
 
                   <div className="space-y-3 mb-6">
                     {service.features.map((feature) => (
-                      <div key={feature} className="flex items-center space-x-3">
+                      <div
+                        key={feature}
+                        className="flex items-center space-x-3"
+                      >
                         <Check className="h-5 w-5 text-green-600 flex-shrink-0" />
                         <span className="text-gray-700">{feature}</span>
                       </div>
@@ -145,8 +173,8 @@ export default function ServicesPage() {
                     </div>
                   </div>
 
-                  <Button 
-                    size="lg" 
+                  <Button
+                    size="lg"
                     className="bg-red-600 hover:bg-red-700 px-8 py-3 rounded-full font-semibold transition-all duration-200 hover:scale-105"
                   >
                     <span>Get Quote</span>
@@ -155,7 +183,11 @@ export default function ServicesPage() {
                 </div>
 
                 {/* Image */}
-                <div className={index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}>
+                <div
+                  className={
+                    index % 2 === 1 ? "lg:col-start-1 lg:row-start-1" : ""
+                  }
+                >
                   <div className="relative rounded-2xl overflow-hidden shadow-2xl">
                     <img
                       src={service.image}
@@ -183,7 +215,8 @@ export default function ServicesPage() {
               Ready to Work Together?
             </h2>
             <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-              Contact us today to discuss your project and discover how we can bring your culinary vision to life.
+              Contact us today to discuss your project and discover how we can
+              bring your culinary vision to life.
             </p>
             <Button
               asChild

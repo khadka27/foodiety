@@ -22,7 +22,8 @@ async function getUserHandler(
     where: { id: id },
     select: {
       id: true,
-      name: true,
+      firstName: true,
+      lastName: true,
       email: true,
       role: true,
       isActive: true,
@@ -91,7 +92,8 @@ async function updateUserHandler(
     data: validatedData,
     select: {
       id: true,
-      name: true,
+      firstName: true,
+      lastName: true,
       email: true,
       role: true,
       isActive: true,

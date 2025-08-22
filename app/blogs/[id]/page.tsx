@@ -1,18 +1,27 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Calendar, Eye, Share2, Heart, Bookmark, User, ArrowLeft, Clock } from 'lucide-react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import {
+  Calendar,
+  Eye,
+  Share2,
+  Heart,
+  Bookmark,
+  User,
+  ArrowLeft,
+  Clock,
+} from "lucide-react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 // This would typically come from a CMS or database
 const blogPost = {
   id: 1,
-  title: 'The Art of Perfect Pasta: Secrets from Italian Grandmothers',
+  title: "The Art of Perfect Pasta: Secrets from Italian Grandmothers",
   content: `
     <p>There's something magical about watching an Italian grandmother make pasta from scratch. The way her weathered hands work the dough, the intuitive understanding of texture and timing, the stories shared while rolling each strand – it's a masterclass in both cooking and cultural preservation.</p>
 
@@ -38,30 +47,35 @@ const blogPost = {
     <h2>The Final Touch</h2>
     <p>Always cook pasta in abundant, well-salted water – as salty as the sea. The pasta should be al dente, with just a slight resistance when bitten. Reserve some pasta water before draining; its starch content helps bind sauce to pasta perfectly.</p>
   `,
-  excerpt: 'Discover the time-honored techniques that make Italian pasta truly exceptional, passed down through generations of skilled home cooks.',
-  image: 'https://images.pexels.com/photos/4518843/pexels-photo-4518843.jpeg?auto=compress&cs=tinysrgb&w=1200',
-  date: '2024-12-15',
+  excerpt:
+    "Discover the time-honored techniques that make Italian pasta truly exceptional, passed down through generations of skilled home cooks.",
+  image:
+    "https://images.pexels.com/photos/4518843/pexels-photo-4518843.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  date: "2024-12-15",
   views: 2847,
-  category: 'Cooking Tips',
-  readTime: '8 min read',
+  category: "Cooking Tips",
+  readTime: "8 min read",
   author: {
-    name: 'Isabella Romano',
-    image: 'https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=200',
-    bio: 'Food writer and Italian cuisine specialist',
+    name: "Isabella Romano",
+    image:
+      "https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=200",
+    bio: "Food writer and Italian cuisine specialist",
   },
-  tags: ['Italian', 'Pasta', 'Traditional', 'Techniques'],
+  tags: ["Italian", "Pasta", "Traditional", "Techniques"],
   relatedPosts: [
     {
       id: 2,
-      title: 'Global Street Food: A Journey Through Authentic Flavors',
-      image: 'https://images.pexels.com/photos/4958792/pexels-photo-4958792.jpeg?auto=compress&cs=tinysrgb&w=400',
-      category: 'Travel',
+      title: "Global Street Food: A Journey Through Authentic Flavors",
+      image:
+        "https://images.pexels.com/photos/4958792/pexels-photo-4958792.jpeg?auto=compress&cs=tinysrgb&w=400",
+      category: "Travel",
     },
     {
       id: 3,
-      title: 'Seasonal Cooking: Winter Comfort Foods That Warm the Soul',
-      image: 'https://images.pexels.com/photos/2890387/pexels-photo-2890387.jpeg?auto=compress&cs=tinysrgb&w=400',
-      category: 'Seasonal',
+      title: "Seasonal Cooking: Winter Comfort Foods That Warm the Soul",
+      image:
+        "https://images.pexels.com/photos/2890387/pexels-photo-2890387.jpeg?auto=compress&cs=tinysrgb&w=400",
+      category: "Seasonal",
     },
   ],
 };
@@ -79,18 +93,24 @@ export default function BlogPostPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <Button asChild variant="ghost" className="text-white hover:bg-white/10 mb-6">
+            <Button
+              asChild
+              variant="ghost"
+              className="text-white hover:bg-white/10 mb-6"
+            >
               <Link href="/blogs" className="flex items-center space-x-2">
                 <ArrowLeft className="h-4 w-4" />
                 <span>Back to Blogs</span>
               </Link>
             </Button>
 
-            <Badge className="bg-white/20 text-white mb-4">{blogPost.category}</Badge>
+            <Badge className="bg-white/20 text-white mb-4">
+              {blogPost.category}
+            </Badge>
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               {blogPost.title}
             </h1>
-            
+
             <div className="flex flex-wrap items-center gap-6 text-red-100">
               <div className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4" />
@@ -145,8 +165,12 @@ export default function BlogPostPage() {
                         className="w-16 h-16 rounded-full object-cover"
                       />
                       <div className="flex-1">
-                        <h3 className="font-bold text-lg text-gray-900">{blogPost.author.name}</h3>
-                        <p className="text-gray-600 text-sm">{blogPost.author.bio}</p>
+                        <h3 className="font-bold text-lg text-gray-900">
+                          {blogPost.author.name}
+                        </h3>
+                        <p className="text-gray-600 text-sm">
+                          {blogPost.author.bio}
+                        </p>
                       </div>
                       <div className="flex space-x-2">
                         <Button variant="outline" size="sm">
@@ -181,7 +205,11 @@ export default function BlogPostPage() {
               >
                 <div className="flex flex-wrap gap-2">
                   {blogPost.tags.map((tag) => (
-                    <Badge key={tag} variant="secondary" className="hover:bg-red-100 hover:text-red-800 cursor-pointer">
+                    <Badge
+                      key={tag}
+                      variant="secondary"
+                      className="hover:bg-red-100 hover:text-red-800 cursor-pointer"
+                    >
                       #{tag}
                     </Badge>
                   ))}
@@ -194,10 +222,15 @@ export default function BlogPostPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
               >
-                <h3 className="text-2xl font-bold text-gray-900 mb-6">Related Articles</h3>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Related Articles
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {blogPost.relatedPosts.map((post) => (
-                    <Card key={post.id} className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md overflow-hidden">
+                    <Card
+                      key={post.id}
+                      className="group hover:shadow-lg transition-all duration-300 border-0 shadow-md overflow-hidden"
+                    >
                       <div className="relative overflow-hidden">
                         <img
                           src={post.image}
@@ -225,13 +258,21 @@ export default function BlogPostPage() {
                 {/* Share Actions */}
                 <Card className="border-0 shadow-lg">
                   <CardContent className="p-6">
-                    <h4 className="font-bold text-gray-900 mb-4">Share this article</h4>
+                    <h4 className="font-bold text-gray-900 mb-4">
+                      Share this article
+                    </h4>
                     <div className="space-y-3">
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start"
+                      >
                         <Share2 className="h-4 w-4 mr-2" />
                         Share on Social
                       </Button>
-                      <Button variant="outline" className="w-full justify-start">
+                      <Button
+                        variant="outline"
+                        className="w-full justify-start"
+                      >
                         <Bookmark className="h-4 w-4 mr-2" />
                         Bookmark
                       </Button>
@@ -242,9 +283,12 @@ export default function BlogPostPage() {
                 {/* Newsletter Signup */}
                 <Card className="border-0 shadow-lg bg-red-50">
                   <CardContent className="p-6">
-                    <h4 className="font-bold text-gray-900 mb-2">Stay Updated</h4>
+                    <h4 className="font-bold text-gray-900 mb-2">
+                      Stay Updated
+                    </h4>
                     <p className="text-sm text-gray-600 mb-4">
-                      Get the latest recipes and food stories delivered to your inbox.
+                      Get the latest recipes and food stories delivered to your
+                      inbox.
                     </p>
                     <div className="space-y-3">
                       <input

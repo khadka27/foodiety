@@ -57,16 +57,21 @@ export function withRateLimit(
 
   return async (request: NextRequest, context?: any) => {
     const ip =
-      request.ip || request.headers.get("x-forwarded-for") || "unknown";
+      request.headers.get("x-forwarded-for") ||
+      request.headers.get("x-real-ip") ||
+      "unknown";
     const now = Date.now();
     const windowStart = now - windowMs;
 
     // Clean up old entries
-    for (const [key, value] of requests.entries()) {
+    // Clean up old entries
+    const keysToDelete: string[] = [];
+    requests.forEach((value, key) => {
       if (value.resetTime < windowStart) {
-        requests.delete(key);
+        keysToDelete.push(key);
       }
-    }
+    });
+    keysToDelete.forEach((key) => requests.delete(key));
 
     const userRequests = requests.get(ip);
 

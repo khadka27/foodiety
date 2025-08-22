@@ -49,7 +49,8 @@ async function getUsersHandler(request: NextRequest) {
       where,
       select: {
         id: true,
-        name: true,
+        firstName: true,
+        lastName: true,
         email: true,
         role: true,
         isActive: true,
@@ -106,14 +107,16 @@ async function createUserHandler(request: NextRequest) {
   // Create user
   const user = await prisma.user.create({
     data: {
-      name: validatedData.name,
+      username: validatedData.email.split("@")[0], // Use email prefix as username
+      firstName: validatedData.name, // Map name to firstName for now
       email: validatedData.email,
       password: hashedPassword,
       role: validatedData.role,
     },
     select: {
       id: true,
-      name: true,
+      firstName: true,
+      lastName: true,
       email: true,
       role: true,
       isActive: true,

@@ -1,20 +1,21 @@
-import { NextAuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
-import bcrypt from 'bcryptjs';
-import { prisma } from '@/lib/prisma';
-import { User, Role } from '@prisma/client';
+import { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
+import { prisma } from "@/lib/prisma";
+
+type RoleType = "ADMIN" | "USER";
 
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
-      name: 'credentials',
+      name: "credentials",
       credentials: {
-        identifier: { label: 'Email or Username', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        identifier: { label: "Email or Username", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.identifier || !credentials?.password) {
-          throw new Error('Email/Username and password are required');
+          throw new Error("Email/Username and password are required");
         }
 
         try {
@@ -29,11 +30,11 @@ export const authOptions: NextAuthOptions = {
           });
 
           if (!user) {
-            throw new Error('Invalid credentials');
+            throw new Error("Invalid credentials");
           }
 
           if (!user.isActive) {
-            throw new Error('Account is deactivated');
+            throw new Error("Account is deactivated");
           }
 
           const isPasswordValid = await bcrypt.compare(
@@ -42,7 +43,7 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isPasswordValid) {
-            throw new Error('Invalid credentials');
+            throw new Error("Invalid credentials");
           }
 
           // Update last login
@@ -54,8 +55,8 @@ export const authOptions: NextAuthOptions = {
           // Log login action
           await prisma.auditLog.create({
             data: {
-              action: 'LOGIN',
-              resource: 'USER',
+              action: "LOGIN",
+              resource: "USER",
               resourceId: user.id,
               userId: user.id,
               details: {
@@ -70,20 +71,22 @@ export const authOptions: NextAuthOptions = {
             id: user.id,
             email: user.email,
             username: user.username,
-            name: user.firstName ? `${user.firstName} ${user.lastName || ''}`.trim() : user.username,
+            name: user.firstName
+              ? `${user.firstName} ${user.lastName || ""}`.trim()
+              : user.username,
             role: user.role,
             avatar: user.avatar,
             isEmailVerified: user.isEmailVerified,
           };
         } catch (error) {
-          console.error('Authentication error:', error);
+          console.error("Authentication error:", error);
           throw error;
         }
       },
     }),
   ],
   session: {
-    strategy: 'jwt',
+    strategy: "jwt",
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   jwt: {
@@ -102,7 +105,7 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       if (token) {
         session.user.id = token.sub!;
-        session.user.role = token.role as Role;
+        session.user.role = token.role as RoleType;
         session.user.username = token.username as string;
         session.user.avatar = token.avatar as string;
         session.user.isEmailVerified = token.isEmailVerified as boolean;
@@ -111,8 +114,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: '/auth/signin',
-    signUp: '/auth/signup',
+    signIn: "/auth/signin",
   },
   secret: process.env.NEXTAUTH_SECRET,
 };

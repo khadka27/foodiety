@@ -1,32 +1,57 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { signUpSchema, type SignUpInput } from '@/lib/validations/auth';
-import axios from 'axios';
-import { checkPasswordStrength, getPasswordStrengthColor, getPasswordStrengthText, PasswordStrength } from '@/lib/utils/password';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Eye, EyeOff, Loader2, ChefHat, CheckCircle, Check, X } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { toast } from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUpSchema, type SignUpInput } from "@/lib/validations/auth";
+import axios from "axios";
+import {
+  checkPasswordStrength,
+  getPasswordStrengthColor,
+  getPasswordStrengthText,
+  PasswordStrength,
+} from "@/lib/utils/password";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Eye,
+  EyeOff,
+  Loader2,
+  ChefHat,
+  CheckCircle,
+  Check,
+  X,
+} from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { toast } from "react-hot-toast";
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [emailAvailable, setEmailAvailable] = useState<boolean | null>(null);
-  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null);
+  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(
+    null
+  );
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [isCheckingUsername, setIsCheckingUsername] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({ score: 0, feedback: [] as string[], isValid: false });
+  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({
+    score: 0,
+    feedback: [] as string[],
+    isValid: false,
+  });
   const router = useRouter();
 
   const {
@@ -38,9 +63,9 @@ export default function SignUpPage() {
     resolver: zodResolver(signUpSchema),
   });
 
-  const watchedEmail = watch('email');
-  const watchedUsername = watch('username');
-  const watchedPassword = watch('password');
+  const watchedEmail = watch("email");
+  const watchedUsername = watch("username");
+  const watchedPassword = watch("password");
 
   // Check email availability
   useEffect(() => {
@@ -52,8 +77,8 @@ export default function SignUpPage() {
 
       setIsCheckingEmail(true);
       try {
-        const response = await axios.post('/api/auth/check-availability', {
-          type: 'email',
+        const response = await axios.post("/api/auth/check-availability", {
+          type: "email",
           value: watchedEmail,
         });
         setEmailAvailable(response.data.available);
@@ -78,8 +103,8 @@ export default function SignUpPage() {
 
       setIsCheckingUsername(true);
       try {
-        const response = await axios.post('/api/auth/check-availability', {
-          type: 'username',
+        const response = await axios.post("/api/auth/check-availability", {
+          type: "username",
           value: watchedUsername,
         });
         setUsernameAvailable(response.data.available);
@@ -100,23 +125,30 @@ export default function SignUpPage() {
       const strength = checkPasswordStrength(watchedPassword);
       setPasswordStrength(strength);
     } else {
-      setPasswordStrength({ score: 0, feedback: [] as string[], isValid: false });
+      setPasswordStrength({
+        score: 0,
+        feedback: [] as string[],
+        isValid: false,
+      });
     }
   }, [watchedPassword]);
 
   const onSubmit = async (data: SignUpInput) => {
     setIsLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await axios.post('/api/auth/signup', data);
+      const response = await axios.post("/api/auth/signup", data);
       setSuccess(true);
-      toast.success('Account created! Please check your email to verify your account.');
+      toast.success(
+        "Account created! Please check your email to verify your account."
+      );
       setTimeout(() => {
-        router.push('/auth/signin');
+        router.push("/auth/signin");
       }, 3000);
     } catch (error: any) {
-      const message = error.response?.data?.message || 'An unexpected error occurred';
+      const message =
+        error.response?.data?.message || "An unexpected error occurred";
       setError(message);
       toast.error(message);
     } finally {
@@ -135,7 +167,8 @@ export default function SignUpPage() {
                 Account Created!
               </h2>
               <p className="text-gray-600 mb-4">
-                Your account has been created successfully! Please check your email to verify your account before signing in.
+                Your account has been created successfully! Please check your
+                email to verify your account before signing in.
               </p>
             </div>
           </CardContent>
@@ -153,9 +186,7 @@ export default function SignUpPage() {
             <span className="text-2xl font-bold">Foodiety</span>
           </div>
           <CardTitle className="text-2xl">Create your account</CardTitle>
-          <CardDescription>
-            Join our community of food lovers
-          </CardDescription>
+          <CardDescription>Join our community of food lovers</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
@@ -174,10 +205,10 @@ export default function SignUpPage() {
                   id="username"
                   type="text"
                   placeholder="Choose a username"
-                  {...register('username')}
-                  className={`${errors.username ? 'border-red-500' : ''} ${
-                    usernameAvailable === true ? 'border-green-500' : ''
-                  } ${usernameAvailable === false ? 'border-red-500' : ''}`}
+                  {...register("username")}
+                  className={`${errors.username ? "border-red-500" : ""} ${
+                    usernameAvailable === true ? "border-green-500" : ""
+                  } ${usernameAvailable === false ? "border-red-500" : ""}`}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                   {isCheckingUsername && (
@@ -192,10 +223,14 @@ export default function SignUpPage() {
                 </div>
               </div>
               {errors.username && (
-                <p className="text-sm text-red-500">{errors.username.message}</p>
+                <p className="text-sm text-red-500">
+                  {errors.username.message}
+                </p>
               )}
               {!errors.username && usernameAvailable === false && (
-                <p className="text-sm text-red-500">This username is already taken</p>
+                <p className="text-sm text-red-500">
+                  This username is already taken
+                </p>
               )}
               {!errors.username && usernameAvailable === true && (
                 <p className="text-sm text-green-500">Username is available</p>
@@ -211,10 +246,10 @@ export default function SignUpPage() {
                   id="email"
                   type="email"
                   placeholder="Enter your email address"
-                  {...register('email')}
-                  className={`${errors.email ? 'border-red-500' : ''} ${
-                    emailAvailable === true ? 'border-green-500' : ''
-                  } ${emailAvailable === false ? 'border-red-500' : ''}`}
+                  {...register("email")}
+                  className={`${errors.email ? "border-red-500" : ""} ${
+                    emailAvailable === true ? "border-green-500" : ""
+                  } ${emailAvailable === false ? "border-red-500" : ""}`}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                   {isCheckingEmail && (
@@ -232,7 +267,9 @@ export default function SignUpPage() {
                 <p className="text-sm text-red-500">{errors.email.message}</p>
               )}
               {!errors.email && emailAvailable === false && (
-                <p className="text-sm text-red-500">An account with this email already exists</p>
+                <p className="text-sm text-red-500">
+                  An account with this email already exists
+                </p>
               )}
               {!errors.email && emailAvailable === true && (
                 <p className="text-sm text-green-500">Email is available</p>
@@ -248,7 +285,7 @@ export default function SignUpPage() {
                   id="firstName"
                   type="text"
                   placeholder="First name"
-                  {...register('firstName')}
+                  {...register("firstName")}
                 />
               </div>
               <div className="space-y-2">
@@ -259,7 +296,7 @@ export default function SignUpPage() {
                   id="lastName"
                   type="text"
                   placeholder="Last name"
-                  {...register('lastName')}
+                  {...register("lastName")}
                 />
               </div>
             </div>
@@ -271,10 +308,10 @@ export default function SignUpPage() {
               <div className="relative">
                 <Input
                   id="password"
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   placeholder="Create a password"
-                  {...register('password')}
-                  className={errors.password ? 'border-red-500 pr-10' : 'pr-10'}
+                  {...register("password")}
+                  className={errors.password ? "border-red-500 pr-10" : "pr-10"}
                 />
                 <button
                   type="button"
@@ -285,24 +322,35 @@ export default function SignUpPage() {
                 </button>
               </div>
               {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
+                <p className="text-sm text-red-500">
+                  {errors.password.message}
+                </p>
               )}
               {watchedPassword && (
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-600">Password strength:</span>
-                    <span className={`text-sm font-medium ${
-                      passwordStrength.score <= 1 ? 'text-red-500' :
-                      passwordStrength.score === 2 ? 'text-orange-500' :
-                      passwordStrength.score === 3 ? 'text-yellow-500' :
-                      'text-green-500'
-                    }`}>
+                    <span className="text-sm text-gray-600">
+                      Password strength:
+                    </span>
+                    <span
+                      className={`text-sm font-medium ${
+                        passwordStrength.score <= 1
+                          ? "text-red-500"
+                          : passwordStrength.score === 2
+                          ? "text-orange-500"
+                          : passwordStrength.score === 3
+                          ? "text-yellow-500"
+                          : "text-green-500"
+                      }`}
+                    >
                       {getPasswordStrengthText(passwordStrength.score)}
                     </span>
                   </div>
-                  <Progress 
-                    value={(passwordStrength.score / 4) * 100} 
-                    className={`h-2 ${getPasswordStrengthColor(passwordStrength.score)}`}
+                  <Progress
+                    value={(passwordStrength.score / 4) * 100}
+                    className={`h-2 ${getPasswordStrengthColor(
+                      passwordStrength.score
+                    )}`}
                   />
                 </div>
               )}
@@ -315,28 +363,41 @@ export default function SignUpPage() {
               <div className="relative">
                 <Input
                   id="confirmPassword"
-                  type={showConfirmPassword ? 'text' : 'password'}
+                  type={showConfirmPassword ? "text" : "password"}
                   placeholder="Confirm your password"
-                  {...register('confirmPassword')}
-                  className={errors.confirmPassword ? 'border-red-500 pr-10' : 'pr-10'}
+                  {...register("confirmPassword")}
+                  className={
+                    errors.confirmPassword ? "border-red-500 pr-10" : "pr-10"
+                  }
                 />
                 <button
                   type="button"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
                 >
-                  {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                  {showConfirmPassword ? (
+                    <EyeOff size={20} />
+                  ) : (
+                    <Eye size={20} />
+                  )}
                 </button>
               </div>
               {errors.confirmPassword && (
-                <p className="text-sm text-red-500">{errors.confirmPassword.message}</p>
+                <p className="text-sm text-red-500">
+                  {errors.confirmPassword.message}
+                </p>
               )}
             </div>
 
             <Button
               type="submit"
               className="w-full bg-red-600 hover:bg-red-700"
-              disabled={isLoading || emailAvailable === false || usernameAvailable === false || !passwordStrength.isValid}
+              disabled={
+                isLoading ||
+                emailAvailable === false ||
+                usernameAvailable === false ||
+                !passwordStrength.isValid
+              }
             >
               {isLoading ? (
                 <>
@@ -344,14 +405,14 @@ export default function SignUpPage() {
                   Creating account...
                 </>
               ) : (
-                'Create account'
+                "Create account"
               )}
             </Button>
           </form>
 
           <div className="mt-6 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account?{' '}
+              Already have an account?{" "}
               <Link
                 href="/auth/signin"
                 className="text-red-600 hover:text-red-500 font-medium"

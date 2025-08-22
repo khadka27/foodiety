@@ -1,10 +1,9 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { SessionProvider } from 'next-auth/react';
 import { Navigation } from '@/components/Navigation';
 import { Footer } from '@/components/Footer';
-import { ThemeProvider } from '@/components/ThemeProvider';
+import { Providers } from '@/components/Providers';
 import { Toaster } from 'react-hot-toast';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Suspense } from 'react';
@@ -38,16 +37,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <SessionProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange={false}
-          >
-            <Navigation />
-            <Suspense fallback={<LoadingScreen isLoading={true} />}>
-              <main className="min-h-screen bg-background text-foreground">
+        <Providers>
+          <Navigation />
+          <Suspense fallback={<LoadingScreen isLoading={true} />}>
+            <main className="min-h-screen bg-background text-foreground">
                 {children}
               </main>
             </Suspense>
@@ -72,8 +65,7 @@ export default function RootLayout({
                 },
               }}
             />
-          </ThemeProvider>
-        </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
