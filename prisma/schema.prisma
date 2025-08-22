@@ -1,0 +1,327 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum RecipeCategory {
+  APPETIZER
+  MAIN_COURSE
+  DESSERT
+  BEVERAGE
+  SNACK
+  BREAKFAST
+  LUNCH
+  DINNER
+}
+
+enum RestaurantCategory {
+  ITALIAN
+  CHINESE
+  MEXICAN
+  INDIAN
+  AMERICAN
+  FRENCH
+  JAPANESE
+  THAI
+  MEDITERRANEAN
+  FAST_FOOD
+}
+
+model User {
+  id                String   @id @default(cuid())
+  username          String   @unique
+  email             String   @unique
+  password          String
+  firstName         String?
+  lastName          String?
+  avatar            String?
+  bio               String?
+  role              Role     @default(USER)
+  isEmailVerified   Boolean  @default(false)
+  emailVerificationToken String?
+  passwordResetToken String?
+  passwordResetExpires DateTime?
+  isActive          Boolean  @default(true)
+  lastLogin         DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  recipes           Recipe[]
+  reviews           Review[]
+  wishlistItems     WishlistItem[]
+  notifications     Notification[]
+  auditLogs         AuditLog[]
+  blogPosts         BlogPost[]
+  comments          Comment[]
+  likes             Like[]
+  followers         Follow[] @relation("UserFollowers")
+  following         Follow[] @relation("UserFollowing")
+
+  @@map("users")
+}
+
+model Recipe {
+  id              String         @id @default(cuid())
+  title           String
+  slug            String         @unique
+  description     String
+  ingredients     Json           // Array of ingredients with quantities
+  instructions    Json           // Array of step-by-step instructions
+  prepTime        Int            // in minutes
+  cookTime        Int            // in minutes
+  servings        Int
+  difficulty      String         // Easy, Medium, Hard
+  category        RecipeCategory
+  cuisine         String?
+  tags            String[]
+  image           String?
+  images          String[]       // Additional images
+  nutritionInfo   Json?          // Calories, protein, carbs, etc.
+  isPublished     Boolean        @default(false)
+  isFeatured      Boolean        @default(false)
+  views           Int            @default(0)
+  rating          Float          @default(0)
+  totalRatings    Int            @default(0)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  // Relations
+  authorId        String
+  author          User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  reviews         Review[]
+  wishlistItems   WishlistItem[]
+  likes           Like[]
+
+  @@map("recipes")
+}
+
+model Restaurant {
+  id              String             @id @default(cuid())
+  name            String
+  slug            String             @unique
+  description     String
+  address         String
+  city            String
+  state           String?
+  country         String
+  zipCode         String?
+  phone           String?
+  email           String?
+  website         String?
+  category        RestaurantCategory
+  cuisine         String[]
+  priceRange      String             // $, $$, $$$, $$$$
+  hours           Json               // Operating hours
+  features        String[]           // Delivery, Takeout, Dine-in, etc.
+  image           String?
+  images          String[]
+  location        Json?              // Latitude, longitude
+  isActive        Boolean            @default(true)
+  isFeatured      Boolean            @default(false)
+  views           Int                @default(0)
+  rating          Float              @default(0)
+  totalRatings    Int                @default(0)
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  // Relations
+  reviews         Review[]
+  wishlistItems   WishlistItem[]
+  likes           Like[]
+
+  @@map("restaurants")
+}
+
+model BlogPost {
+  id              String    @id @default(cuid())
+  title           String
+  slug            String    @unique
+  excerpt         String
+  content         String
+  image           String?
+  category        String
+  tags            String[]
+  isPublished     Boolean   @default(false)
+  isFeatured      Boolean   @default(false)
+  views           Int       @default(0)
+  readTime        Int       // in minutes
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  authorId        String
+  author          User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments        Comment[]
+  likes           Like[]
+
+  @@map("blog_posts")
+}
+
+model Review {
+  id          String     @id @default(cuid())
+  rating      Int        // 1-5 stars
+  title       String?
+  content     String
+  images      String[]
+  isVerified  Boolean    @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Relations
+  userId      String
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipeId    String?
+  recipe      Recipe?    @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  restaurantId String?
+  restaurant  Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  likes       Like[]
+
+  @@unique([userId, recipeId])
+  @@unique([userId, restaurantId])
+  @@map("reviews")
+}
+
+model WishlistItem {
+  id           String      @id @default(cuid())
+  createdAt    DateTime    @default(now())
+
+  // Relations
+  userId       String
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipeId     String?
+  recipe       Recipe?     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  restaurantId String?
+  restaurant   Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+  @@unique([userId, restaurantId])
+  @@map("wishlist_items")
+}
+
+model Comment {
+  id          String    @id @default(cuid())
+  content     String
+  isApproved  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  // Relations
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  blogPostId  String
+  blogPost    BlogPost  @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  parentId    String?
+  parent      Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies     Comment[] @relation("CommentReplies")
+  likes       Like[]
+
+  @@map("comments")
+}
+
+model Like {
+  id          String    @id @default(cuid())
+  createdAt   DateTime  @default(now())
+
+  // Relations
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipeId    String?
+  recipe      Recipe?   @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  restaurantId String?
+  restaurant  Restaurant? @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  blogPostId  String?
+  blogPost    BlogPost? @relation(fields: [blogPostId], references: [id], onDelete: Cascade)
+  reviewId    String?
+  review      Review?   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  commentId   String?
+  comment     Comment?  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, recipeId])
+  @@unique([userId, restaurantId])
+  @@unique([userId, blogPostId])
+  @@unique([userId, reviewId])
+  @@unique([userId, commentId])
+  @@map("likes")
+}
+
+model Follow {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+
+  // Relations
+  followerId  String
+  follower    User     @relation("UserFollowing", fields: [followerId], references: [id], onDelete: Cascade)
+  followingId String
+  following   User     @relation("UserFollowers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+  @@map("follows")
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  type      String   // like, comment, follow, recipe_approved, etc.
+  title     String
+  message   String
+  data      Json?    // Additional data for the notification
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  action    String   // CREATE, UPDATE, DELETE, LOGIN, etc.
+  resource  String   // USER, RECIPE, RESTAURANT, etc.
+  resourceId String?
+  details   Json?    // Additional details about the action
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@map("audit_logs")
+}
+
+model EmailVerification {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("email_verifications")
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  email     String
+  token     String   @unique
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("password_resets")
+}
