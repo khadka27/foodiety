@@ -1,22 +1,46 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Home, Search, ArrowLeft, ChefHat, Utensils, Coffee } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Home,
+  Search,
+  ArrowLeft,
+  ChefHat,
+  Utensils,
+  Coffee,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
 
 export default function NotFound() {
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const floatingIcons = [ChefHat, Utensils, Coffee];
+
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 dark:from-orange-950/20 dark:via-red-950/20 dark:to-yellow-950/20 flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5 dark:opacity-10">
-        <div 
+        <div
           className="w-full h-full"
           style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -29,20 +53,28 @@ export default function NotFound() {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            initial={{ 
-              x: Math.random() * window.innerWidth,
-              y: Math.random() * window.innerHeight,
-              opacity: 0 
+            initial={{
+              x:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerWidth : 1200),
+              y:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerHeight : 800),
+              opacity: 0,
             }}
-            animate={{ 
-              x: Math.random() * (typeof window !== 'undefined' ? window.innerWidth : 1200),
-              y: Math.random() * (typeof window !== 'undefined' ? window.innerHeight : 800),
-              opacity: [0, 0.2, 0] 
+            animate={{
+              x:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerWidth : 1200),
+              y:
+                Math.random() *
+                (typeof window !== "undefined" ? window.innerHeight : 800),
+              opacity: [0, 0.2, 0],
             }}
-            transition={{ 
+            transition={{
               duration: 4 + Math.random() * 3,
               repeat: Infinity,
-              delay: Math.random() * 3 
+              delay: Math.random() * 3,
             }}
             className="absolute text-orange-200 dark:text-orange-800"
           >
@@ -67,7 +99,7 @@ export default function NotFound() {
             >
               404
             </motion.div>
-            
+
             <motion.div
               initial={{ rotate: -10, scale: 0 }}
               animate={{ rotate: 0, scale: 1 }}
@@ -88,15 +120,16 @@ export default function NotFound() {
               >
                 Oops! Recipe Not Found
               </motion.h1>
-              
+
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed"
               >
-                It looks like this page has gone off the menu! The recipe you're looking for 
-                might have been moved, deleted, or perhaps it never existed in our kitchen.
+                It looks like this page has gone off the menu! The recipe you're
+                looking for might have been moved, deleted, or perhaps it never
+                existed in our kitchen.
               </motion.p>
 
               {/* Action Buttons */}
@@ -152,10 +185,10 @@ export default function NotFound() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-3">
                   {[
-                    { name: 'Recipes', href: '/recipes' },
-                    { name: 'Restaurants', href: '/restaurants' },
-                    { name: 'Blogs', href: '/blogs' },
-                    { name: 'Gallery', href: '/gallery' },
+                    { name: "Recipes", href: "/recipes" },
+                    { name: "Restaurants", href: "/restaurants" },
+                    { name: "Blogs", href: "/blogs" },
+                    { name: "Gallery", href: "/gallery" },
                   ].map((link) => (
                     <Link
                       key={link.name}

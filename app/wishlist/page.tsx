@@ -13,6 +13,9 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { Heart, Clock, Users, Star, MapPin, ChefHat } from "lucide-react";
 import Link from "next/link";
 
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
+
 export default function WishlistPage() {
   const { data: session, status } = useSession();
   const router = useRouter();

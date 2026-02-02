@@ -1,11 +1,14 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Shield, Home, ArrowLeft, Lock } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { ClientMotionDiv } from "@/components/ui/client-motion";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Shield, Home, ArrowLeft, Lock } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
 
 export default function Forbidden() {
   const router = useRouter();
@@ -13,60 +16,35 @@ export default function Forbidden() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-red-950/20 dark:via-orange-950/20 dark:to-yellow-950/20 flex items-center justify-center p-4">
       <div className="max-w-2xl mx-auto text-center">
-        <motion.div
+        <ClientMotionDiv
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           {/* 403 Animation */}
           <div className="mb-8">
-            <motion.div
-              initial={{ scale: 0.5 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-8xl md:text-9xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-4"
-            >
+            <div className="text-8xl md:text-9xl font-bold bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent mb-4">
               403
-            </motion.div>
-            
-            <motion.div
-              initial={{ rotate: -10, scale: 0 }}
-              animate={{ rotate: 0, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="w-24 h-24 mx-auto bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-xl mb-6"
-            >
+            </div>
+
+            <div className="w-24 h-24 mx-auto bg-gradient-to-r from-red-500 to-orange-500 rounded-full flex items-center justify-center shadow-xl mb-6">
               <Shield className="h-12 w-12 text-white" />
-            </motion.div>
+            </div>
           </div>
 
           <Card className="border-0 shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
             <CardContent className="p-8">
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
-              >
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 Access Denied
-              </motion.h1>
-              
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed"
-              >
-                Sorry, you don't have permission to access this kitchen area. 
+              </h1>
+
+              <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+                Sorry, you don't have permission to access this kitchen area.
                 This section is reserved for authorized chefs only.
-              </motion.p>
+              </p>
 
               {/* Action Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-                className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-              >
+              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <Button
                   asChild
                   size="lg"
@@ -87,10 +65,10 @@ export default function Forbidden() {
                   <ArrowLeft className="h-5 w-5 mr-2" />
                   Go Back
                 </Button>
-              </motion.div>
+              </div>
             </CardContent>
           </Card>
-        </motion.div>
+        </ClientMotionDiv>
       </div>
     </div>
   );

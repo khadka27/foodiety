@@ -1,8 +1,11 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
+import { useEffect } from "react";
+import { motion } from "framer-motion";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
 
 interface GlobalErrorProps {
   error: Error & { digest?: string };
@@ -12,7 +15,7 @@ interface GlobalErrorProps {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   useEffect(() => {
     // Log the error to an error reporting service
-    console.error('Global Application Error:', error);
+    console.error("Global Application Error:", error);
   }, [error]);
 
   return (
@@ -39,9 +42,10 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
                 Critical Kitchen Error
               </h1>
-              
+
               <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-                Something went seriously wrong in our kitchen! Our entire system needs attention.
+                Something went seriously wrong in our kitchen! Our entire system
+                needs attention.
               </p>
 
               {/* Action Buttons */}
@@ -55,7 +59,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                 </button>
 
                 <button
-                  onClick={() => window.location.href = '/'}
+                  onClick={() => (window.location.href = "/")}
                   className="border border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-400 dark:hover:bg-orange-950/30 px-8 py-3 rounded-full font-semibold transition-all duration-200 hover:scale-105 flex items-center space-x-2"
                 >
                   <Home className="h-5 w-5" />

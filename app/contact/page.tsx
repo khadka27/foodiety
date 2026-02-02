@@ -1,47 +1,70 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
+
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    service: '',
-    message: '',
+    name: "",
+    email: "",
+    phone: "",
+    service: "",
+    message: "",
   });
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
     setIsSubmitting(false);
     setIsSubmitted(true);
-    toast.success('Message sent successfully! We\'ll get back to you soon.');
+    toast.success("Message sent successfully! We'll get back to you soon.");
 
     // Reset form after 3 seconds
     setTimeout(() => {
       setIsSubmitted(false);
-      setFormData({ name: '', email: '', phone: '', service: '', message: '' });
+      setFormData({ name: "", email: "", phone: "", service: "", message: "" });
     }, 3000);
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
+
+  // Prevent SSR context issues
+  if (!isMounted) {
+    return (
+      <div className="pt-16 min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -57,8 +80,9 @@ export default function ContactPage() {
               Get In Touch
             </h1>
             <p className="text-xl text-red-100 max-w-2xl mx-auto">
-              Ready to start your culinary journey? We're here to help bring your food dreams to life. 
-              Let's discuss your project and create something amazing together.
+              Ready to start your culinary journey? We're here to help bring
+              your food dreams to life. Let's discuss your project and create
+              something amazing together.
             </p>
           </motion.div>
         </div>
@@ -80,7 +104,7 @@ export default function ContactPage() {
                     Contact Information
                   </h2>
                   <p className="text-gray-600 mb-8">
-                    We're always excited to hear from fellow food enthusiasts. 
+                    We're always excited to hear from fellow food enthusiasts.
                     Reach out to us through any of these channels.
                   </p>
                 </div>
@@ -91,9 +115,13 @@ export default function ContactPage() {
                       <Mail className="h-6 w-6 text-red-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Email Us</h3>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        Email Us
+                      </h3>
                       <p className="text-gray-600">hello@foodiety.com</p>
-                      <p className="text-sm text-gray-500">We typically respond within 24 hours</p>
+                      <p className="text-sm text-gray-500">
+                        We typically respond within 24 hours
+                      </p>
                     </div>
                   </div>
 
@@ -102,9 +130,13 @@ export default function ContactPage() {
                       <Phone className="h-6 w-6 text-red-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Call Us</h3>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        Call Us
+                      </h3>
                       <p className="text-gray-600">+1 (555) 123-4567</p>
-                      <p className="text-sm text-gray-500">Mon-Fri, 9am-6pm PST</p>
+                      <p className="text-sm text-gray-500">
+                        Mon-Fri, 9am-6pm PST
+                      </p>
                     </div>
                   </div>
 
@@ -113,7 +145,9 @@ export default function ContactPage() {
                       <MapPin className="h-6 w-6 text-red-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Visit Us</h3>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        Visit Us
+                      </h3>
                       <p className="text-gray-600">123 Culinary Street</p>
                       <p className="text-gray-600">San Francisco, CA 94102</p>
                     </div>
@@ -124,9 +158,15 @@ export default function ContactPage() {
                       <Clock className="h-6 w-6 text-red-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900 mb-1">Business Hours</h3>
-                      <p className="text-gray-600">Monday - Friday: 9:00 AM - 6:00 PM</p>
-                      <p className="text-gray-600">Saturday: 10:00 AM - 4:00 PM</p>
+                      <h3 className="font-semibold text-gray-900 mb-1">
+                        Business Hours
+                      </h3>
+                      <p className="text-gray-600">
+                        Monday - Friday: 9:00 AM - 6:00 PM
+                      </p>
+                      <p className="text-gray-600">
+                        Saturday: 10:00 AM - 4:00 PM
+                      </p>
                       <p className="text-gray-600">Sunday: Closed</p>
                     </div>
                   </div>
@@ -158,7 +198,9 @@ export default function ContactPage() {
                             <Input
                               required
                               value={formData.name}
-                              onChange={(e) => handleInputChange('name', e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange("name", e.target.value)
+                              }
                               className="rounded-lg"
                               placeholder="John Doe"
                             />
@@ -171,7 +213,9 @@ export default function ContactPage() {
                               type="email"
                               required
                               value={formData.email}
-                              onChange={(e) => handleInputChange('email', e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange("email", e.target.value)
+                              }
                               className="rounded-lg"
                               placeholder="john@example.com"
                             />
@@ -186,7 +230,9 @@ export default function ContactPage() {
                             <Input
                               type="tel"
                               value={formData.phone}
-                              onChange={(e) => handleInputChange('phone', e.target.value)}
+                              onChange={(e) =>
+                                handleInputChange("phone", e.target.value)
+                              }
                               className="rounded-lg"
                               placeholder="+1 (555) 123-4567"
                             />
@@ -195,15 +241,28 @@ export default function ContactPage() {
                             <label className="block text-sm font-medium text-gray-700 mb-2">
                               Service of Interest
                             </label>
-                            <Select value={formData.service} onValueChange={(value) => handleInputChange('service', value)}>
+                            <Select
+                              value={formData.service}
+                              onValueChange={(value) =>
+                                handleInputChange("service", value)
+                              }
+                            >
                               <SelectTrigger className="rounded-lg">
                                 <SelectValue placeholder="Select a service" />
                               </SelectTrigger>
                               <SelectContent>
-                                <SelectItem value="catering">Premium Catering</SelectItem>
-                                <SelectItem value="photography">Food Photography</SelectItem>
-                                <SelectItem value="promotion">Event Promotion</SelectItem>
-                                <SelectItem value="consulting">Culinary Consulting</SelectItem>
+                                <SelectItem value="catering">
+                                  Premium Catering
+                                </SelectItem>
+                                <SelectItem value="photography">
+                                  Food Photography
+                                </SelectItem>
+                                <SelectItem value="promotion">
+                                  Event Promotion
+                                </SelectItem>
+                                <SelectItem value="consulting">
+                                  Culinary Consulting
+                                </SelectItem>
                                 <SelectItem value="other">Other</SelectItem>
                               </SelectContent>
                             </Select>
@@ -217,7 +276,9 @@ export default function ContactPage() {
                           <Textarea
                             required
                             value={formData.message}
-                            onChange={(e) => handleInputChange('message', e.target.value)}
+                            onChange={(e) =>
+                              handleInputChange("message", e.target.value)
+                            }
                             className="rounded-lg min-h-32"
                             placeholder="Tell us about your project, event, or how we can help you..."
                           />
@@ -253,7 +314,8 @@ export default function ContactPage() {
                           Message Sent Successfully!
                         </h3>
                         <p className="text-gray-600">
-                          Thank you for reaching out. We'll get back to you within 24 hours.
+                          Thank you for reaching out. We'll get back to you
+                          within 24 hours.
                         </p>
                       </motion.div>
                     )}

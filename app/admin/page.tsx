@@ -1,13 +1,19 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, UserCheck, Shield, TrendingUp } from 'lucide-react';
-import apiClient from '@/lib/api-client';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { StatsChart } from '@/components/admin/StatsChart';
-import { RecentActivity } from '@/components/admin/RecentActivity';
+import { useEffect, useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Users, UserCheck, Shield, TrendingUp } from "lucide-react";
+import apiClient from "@/lib/api-client";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { StatsChart } from "@/components/admin/StatsChart";
+import { RecentActivity } from "@/components/admin/RecentActivity";
 
 interface DashboardStats {
   overview: {
@@ -32,10 +38,13 @@ interface DashboardStats {
   }>;
 }
 
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
+
 export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchStats();
@@ -44,10 +53,10 @@ export default function AdminDashboard() {
   const fetchStats = async () => {
     try {
       setIsLoading(true);
-      const response = await apiClient.get('/admin/stats');
+      const response = await apiClient.get("/admin/stats");
       setStats(response.data.data);
     } catch (error: any) {
-      setError(error.message || 'Failed to fetch dashboard stats');
+      setError(error.message || "Failed to fetch dashboard stats");
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +89,8 @@ export default function AdminDashboard() {
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <p className="text-muted-foreground">
-          Welcome to your admin dashboard. Here's what's happening with your platform.
+          Welcome to your admin dashboard. Here's what's happening with your
+          platform.
         </p>
       </div>
 
@@ -127,7 +137,9 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">New Users (30d)</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              New Users (30d)
+            </CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

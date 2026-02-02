@@ -1,10 +1,11 @@
 'use client';
 
-// import { motion } from 'framer-motion'; // Removed for SSR compatibility
 import { useInView } from 'react-intersection-observer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Award, Globe, Target, Eye, Zap } from 'lucide-react';
+
+export const dynamic = "force-dynamic";
 
 const timeline = [
   {
@@ -132,7 +133,7 @@ export default function AboutPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -141,11 +142,7 @@ export default function AboutPage() {
       <section ref={ref} className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
+            <div>
               <Card className="h-full border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                   <Target className="h-12 w-12 text-red-600 mx-auto mb-4" />
@@ -156,13 +153,9 @@ export default function AboutPage() {
                   </p>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
+            <div>
               <Card className="h-full border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                   <Eye className="h-12 w-12 text-red-600 mx-auto mb-4" />
@@ -173,13 +166,9 @@ export default function AboutPage() {
                   </p>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
+            <div>
               <Card className="h-full border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                   <Zap className="h-12 w-12 text-red-600 mx-auto mb-4" />
@@ -190,7 +179,7 @@ export default function AboutPage() {
                   </p>
                 </CardContent>
               </Card>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -198,28 +187,18 @@ export default function AboutPage() {
       {/* Values */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our Values
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               These core principles guide everything we do and shape how we serve our community.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
+              <div key={value.title}>
                 <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg h-full">
                   <CardContent className="p-8">
                     <div className="flex items-start space-x-4">
@@ -237,7 +216,7 @@ export default function AboutPage() {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -246,19 +225,14 @@ export default function AboutPage() {
       {/* Timeline */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Our Journey
             </h2>
             <p className="text-lg text-gray-600">
               From humble beginnings to a thriving community – here's how we've grown together.
             </p>
-          </motion.div>
+          </div>
 
           <div className="relative">
             {/* Timeline Line */}
@@ -266,11 +240,8 @@ export default function AboutPage() {
 
             <div className="space-y-12">
               {timeline.map((item, index) => (
-                <motion.div
+                <div
                   key={item.year}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
                   className={`relative flex items-center ${
                     index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
                   }`}
@@ -288,7 +259,7 @@ export default function AboutPage() {
                       </CardContent>
                     </Card>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -298,12 +269,7 @@ export default function AboutPage() {
       {/* Team */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
+          <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
               Meet Our Team
             </h2>
@@ -311,16 +277,11 @@ export default function AboutPage() {
               The passionate individuals behind Foodiety who work tirelessly to bring you 
               the best culinary experiences and content.
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
+              <div key={member.name}>
                 <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
                   <div className="relative overflow-hidden">
                     <img
@@ -338,7 +299,7 @@ export default function AboutPage() {
                     <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>

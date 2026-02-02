@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-import { signIn, getSession } from "next-auth/react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -19,11 +18,26 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, Loader2, ChefHat } from "lucide-react";
 
+// Force dynamic rendering to avoid SSR issues
+export const dynamic = "force-dynamic";
+
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
+  const [nextAuth, setNextAuth] = useState<any>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+    // Dynamically import NextAuth to avoid SSR issues
+    if (typeof window !== "undefined") {
+      import("next-auth/react").then((module) => {
+        setNextAuth(module);
+      });
+    }
+  }, []);
 
   const {
     register,
@@ -34,11 +48,16 @@ export default function SignInPage() {
   });
 
   const onSubmit = async (data: SignInInput) => {
+    if (!nextAuth) {
+      setError("Authentication system not ready. Please try again.");
+      return;
+    }
+
     setIsLoading(true);
     setError("");
 
     try {
-      const result = await signIn("credentials", {
+      const result = await nextAuth.signIn("credentials", {
         email: data.identifier,
         password: data.password,
         redirect: false,
@@ -48,7 +67,7 @@ export default function SignInPage() {
         setError(result.error);
       } else {
         // Get session to check user role
-        const session = await getSession();
+        const session = await nextAuth.getSession();
         if (session?.user?.role === "ADMIN") {
           router.push("/admin");
         } else {
@@ -61,6 +80,14 @@ export default function SignInPage() {
       setIsLoading(false);
     }
   };
+
+  if (!isMounted || !nextAuth) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 p-4">
