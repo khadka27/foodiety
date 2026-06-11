@@ -147,29 +147,32 @@ export function LoadingScreen({ isLoading, onComplete }: LoadingScreenProps) {
 
             {/* Floating Food Icons */}
             <div className="absolute inset-0 pointer-events-none">
-              {[...Array(6)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ 
-                    x: Math.random() * 400 - 200,
-                    y: Math.random() * 400 - 200,
-                    opacity: 0 
-                  }}
-                  animate={{ 
-                    x: Math.random() * 400 - 200,
-                    y: Math.random() * 400 - 200,
-                    opacity: [0, 0.3, 0] 
-                  }}
-                  transition={{ 
-                    duration: 3 + Math.random() * 2,
-                    repeat: Infinity,
-                    delay: Math.random() * 2 
-                  }}
-                  className="absolute text-orange-300 dark:text-orange-700"
-                >
-                  {icons[i % icons.length]({ size: 20 })}
-                </motion.div>
-              ))}
+              {[...Array(6)].map((_, i) => {
+                const Icon = icons[i % icons.length];
+                return (
+                  <motion.div
+                    key={i}
+                    initial={{ 
+                      x: Math.random() * 400 - 200,
+                      y: Math.random() * 400 - 200,
+                      opacity: 0 
+                    }}
+                    animate={{ 
+                      x: Math.random() * 400 - 200,
+                      y: Math.random() * 400 - 200,
+                      opacity: [0, 0.3, 0] 
+                    }}
+                    transition={{ 
+                      duration: 3 + Math.random() * 2,
+                      repeat: Infinity,
+                      delay: Math.random() * 2 
+                    }}
+                    className="absolute text-orange-300 dark:text-orange-700"
+                  >
+                    <Icon size={20} />
+                  </motion.div>
+                );
+              })}
             </div>
           </div>
         </motion.div>

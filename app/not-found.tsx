@@ -50,37 +50,40 @@ export default function NotFound() {
 
       {/* Floating Food Icons */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(8)].map((_, i) => (
-          <motion.div
-            key={i}
-            initial={{
-              x:
-                Math.random() *
-                (typeof window !== "undefined" ? window.innerWidth : 1200),
-              y:
-                Math.random() *
-                (typeof window !== "undefined" ? window.innerHeight : 800),
-              opacity: 0,
-            }}
-            animate={{
-              x:
-                Math.random() *
-                (typeof window !== "undefined" ? window.innerWidth : 1200),
-              y:
-                Math.random() *
-                (typeof window !== "undefined" ? window.innerHeight : 800),
-              opacity: [0, 0.2, 0],
-            }}
-            transition={{
-              duration: 4 + Math.random() * 3,
-              repeat: Infinity,
-              delay: Math.random() * 3,
-            }}
-            className="absolute text-orange-200 dark:text-orange-800"
-          >
-            {floatingIcons[i % floatingIcons.length]({ size: 24 })}
-          </motion.div>
-        ))}
+        {[...Array(8)].map((_, i) => {
+          const Icon = floatingIcons[i % floatingIcons.length];
+          return (
+            <motion.div
+              key={i}
+              initial={{
+                x:
+                  Math.random() *
+                  (typeof window !== "undefined" ? window.innerWidth : 1200),
+                y:
+                  Math.random() *
+                  (typeof window !== "undefined" ? window.innerHeight : 800),
+                opacity: 0,
+              }}
+              animate={{
+                x:
+                  Math.random() *
+                  (typeof window !== "undefined" ? window.innerWidth : 1200),
+                y:
+                  Math.random() *
+                  (typeof window !== "undefined" ? window.innerHeight : 800),
+                opacity: [0, 0.2, 0],
+              }}
+              transition={{
+                duration: 4 + Math.random() * 3,
+                repeat: Infinity,
+                delay: Math.random() * 3,
+              }}
+              className="absolute text-orange-200 dark:text-orange-800"
+            >
+              <Icon size={24} />
+            </motion.div>
+          );
+        })}
       </div>
 
       <div className="relative z-10 max-w-2xl mx-auto text-center">

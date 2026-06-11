@@ -1,6 +1,6 @@
 'use client';
 
-// import { motion } from 'framer-motion'; // Removed for SSR compatibility
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -132,7 +132,7 @@ export default function AboutPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
