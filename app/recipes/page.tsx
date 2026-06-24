@@ -209,17 +209,20 @@ export default function RecipesPage() {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-red-600 to-orange-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-20 bg-[url('/bg-light.png')] dark:bg-[url('/bg-dark.png')] bg-cover bg-center bg-no-repeat transition-colors duration-500 overflow-hidden">
+        {/* Texture noise overlay */}
+        <div className="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none" />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center select-none pt-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+            <h1 className="font-playfair font-bold text-4xl md:text-5xl text-stone-900 dark:text-white mb-6 leading-tight">
               Recipe Collection
             </h1>
-            <p className="text-xl text-red-100 max-w-2xl mx-auto">
+            <p className="text-lg text-stone-700 dark:text-stone-200 max-w-2xl mx-auto leading-relaxed">
               Discover amazing recipes from around the world. Filter by cuisine,
               cooking time, and difficulty to find the perfect dish for any
               occasion.
@@ -239,7 +242,7 @@ export default function RecipesPage() {
                 placeholder="Search recipes, ingredients, or tags..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-12 pr-4 py-3 rounded-full border-gray-200 focus:border-red-500 focus:ring-red-500"
+                className="pl-12 pr-4 py-3 rounded-full border-gray-200 focus-visible:ring-[#c05c31]/30 focus-visible:border-[#c05c31]"
               />
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
@@ -346,7 +349,7 @@ export default function RecipesPage() {
                   </div>
 
                   <CardContent className="p-6 flex-1 flex flex-col">
-                    <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-red-600 transition-colors">
+                    <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-[#c05c31] transition-colors">
                       {recipe.title}
                     </h3>
                     <p className="text-muted-foreground text-sm mb-4 flex-1">
@@ -383,7 +386,7 @@ export default function RecipesPage() {
 
                     <Button
                       asChild
-                      className="w-full bg-red-600 hover:bg-red-700"
+                      className="w-full bg-[#c05c31] hover:bg-[#a64b25] text-white"
                     >
                       <Link href={`/recipes/${recipe.id}`}>View Recipe</Link>
                     </Button>
@@ -399,7 +402,7 @@ export default function RecipesPage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 px-8 py-3 rounded-full"
+                className="border-[#c05c31]/20 dark:border-[#c05c31]/30 text-[#c05c31] dark:text-[#ebc63c] hover:bg-[#c05c31]/5 dark:hover:bg-[#ebc63c]/5 px-8 py-3 rounded-full"
               >
                 Load More Recipes
               </Button>

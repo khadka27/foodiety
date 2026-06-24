@@ -468,7 +468,7 @@ export default function RestaurantsPage() {
   if (!isMounted) {
     return (
       <div className="pt-24 min-h-screen bg-background flex flex-col items-center justify-center">
-        <div className="w-12 h-12 rounded-full border-4 border-orange-500/20 border-t-orange-500 animate-spin" />
+        <div className="w-12 h-12 rounded-full border-4 border-[#c05c31]/20 border-t-[#c05c31] animate-spin" />
         <p className="mt-4 text-muted-foreground font-medium animate-pulse">Loading directory...</p>
       </div>
     );
@@ -478,11 +478,13 @@ export default function RestaurantsPage() {
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
       
       {/* Background Decorative Blobs */}
-      <div className="absolute top-20 left-1/4 w-[400px] h-[400px] rounded-full bg-orange-500/5 blur-[120px] pointer-events-none animate-blob" />
-      <div className="absolute top-[40%] right-1/4 w-[450px] h-[450px] rounded-full bg-red-500/5 blur-[130px] pointer-events-none animate-blob" style={{ animationDelay: "2s" }} />
+      <div className="absolute top-20 left-1/4 w-[400px] h-[400px] rounded-full bg-[#c05c31]/5 blur-[120px] pointer-events-none animate-blob" />
+      <div className="absolute top-[40%] right-1/4 w-[450px] h-[450px] rounded-full bg-[#ebc63c]/5 blur-[130px] pointer-events-none animate-blob" style={{ animationDelay: "2s" }} />
 
       {/* Hero Section */}
-      <section className="relative pt-28 pb-16 overflow-hidden">
+      <section className="relative pt-28 pb-16 bg-[url('/bg-light.png')] dark:bg-[url('/bg-dark.png')] bg-cover bg-center bg-no-repeat transition-colors duration-500 overflow-hidden border-b border-border/40">
+        {/* Texture noise overlay */}
+        <div className="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -490,12 +492,12 @@ export default function RestaurantsPage() {
             transition={{ duration: 0.8 }}
             className="space-y-6"
           >
-            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass border border-orange-500/20 text-orange-600 dark:text-orange-400 text-xs font-semibold uppercase tracking-wider">
+            <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full glass border border-[#c05c31]/20 text-[#c05c31] dark:text-[#ebc63c] text-xs font-semibold uppercase tracking-wider">
               <Sparkles className="h-3.5 w-3.5" />
               <span>Taste, Stay & Discover</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl font-black tracking-tight max-w-4xl mx-auto leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold font-playfair tracking-tight max-w-4xl mx-auto leading-tight text-stone-900 dark:text-white">
               Hotels, Cafes & Food <span className="text-gradient">Reviews Hub</span>
             </h1>
             
@@ -512,7 +514,7 @@ export default function RestaurantsPage() {
                 { label: "Community Reviews", value: establishments.reduce((acc, cur) => acc + cur.reviews.length, 0) },
               ].map((c, i) => (
                 <div key={i} className="glass p-3 rounded-2xl border border-border/60">
-                  <div className="text-2xl font-bold text-orange-500 font-outfit">{c.value}</div>
+                  <div className="text-2xl font-bold text-[#c05c31] dark:text-[#ebc63c] font-playfair">{c.value}</div>
                   <div className="text-xs text-muted-foreground font-medium">{c.label}</div>
                 </div>
               ))}
@@ -526,7 +528,7 @@ export default function RestaurantsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           {/* Glass Filter & Search Control Panel */}
-          <div className="glass p-6 rounded-3xl border border-orange-500/10 shadow-2xl mb-12 space-y-6">
+          <div className="glass p-6 rounded-3xl border border-[#c05c31]/10 shadow-2xl mb-12 space-y-6">
             
             {/* Search & Select Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
@@ -539,7 +541,7 @@ export default function RestaurantsPage() {
                   placeholder="Search names, culinary styles, specialty dishes..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-11 pr-4 py-6 rounded-2xl bg-background/50 border-border/80 focus-visible:ring-orange-500 focus-visible:border-orange-500 text-sm"
+                  className="pl-11 pr-4 py-6 rounded-2xl bg-background/50 border-border/80 focus-visible:ring-[#c05c31] focus-visible:border-[#c05c31] text-sm"
                 />
               </div>
 
@@ -551,7 +553,7 @@ export default function RestaurantsPage() {
                   </SelectTrigger>
                   <SelectContent className="glass-panel border-border/60">
                     {cuisinesList.map((c) => (
-                      <SelectItem key={c} value={c} className="hover:bg-orange-500/10 focus:bg-orange-500/10 rounded-lg cursor-pointer">
+                      <SelectItem key={c} value={c} className="hover:bg-[#c05c31]/10 focus:bg-[#c05c31]/10 rounded-lg cursor-pointer">
                         {c}
                       </SelectItem>
                     ))}
@@ -567,7 +569,7 @@ export default function RestaurantsPage() {
                   </SelectTrigger>
                   <SelectContent className="glass-panel border-border/60">
                     {priceRanges.map((p) => (
-                      <SelectItem key={p} value={p} className="hover:bg-orange-500/10 focus:bg-orange-500/10 rounded-lg cursor-pointer">
+                      <SelectItem key={p} value={p} className="hover:bg-[#c05c31]/10 focus:bg-[#c05c31]/10 rounded-lg cursor-pointer">
                         {p === "All Prices" ? "All Price Levels" : `Price: ${p}`}
                       </SelectItem>
                     ))}
@@ -593,14 +595,14 @@ export default function RestaurantsPage() {
                       className={`relative flex items-center space-x-2 px-4 py-2.5 rounded-xl text-xs font-semibold tracking-wide uppercase transition-all duration-300 ${
                         isSelected
                           ? "text-white"
-                          : "text-muted-foreground hover:text-foreground hover:bg-orange-500/5 bg-transparent"
+                          : "text-muted-foreground hover:text-foreground hover:bg-[#c05c31]/5 bg-transparent"
                       }`}
                     >
                       {/* Active indicator pill background */}
                       {isSelected && (
                         <motion.div
                           layoutId="active-cat-bg"
-                          className="absolute inset-0 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl -z-10 shadow-lg shadow-orange-500/25"
+                          className="absolute inset-0 bg-gradient-to-r from-[#c05c31] to-[#ebc63c] rounded-xl -z-10 shadow-lg shadow-[#c05c31]/25"
                           transition={{ type: "spring", stiffness: 380, damping: 30 }}
                         />
                       )}
@@ -625,16 +627,16 @@ export default function RestaurantsPage() {
               animate={{ opacity: 1, scale: 1 }}
               className="glass p-16 text-center max-w-xl mx-auto rounded-3xl border border-border/80 space-y-4"
             >
-              <div className="w-16 h-16 bg-orange-500/10 rounded-full flex items-center justify-center mx-auto text-orange-500">
+              <div className="w-16 h-16 bg-[#c05c31]/10 rounded-full flex items-center justify-center mx-auto text-[#c05c31]">
                 <Search className="h-8 w-8" />
               </div>
-              <h3 className="text-xl font-bold">No Hubs Found</h3>
+              <h3 className="text-xl font-bold font-playfair">No Hubs Found</h3>
               <p className="text-muted-foreground text-sm">
                 We couldn't find any match for your search term or filters. Try adjusting your query or resetting the cuisine selector.
               </p>
               <Button
                 variant="outline"
-                className="rounded-xl border-orange-500/20 text-orange-500 hover:bg-orange-500/5"
+                className="rounded-xl border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5"
                 onClick={() => {
                   setSearchTerm("");
                   setSelectedCuisine("All Styles");
@@ -677,12 +679,12 @@ export default function RestaurantsPage() {
                       {/* Absolute Top Badges */}
                       <div className="absolute top-4 left-4 flex flex-wrap gap-2">
                         <Badge className="bg-white/95 text-gray-900 border-none backdrop-blur-md px-2.5 py-1 text-xs font-semibold uppercase flex items-center space-x-1 shadow-md">
-                          {est.category === "cafe" && <Coffee className="h-3 w-3 text-amber-600" />}
-                          {est.category === "restaurant" && <Utensils className="h-3 w-3 text-red-600" />}
-                          {est.category === "hotel" && <Hotel className="h-3 w-3 text-blue-600" />}
+                          {est.category === "cafe" && <Coffee className="h-3 w-3 text-[#c05c31]" />}
+                          {est.category === "restaurant" && <Utensils className="h-3 w-3 text-[#c05c31]" />}
+                          {est.category === "hotel" && <Hotel className="h-3 w-3 text-[#c05c31]" />}
                           <span>{est.category}</span>
                         </Badge>
-                        <Badge className="bg-orange-500 text-white border-none px-2.5 py-1 text-xs font-semibold shadow-md">
+                        <Badge className="bg-[#c05c31] text-white border-none px-2.5 py-1 text-xs font-semibold shadow-md">
                           {est.priceRange}
                         </Badge>
                       </div>
@@ -697,7 +699,7 @@ export default function RestaurantsPage() {
 
                       {/* Distance overlay */}
                       <div className="absolute bottom-4 left-4 text-white text-xs font-semibold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full flex items-center space-x-1.5 border border-white/10">
-                        <MapPin className="h-3.5 w-3.5 text-orange-400" />
+                        <MapPin className="h-3.5 w-3.5 text-[#ebc63c]" />
                         <span>{est.distance}</span>
                       </div>
 
@@ -715,8 +717,8 @@ export default function RestaurantsPage() {
                       <div className="space-y-4">
                         <div className="flex items-start justify-between">
                           <div>
-                            <span className="text-xs font-bold text-orange-500 uppercase tracking-widest">{est.cuisine}</span>
-                            <h3 className="text-xl font-bold tracking-tight text-foreground mt-0.5 group-hover:text-orange-500 transition-colors">
+                            <span className="text-xs font-bold text-[#c05c31] dark:text-[#ebc63c] uppercase tracking-widest">{est.cuisine}</span>
+                            <h3 className="text-xl font-bold font-playfair tracking-tight text-stone-900 dark:text-stone-100 mt-0.5 group-hover:text-[#c05c31] dark:group-hover:text-[#ebc63c] transition-colors">
                               {est.name}
                             </h3>
                           </div>
@@ -731,7 +733,7 @@ export default function RestaurantsPage() {
                           {est.specialties.map((s) => (
                             <span
                               key={s}
-                              className="text-[10px] font-semibold bg-orange-500/5 text-orange-600 dark:text-orange-400 border border-orange-500/10 px-2 py-0.5 rounded-md"
+                              className="text-[10px] font-semibold bg-[#c05c31]/5 text-[#c05c31] dark:text-[#ebc63c] border border-[#c05c31]/10 px-2 py-0.5 rounded-md"
                             >
                               {s}
                             </span>
@@ -741,11 +743,11 @@ export default function RestaurantsPage() {
                         {/* Quick Contact Details */}
                         <div className="pt-3 border-t border-border/40 space-y-2 text-xs text-muted-foreground">
                           <div className="flex items-center space-x-2">
-                            <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-orange-500/60" />
+                            <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[#c05c31]/60 dark:text-[#ebc63c]/60" />
                             <span className="truncate">{est.address}</span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <Clock className="h-3.5 w-3.5 flex-shrink-0 text-orange-500/60" />
+                            <Clock className="h-3.5 w-3.5 flex-shrink-0 text-[#c05c31]/60 dark:text-[#ebc63c]/60" />
                             <span>{est.hours}</span>
                           </div>
                         </div>
@@ -755,14 +757,14 @@ export default function RestaurantsPage() {
                       <div className="flex space-x-3 pt-6">
                         <Button
                           variant="default"
-                          className="flex-1 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white rounded-xl text-xs font-bold py-5 shadow-md shadow-orange-500/10"
+                          className="flex-1 bg-gradient-to-r from-[#c05c31] to-[#ebc63c] hover:opacity-90 text-white rounded-xl text-xs font-bold py-5 shadow-md shadow-[#c05c31]/10"
                         >
                           View Reviews
                         </Button>
                         <Button
                           variant="outline"
                           onClick={(e) => handleOpenReviewModal(est.id, e)}
-                          className="border-orange-500/20 text-orange-500 hover:bg-orange-500/5 hover:text-orange-600 rounded-xl px-3.5 py-5 flex items-center justify-center transition-all duration-300"
+                          className="border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5 hover:text-[#a64b25] rounded-xl px-3.5 py-5 flex items-center justify-center transition-all duration-300"
                         >
                           <Plus className="h-4.5 w-4.5" />
                         </Button>

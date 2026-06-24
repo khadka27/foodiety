@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { flushSync } from 'react-dom';
 
 function ActiveThemeToggle() {
   const { theme, setTheme } = useTheme();
@@ -45,11 +46,59 @@ function ActiveThemeToggle() {
     }
   };
 
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const nextTheme = getNextTheme();
+
+    const isTransitionable =
+      typeof document !== 'undefined' &&
+      // @ts-ignore
+      document.startViewTransition &&
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!isTransitionable) {
+      setTheme(nextTheme);
+      return;
+    }
+
+    const x = event.clientX;
+    const y = event.clientY;
+
+    // @ts-ignore
+    const transition = document.startViewTransition(() => {
+      flushSync(() => {
+        setTheme(nextTheme);
+      });
+    });
+
+    transition.ready.then(() => {
+      const right = window.innerWidth - x;
+      const bottom = window.innerHeight - y;
+      const maxRadius = Math.hypot(
+        Math.max(x, right),
+        Math.max(y, bottom),
+      );
+
+      document.documentElement.animate(
+        {
+          clipPath: [
+            `circle(0px at ${x}px ${y}px)`,
+            `circle(${maxRadius}px at ${x}px ${y}px)`,
+          ],
+        },
+        {
+          duration: 500,
+          easing: 'ease-in-out',
+          pseudoElement: '::view-transition-new(root)',
+        }
+      );
+    });
+  };
+
   return (
     <Button
       variant="ghost"
       size="sm"
-      onClick={() => setTheme(getNextTheme())}
+      onClick={toggleTheme}
       className="w-9 h-9 p-0 hover:bg-orange-100 dark:hover:bg-orange-900/20 transition-colors"
       title={getLabel()}
     >

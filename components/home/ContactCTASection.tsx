@@ -60,10 +60,10 @@ export function ContactCTASection() {
   }, []);
 
   const contactCards = [
-    { icon: Mail, label: 'Email Us', value: contactInfo.email, color: 'from-orange-500 to-red-500' },
-    { icon: Phone, label: 'Call Us', value: contactInfo.phone, color: 'from-blue-500 to-purple-500' },
-    { icon: MapPin, label: 'Visit Us', value: contactInfo.address, color: 'from-green-500 to-teal-500' },
-    { icon: Clock, label: 'Open Hours', value: contactInfo.hours, color: 'from-amber-500 to-orange-500' },
+    { icon: Mail, label: 'Email Us', value: contactInfo.email, color: 'from-[#c05c31] to-[#e87a43]' },
+    { icon: Phone, label: 'Call Us', value: contactInfo.phone, color: 'from-[#e87a43] to-[#ebc63c]' },
+    { icon: MapPin, label: 'Visit Us', value: contactInfo.address, color: 'from-[#ebc63c] to-[#d97742]' },
+    { icon: Clock, label: 'Open Hours', value: contactInfo.hours, color: 'from-[#d97742] to-[#c05c31]' },
   ];
 
   const titleWords = contactCTA.title.split(' ');
@@ -72,9 +72,9 @@ export function ContactCTASection() {
   const titleSecond = titleWords.slice(midPoint).join(' ');
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden">
-      {/* Dramatic Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-red-600 to-rose-700 dark:from-orange-950 dark:via-red-950 dark:to-rose-950" />
+    <section ref={ref} className="py-12 md:py-16 relative overflow-hidden">
+      {/* Golden Solid Background */}
+      <div className="absolute inset-0 bg-[#FCDB56] dark:bg-[#1C1816]" />
       <div className="absolute inset-0 bg-noise opacity-30" />
 
       {/* Animated orbs */}
@@ -84,7 +84,7 @@ export function ContactCTASection() {
       {/* Dot pattern overlay */}
       <div className="absolute inset-0 opacity-15 pointer-events-none"
         style={{
-          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px)`,
           backgroundSize: '32px 32px',
         }}
       />
@@ -101,16 +101,16 @@ export function ContactCTASection() {
           >
             {/* Label */}
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-px w-10 bg-white/50" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-orange-200">Get In Touch</span>
+              <div className="h-px w-10 bg-stone-900/30 dark:bg-white/30" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-stone-800 dark:text-amber-400">Get In Touch</span>
             </div>
 
-            <h2 className="heading-section text-4xl md:text-5xl lg:text-6xl text-white mb-5 leading-tight">
+            <h2 className="font-playfair font-bold text-4xl md:text-5xl lg:text-6xl text-stone-900 dark:text-white mb-5 leading-tight">
               {titleFirst}<br />
-              <span className="text-amber-300">{titleSecond}</span>
+              <span className="text-amber-700 dark:text-[#ebc63c]">{titleSecond}</span>
             </h2>
 
-            <p className="text-lg text-red-100 mb-8 leading-relaxed max-w-md">
+            <p className="text-lg text-stone-800 dark:text-stone-200 mb-8 leading-relaxed max-w-md">
               {contactCTA.subtitle}
             </p>
 
@@ -122,14 +122,14 @@ export function ContactCTASection() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
-                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 hover:border-white/25 transition-all duration-200 backdrop-blur-sm group cursor-pointer"
+                  className="flex items-center gap-3 p-3.5 rounded-2xl bg-stone-950/5 dark:bg-white/10 hover:bg-stone-950/10 dark:hover:bg-white/15 border border-stone-950/10 dark:border-white/15 hover:border-stone-950/20 dark:hover:border-white/25 transition-all duration-200 backdrop-blur-sm group cursor-pointer"
                 >
                   <div className={`w-9 h-9 rounded-xl bg-gradient-to-br ${card.color} flex items-center justify-center flex-shrink-0 shadow-lg`}>
                     <card.icon className="h-4 w-4 text-white" />
                   </div>
                   <div className="min-w-0">
-                    <div className="text-white/60 text-[10px] font-semibold uppercase tracking-wider">{card.label}</div>
-                    <div className="text-white text-xs font-semibold truncate">{card.value}</div>
+                    <div className="text-stone-800/60 dark:text-white/60 text-[10px] font-semibold uppercase tracking-wider">{card.label}</div>
+                    <div className="text-stone-900 dark:text-white text-xs font-semibold truncate">{card.value}</div>
                   </div>
                 </motion.div>
               ))}
@@ -137,12 +137,12 @@ export function ContactCTASection() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <Link href="/contact" className="btn-glass flex items-center justify-center gap-2 bg-white text-orange-600 hover:bg-orange-50 border-0 rounded-full px-7 py-3 font-bold text-sm shadow-2xl shadow-black/20 transition-all duration-200 hover:-translate-y-1">
+              <Link href="/contact" className="bg-stone-950 hover:bg-stone-900 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 border-0 rounded-full px-7 py-3 font-bold text-sm shadow-xl hover:-translate-y-1 transition-all duration-200 flex items-center justify-center gap-2">
                 <MessageSquare className="h-4 w-4" />
                 {contactCTA.btnText}
                 <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href="/services" className="btn-glass flex items-center justify-center gap-2 rounded-full px-7 py-3 font-semibold text-sm">
+              <Link href="/services" className="border border-stone-950/20 dark:border-white/20 text-stone-900 dark:text-white hover:bg-stone-900/5 dark:hover:bg-white/5 rounded-full px-7 py-3 font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200">
                 <Sparkles className="h-4 w-4" />
                 View Services
               </Link>
@@ -196,22 +196,22 @@ export function ContactCTASection() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.6 + i * 0.1 }}
-                  className="flex items-start gap-3 p-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 backdrop-blur-sm transition-all duration-200"
+                  className="flex items-start gap-3 p-4 rounded-2xl bg-stone-950/5 dark:bg-white/10 hover:bg-stone-950/10 dark:hover:bg-white/15 border border-stone-950/10 dark:border-white/15 backdrop-blur-sm transition-all duration-200"
                 >
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c05c31] to-[#e87a43] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                     {t.avatar}
                   </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="text-white text-sm font-semibold">{t.name}</span>
-                      <span className="text-red-200 text-xs">{t.role}</span>
+                      <span className="text-stone-900 dark:text-white text-sm font-semibold">{t.name}</span>
+                      <span className="text-stone-700/80 dark:text-amber-400 text-xs">{t.role}</span>
                       <div className="flex ml-auto">
                         {[...Array(t.rating)].map((_: any, j: number) => (
-                          <Star key={j} className="h-3 w-3 text-amber-300 fill-current" />
+                          <Star key={j} className="h-3 w-3 text-amber-600 dark:text-[#ebc63c] fill-current" />
                         ))}
                       </div>
                     </div>
-                    <p className="text-red-100 text-xs leading-relaxed">{t.text}</p>
+                    <p className="text-stone-800 dark:text-stone-200 text-xs leading-relaxed">{t.text}</p>
                   </div>
                 </motion.div>
               ))}

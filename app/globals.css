@@ -907,3 +907,10 @@
   border-top: 2px solid hsl(var(--border) / 0.5);
   margin: 2.5rem 0;
 }
+
+/* ===== VIEW TRANSITIONS FOR THEME TOGGLE ===== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

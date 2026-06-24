@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@/components/ui/button';
-import { Calendar, Eye, ArrowRight, BookOpen, Share2, Tag } from 'lucide-react';
+import { Calendar, Eye, ArrowRight, BookOpen, Share2, Tag, Star } from 'lucide-react';
 import Link from 'next/link';
 
 const blogPosts = [
@@ -50,7 +50,7 @@ export function BlogPreviewSection() {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.08 });
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden bg-background">
+    <section ref={ref} className="py-12 md:py-16 relative overflow-hidden bg-background">
       <div className="absolute top-0 right-1/4 w-80 h-80 bg-red-500/6 rounded-full blur-[100px] animate-blob pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-orange-500/6 rounded-full blur-[100px] animate-blob animation-delay-2000 pointer-events-none" />
 
@@ -67,8 +67,8 @@ export function BlogPreviewSection() {
               <div className="h-px w-10 bg-gradient-to-r from-transparent to-orange-500" />
               <span className="text-label text-orange-500">Food Stories</span>
             </div>
-            <h2 className="heading-section text-4xl md:text-5xl text-foreground mb-2">
-              Latest <span className="text-gradient">Articles</span>
+            <h2 className="font-playfair font-bold text-4xl md:text-5xl text-foreground mb-2 leading-tight">
+              Latest <span className="text-[#c05c31] dark:text-[#ebc63c]">Articles</span>
             </h2>
             <p className="text-base text-muted-foreground max-w-lg">
               Dive into food stories, cooking tips, and culinary adventures from around the world.
@@ -121,8 +121,8 @@ export function BlogPreviewSection() {
 
                     {isFeatured && (
                       <div className="absolute bottom-3 left-3">
-                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                          ⭐ Featured
+                        <span className="px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-[#c05c31] to-[#e87a43] text-white flex items-center gap-1">
+                          <Star className="h-3 w-3 fill-current" /> Featured
                         </span>
                       </div>
                     )}

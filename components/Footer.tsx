@@ -5,7 +5,13 @@ import { ChefHat, Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, Ar
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 
-const footerLinks = {
+interface FooterLink {
+  name: string;
+  href: string;
+  badge?: string;
+}
+
+const footerLinks: Record<string, FooterLink[]> = {
   explore: [
     { name: 'Restaurants', href: '/restaurants' },
     { name: 'Cafés', href: '/restaurants?type=cafe' },
@@ -16,7 +22,7 @@ const footerLinks = {
     { name: 'Recipes', href: '/recipes' },
     { name: 'Food Blogs', href: '/blogs' },
     { name: 'Food Reviews', href: '/blogs?cat=reviews' },
-    { name: 'Foodiety AI', href: '/ai' },
+    { name: 'Foodiety AI', href: '/ai', badge: 'New' },
   ],
   company: [
     { name: 'About Us', href: '/about' },
@@ -165,6 +171,11 @@ export function Footer() {
                     >
                       <span className="w-0 group-hover:w-3 h-px bg-orange-500 transition-all duration-200 overflow-hidden" />
                       {link.name}
+                      {link.badge && (
+                        <span className="ml-1 px-1.5 py-0.5 text-[8px] font-bold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full uppercase tracking-wide">
+                          {link.badge}
+                        </span>
+                      )}
                     </Link>
                   </li>
                 ))}

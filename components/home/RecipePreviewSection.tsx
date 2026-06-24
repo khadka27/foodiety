@@ -85,7 +85,7 @@ export function RecipePreviewSection() {
   const featuredRecipes = recipes.slice(0, 4);
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden bg-background">
+    <section ref={ref} className="py-12 md:py-16 relative overflow-hidden bg-background">
       <div className="absolute inset-0 bg-dots-pattern opacity-50 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-full blur-[100px] -z-10 pointer-events-none" />
 
@@ -102,8 +102,8 @@ export function RecipePreviewSection() {
               <div className="h-px w-10 bg-gradient-to-r from-transparent to-orange-500" />
               <span className="text-label text-orange-500">Top Recipes</span>
             </div>
-            <h2 className="heading-section text-4xl md:text-5xl text-foreground mb-2">
-              Featured <span className="text-gradient">Recipes</span>
+            <h2 className="font-playfair font-bold text-4xl md:text-5xl text-foreground mb-2 leading-tight">
+              Featured <span className="text-[#c05c31] dark:text-[#ebc63c]">Recipes</span>
             </h2>
             <p className="text-base text-muted-foreground max-w-lg">
               Master these crowd-favorite recipes that our community can't stop making.
@@ -226,8 +226,9 @@ export function RecipePreviewSection() {
           className="mt-12 glass-card rounded-3xl p-6 md:p-8 border border-orange-200/30 dark:border-orange-800/20 flex flex-col md:flex-row items-center justify-between gap-6"
         >
           <div className="text-center md:text-left">
-            <h3 className="text-xl font-bold text-foreground mb-1">
-              🍳 Ready to cook something amazing?
+            <h3 className="text-xl font-bold text-foreground mb-1 flex items-center justify-center md:justify-start gap-2">
+              <ChefHat className="h-5 w-5 text-[#c05c31] dark:text-[#ebc63c]" />
+              Ready to cook something amazing?
             </h3>
             <p className="text-muted-foreground text-sm">
               Browse our library of 10,000+ recipes from cuisines around the world.

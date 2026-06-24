@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ZoomIn, Heart, Share2, Grid3x3, LayoutGrid, Search, Download } from "lucide-react";
+import { X, ZoomIn, Heart, Share2, Grid3x3, LayoutGrid, Search, Download, Star } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -80,42 +80,38 @@ export default function GalleryPage() {
   return (
     <div className="pt-16 overflow-x-hidden">
       {/* Hero */}
-      <section className="relative py-24 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-red-600 to-rose-700" />
-        <div className="absolute inset-0 opacity-10" style={{
-          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px)`,
-          backgroundSize: '28px 28px',
-        }} />
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/4" />
+      <section className="relative py-24 overflow-hidden bg-[url('/bg-light.png')] dark:bg-[url('/bg-dark.png')] bg-cover bg-center bg-no-repeat transition-colors duration-500">
+        {/* Texture noise overlay */}
+        <div className="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center select-none pt-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
             <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-12 bg-white/40" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-200">Visual Stories</span>
-              <div className="h-px w-12 bg-white/40" />
+              <div className="h-px w-12 bg-stone-300 dark:bg-stone-700" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d97742] dark:text-[#ebc63c]">Visual Stories</span>
+              <div className="h-px w-12 bg-stone-300 dark:bg-stone-700" />
             </div>
-            <h1 className="heading-hero text-5xl sm:text-6xl md:text-7xl text-white mb-5">
+            <h1 className="font-playfair font-bold text-5xl sm:text-6xl md:text-7xl text-stone-900 dark:text-white mb-5 leading-tight">
               Food Gallery
             </h1>
-            <p className="text-lg text-red-100 max-w-2xl mx-auto leading-relaxed mb-8">
+            <p className="text-lg text-stone-700 dark:text-stone-200 max-w-2xl mx-auto leading-relaxed mb-8">
               Explore stunning food photography, behind-the-scenes moments, and unforgettable dining experiences.
             </p>
 
             {/* Search Bar */}
             <div className="max-w-md mx-auto">
               <div className="relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-stone-500 dark:text-white/60" />
                 <input
                   type="text"
                   placeholder="Search photos..."
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 rounded-full bg-white/15 backdrop-blur-sm border border-white/25 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-white/30 text-sm"
+                  className="w-full pl-11 pr-4 py-3 rounded-full bg-stone-950/5 dark:bg-white/15 border border-stone-950/10 dark:border-white/25 text-stone-900 dark:text-white placeholder-stone-500 dark:placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-[#c05c31]/30 focus:border-[#c05c31]/50 text-sm transition-all"
                 />
               </div>
             </div>
@@ -214,8 +210,8 @@ export default function GalleryPage() {
 
                     {/* Featured badge */}
                     {image.featured && (
-                      <div className="absolute top-3 left-3 px-2 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r from-orange-500 to-red-500 text-white">
-                        ⭐ Featured
+                      <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-[10px] font-bold bg-gradient-to-r from-[#c05c31] to-[#e87a43] text-white flex items-center gap-1">
+                        <Star className="h-3 w-3 fill-current" /> Featured
                       </div>
                     )}
                   </div>
@@ -226,7 +222,7 @@ export default function GalleryPage() {
 
           {filteredImages.length === 0 && (
             <div className="text-center py-20">
-              <div className="text-5xl mb-4">🔍</div>
+              <Search className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-bold text-foreground mb-2">No photos found</h3>
               <p className="text-muted-foreground text-sm">Try a different category or search term</p>
             </div>

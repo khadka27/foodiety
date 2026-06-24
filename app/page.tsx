@@ -6,6 +6,7 @@ import { ServicesSection } from "@/components/home/ServicesSection";
 import { RecommendedPicksSection } from "@/components/home/RecommendedPicksSection";
 import { BlogPreviewSection } from "@/components/home/BlogPreviewSection";
 import { RecipePreviewSection } from "@/components/home/RecipePreviewSection";
+import { TopRestaurantsSection } from "@/components/home/TopRestaurantsSection";
 import { ContactCTASection } from "@/components/home/ContactCTASection";
 
 import nextDynamic from "next/dynamic";
@@ -22,6 +23,7 @@ function HomeComponent() {
       <RecommendedPicksSection />
       <BlogPreviewSection />
       <RecipePreviewSection />
+      <TopRestaurantsSection />
       <ContactCTASection />
     </div>
   );

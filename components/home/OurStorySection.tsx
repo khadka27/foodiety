@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, type Variants } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Heart, Users, Award, Globe, TrendingUp, Quote } from 'lucide-react';
+import { Heart, Users, Award, Globe, TrendingUp, Quote, Star } from 'lucide-react';
 
 const defaultStats = [
   { value: '50K+', label: 'Community Members' },
@@ -78,7 +78,7 @@ export function OurStorySection() {
   const subtitleSecond = subtitleWords.slice(midPoint).join(' ');
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden bg-background">
+    <section ref={ref} className="py-12 md:py-16 relative overflow-hidden bg-background">
       {/* Background */}
       <div className="absolute inset-0 bg-dots-pattern opacity-60 pointer-events-none" />
       <div className="absolute -top-32 -right-32 w-80 h-80 bg-orange-500/8 rounded-full blur-[80px] animate-blob pointer-events-none" />
@@ -101,10 +101,10 @@ export function OurStorySection() {
 
             <motion.h2
               variants={itemVariants}
-              className="heading-section text-4xl md:text-5xl text-foreground mb-6"
+              className="font-playfair font-bold text-4xl md:text-5xl text-foreground mb-6 leading-tight"
             >
               {subtitleFirst}{' '}
-              <span className="text-gradient block">{subtitleSecond}</span>
+              <span className="text-[#c05c31] dark:text-[#ebc63c] block">{subtitleSecond}</span>
             </motion.h2>
 
             {/* Quote */}
@@ -206,9 +206,9 @@ export function OurStorySection() {
               />
               <div className="p-2 bg-white dark:bg-gray-900">
                 <div className="text-xs font-bold text-foreground">Today's Special</div>
-                <div className="flex items-center gap-1 mt-0.5">
+                <div className="flex items-center gap-0.5 mt-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <span key={i} className="text-amber-400 text-xs">★</span>
+                    <Star key={i} className="h-3 w-3 text-amber-400 fill-current" />
                   ))}
                 </div>
               </div>

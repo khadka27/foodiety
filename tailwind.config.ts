@@ -13,6 +13,7 @@ const config: Config = {
         outfit: ['var(--font-outfit)', 'Outfit', 'sans-serif'],
         inter: ['var(--font-inter)', 'Inter', 'sans-serif'],
         sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+        playfair: ['var(--font-playfair)', 'Playfair Display', 'serif'],
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',

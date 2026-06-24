@@ -137,7 +137,7 @@ export function RecommendedPicksSection() {
   const prev = () => setCurrentIndex(p => (p - 1 + filtered.length) % filtered.length);
 
   return (
-    <section ref={ref} className="py-24 md:py-32 relative overflow-hidden bg-background">
+    <section ref={ref} className="py-12 md:py-16 relative overflow-hidden bg-background">
       <div className="absolute inset-0 bg-grid-pattern opacity-50 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[600px] bg-gradient-to-r from-orange-500/6 to-red-500/6 rounded-full blur-[120px] -z-10 animate-blob pointer-events-none" />
 
@@ -154,8 +154,8 @@ export function RecommendedPicksSection() {
             <span className="text-label text-orange-500">Chef's Selection</span>
             <div className="h-px w-12 bg-gradient-to-r from-orange-500 to-transparent" />
           </div>
-          <h2 className="heading-section text-4xl md:text-5xl text-foreground mb-4">
-            Recommended <span className="text-gradient">Picks</span>
+          <h2 className="font-playfair font-bold text-4xl md:text-5xl text-foreground mb-4 leading-tight">
+            Recommended <span className="text-[#c05c31] dark:text-[#ebc63c]">Picks</span>
           </h2>
           <p className="text-base text-muted-foreground max-w-xl mx-auto">
             Handpicked dishes that our community absolutely loves — tested, tasted, and guaranteed to impress.

@@ -17,6 +17,9 @@ import {
   ArrowRight,
   Sparkles,
   Award,
+  Heart,
+  BookOpen,
+  Globe,
 } from "lucide-react";
 import Link from "next/link";
 
@@ -90,6 +93,27 @@ const defaultServices = [
   },
 ];
 
+const getIconForEmoji = (emoji: string) => {
+  switch (emoji) {
+    case "🍽️":
+      return <Utensils className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto" />;
+    case "⭐":
+      return <Star className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] fill-[#c05c31] dark:fill-[#ebc63c] mx-auto" />;
+    case "👨‍🍳":
+      return <ChefHat className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto" />;
+    case "🏆":
+      return <Award className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto" />;
+    case "❤️":
+      return <Heart className="h-6 w-6 text-rose-500 fill-rose-500 mx-auto" />;
+    case "📖":
+      return <BookOpen className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto" />;
+    case "🌐":
+      return <Globe className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto" />;
+    default:
+      return <span className="text-xl">{emoji}</span>;
+  }
+};
+
 const defaultStats = [
   { value: "500+", label: "Events Catered", icon: "🍽️" },
   { value: "98%", label: "Client Satisfaction", icon: "⭐" },
@@ -140,43 +164,37 @@ export default function ServicesPage() {
   return (
     <div className="pt-16 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative py-28 overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-600 via-red-600 to-rose-700" />
-        <div className="absolute inset-0 opacity-15" style={{
-          backgroundImage: `radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px)`,
-          backgroundSize: '32px 32px',
-        }} />
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/4" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-400/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/4" />
+      <section className="relative py-28 overflow-hidden bg-[url('/bg-light.png')] dark:bg-[url('/bg-dark.png')] bg-cover bg-center bg-no-repeat transition-colors duration-500">
+        {/* Texture noise overlay */}
+        <div className="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center select-none pt-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
           >
             <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-12 bg-white/40" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-orange-200">What We Offer</span>
-              <div className="h-px w-12 bg-white/40" />
+              <div className="h-px w-12 bg-stone-300 dark:bg-stone-700" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#d97742] dark:text-[#ebc63c]">What We Offer</span>
+              <div className="h-px w-12 bg-stone-300 dark:bg-stone-700" />
             </div>
-            <h1 className="heading-hero text-5xl sm:text-6xl md:text-7xl text-white mb-6">
+            <h1 className="font-playfair font-bold text-5xl sm:text-6xl md:text-7xl text-stone-900 dark:text-white mb-6 leading-tight">
               Our Services
             </h1>
-            <p className="text-lg text-red-100 max-w-2xl mx-auto leading-relaxed mb-8">
+            <p className="text-lg text-stone-700 dark:text-stone-200 max-w-2xl mx-auto leading-relaxed mb-8">
               From intimate dinner parties to grand celebrations, we bring culinary excellence 
               and professional service to every occasion. Let us create unforgettable experiences.
             </p>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link href="/contact"
-                className="btn-premium flex items-center justify-center gap-2 bg-white text-orange-600 hover:bg-orange-50 border-0 px-7 py-3 font-bold text-sm rounded-full shadow-2xl shadow-black/20">
+                className="bg-stone-950 hover:bg-stone-900 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 border-0 px-7 py-3 font-bold text-sm rounded-full shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2">
                 <Mail className="h-4 w-4" />
                 Get a Quote
                 <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href="#services"
-                className="btn-glass flex items-center justify-center gap-2 px-7 py-3 font-semibold text-sm rounded-full">
+                className="border border-stone-300 dark:border-white/20 text-stone-900 dark:text-white hover:bg-stone-900/5 dark:hover:bg-white/5 px-7 py-3 font-semibold text-sm rounded-full flex items-center justify-center transition-all duration-200">
                 Explore Services
               </Link>
             </div>
@@ -196,7 +214,7 @@ export default function ServicesPage() {
                 transition={{ delay: i * 0.1 }}
                 className="text-center p-4 glass-card rounded-2xl border border-orange-100/30 dark:border-orange-900/20 hover:-translate-y-1 transition-transform duration-300"
               >
-                <div className="text-3xl mb-1">{stat.icon}</div>
+                <div className="mb-3 h-7 flex items-center justify-center">{getIconForEmoji(stat.icon)}</div>
                 <div className="text-2xl font-black text-gradient">{stat.value}</div>
                 <div className="text-xs text-muted-foreground font-medium">{stat.label}</div>
               </motion.div>

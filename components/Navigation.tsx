@@ -97,14 +97,14 @@ export function Navigation() {
               </motion.div>
               <div className="flex flex-col leading-none">
                 <span className={`text-lg font-black tracking-tight transition-colors duration-300 ${
-                  !scrolled && isHomePage ? "text-white" : "text-foreground"
+                  !scrolled && isHomePage ? "text-slate-900 dark:text-white" : "text-foreground"
                 } group-hover:text-orange-500`}
                   style={{ fontFamily: "'Outfit', sans-serif" }}
                 >
                   Foodiety
                 </span>
                 <span className={`text-[9px] font-semibold tracking-[0.15em] uppercase transition-colors ${
-                  !scrolled && isHomePage ? "text-orange-200" : "text-orange-500"
+                  !scrolled && isHomePage ? "text-orange-600 dark:text-orange-300" : "text-orange-500"
                 }`}>
                   Taste & Discover
                 </span>
@@ -120,10 +120,10 @@ export function Navigation() {
                   className={`relative px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
                     isActive(item.href)
                       ? !scrolled && isHomePage
-                        ? "text-white bg-white/15"
+                        ? "text-slate-900 dark:text-white bg-slate-900/5 dark:bg-white/15"
                         : "text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/30"
                       : !scrolled && isHomePage
-                        ? "text-white/80 hover:text-white hover:bg-white/10"
+                        ? "text-slate-800/80 hover:text-slate-900 hover:bg-slate-900/5 dark:text-white/85 dark:hover:text-white dark:hover:bg-white/10"
                         : "text-foreground/70 hover:text-foreground hover:bg-orange-50 dark:hover:bg-orange-950/20"
                   }`}
                 >
@@ -226,8 +226,8 @@ export function Navigation() {
                     size="sm"
                     className={`rounded-full font-medium transition-all duration-200 ${
                       !scrolled && isHomePage
-                        ? "text-white hover:bg-white/10"
-                        : "text-foreground hover:text-orange-600"
+                      ? "text-slate-800 hover:text-slate-950 hover:bg-slate-900/5 dark:text-white/90 dark:hover:text-white dark:hover:bg-white/10"
+                      : "text-foreground hover:text-orange-600"
                     }`}
                   >
                     <Link href="/auth/signin">Sign In</Link>
@@ -255,7 +255,7 @@ export function Navigation() {
                 onClick={() => setIsOpen(!isOpen)}
                 className={`p-2 rounded-xl transition-all duration-200 ${
                   !scrolled && isHomePage
-                    ? "text-white hover:bg-white/10"
+                    ? "text-slate-900 hover:bg-slate-900/5 dark:text-white dark:hover:bg-white/10"
                     : "text-foreground hover:bg-orange-50 dark:hover:bg-orange-950/30"
                 }`}
                 aria-label={isOpen ? "Close menu" : "Open menu"}

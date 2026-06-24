@@ -186,7 +186,7 @@ export default function RecipePage() {
   if (!isMounted || !recipe) {
     return (
       <div className="pt-16 min-h-screen bg-background flex items-center justify-center">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 animate-pulse" />
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent animate-pulse" />
       </div>
     );
   }
@@ -194,7 +194,9 @@ export default function RecipePage() {
   return (
     <div className="pt-16">
       {/* Hero Section */}
-      <section className="py-12 bg-gray-50">
+      <section className="relative py-12 bg-[url('/bg-light.png')] dark:bg-[url('/bg-dark.png')] bg-cover bg-center bg-no-repeat transition-colors duration-500 overflow-hidden border-b border-border/40">
+        {/* Texture noise overlay */}
+        <div className="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -217,7 +219,7 @@ export default function RecipePage() {
                   <Badge variant="outline">{recipe.cuisine}</Badge>
                 </div>
 
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                <h1 className="text-3xl md:text-4xl font-bold font-playfair text-stone-900 dark:text-white mb-4">
                   {recipe.title}
                 </h1>
 
@@ -227,21 +229,21 @@ export default function RecipePage() {
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                   <div className="text-center">
-                    <Clock className="h-6 w-6 text-red-600 mx-auto mb-1" />
-                    <div className="text-sm font-medium text-gray-900">
+                    <Clock className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto mb-1" />
+                    <div className="text-sm font-medium text-stone-900 dark:text-stone-100">
                       {recipe.cookTime}
                     </div>
-                    <div className="text-xs text-gray-500">Cook Time</div>
+                    <div className="text-xs text-stone-500">Cook Time</div>
                   </div>
                   <div className="text-center">
-                    <Users className="h-6 w-6 text-red-600 mx-auto mb-1" />
-                    <div className="text-sm font-medium text-gray-900">
+                    <Users className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto mb-1" />
+                    <div className="text-sm font-medium text-stone-900 dark:text-stone-100">
                       {recipe.servings}
                     </div>
-                    <div className="text-xs text-gray-500">Servings</div>
+                    <div className="text-xs text-stone-500">Servings</div>
                   </div>
                   <div className="text-center">
-                    <Star className="h-6 w-6 text-red-600 mx-auto mb-1" />
+                    <Star className="h-6 w-6 text-[#c05c31] dark:text-[#ebc63c] mx-auto mb-1" />
                     <div className="text-sm font-medium text-gray-900">
                       {recipe.rating}
                     </div>
@@ -263,8 +265,8 @@ export default function RecipePage() {
                     variant={isFavorited ? "default" : "outline"}
                     className={
                       isFavorited
-                        ? "bg-red-600 hover:bg-red-700"
-                        : "border-red-200 text-red-600 hover:bg-red-50"
+                        ? "bg-[#c05c31] hover:bg-[#a64b25] text-white"
+                        : "border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5"
                     }
                   >
                     <Heart
@@ -277,7 +279,7 @@ export default function RecipePage() {
                   <Button
                     onClick={() => setIsBookmarked(!isBookmarked)}
                     variant="outline"
-                    className="border-red-200 text-red-600 hover:bg-red-50"
+                    className="border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5"
                   >
                     <Bookmark
                       className={`h-4 w-4 mr-2 ${
@@ -347,7 +349,7 @@ export default function RecipePage() {
                         className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0"
                       >
                         <span className="text-gray-900">{ingredient.item}</span>
-                        <span className="font-medium text-red-600">
+                        <span className="font-medium text-[#c05c31] dark:text-[#ebc63c]">
                           {adjustAmount(ingredient.amount)}
                         </span>
                       </div>
