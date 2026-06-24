@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,96 +23,148 @@ import { useParams } from "next/navigation";
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
-// This would typically come from a CMS or database
-const recipe = {
-  id: 1,
-  title: "Homemade Pizza Margherita",
-  image:
-    "https://images.pexels.com/photos/2762942/pexels-photo-2762942.jpeg?auto=compress&cs=tinysrgb&w=1200",
-  difficulty: "Beginner",
-  cookTime: "30 min",
-  prepTime: "15 min",
-  servings: 4,
-  rating: 4.9,
-  reviews: 127,
-  cuisine: "Italian",
-  tags: ["Vegetarian", "Quick", "Family-Friendly"],
-  description:
-    "A classic Italian pizza with fresh tomatoes, mozzarella, and basil – simple ingredients that create an extraordinary flavor experience.",
-  calories: 285,
-  nutrition: {
-    protein: "12g",
-    carbs: "35g",
-    fat: "10g",
-    fiber: "3g",
+const defaultRecipes = [
+  {
+    id: 1,
+    title: "Homemade Pizza Margherita",
+    image:
+      "https://images.pexels.com/photos/2762942/pexels-photo-2762942.jpeg?auto=compress&cs=tinysrgb&w=1200",
+    difficulty: "Beginner",
+    cookTime: "30 min",
+    prepTime: "15 min",
+    servings: 4,
+    rating: 4.9,
+    reviews: 127,
+    cuisine: "Italian",
+    tags: ["Vegetarian", "Quick", "Family-Friendly"],
+    description:
+      "A classic Italian pizza with fresh tomatoes, mozzarella, and basil – simple ingredients that create an extraordinary flavor experience.",
+    calories: 285,
+    nutrition: {
+      protein: "12g",
+      carbs: "35g",
+      fat: "10g",
+      fiber: "3g",
+    },
+    ingredients: [
+      { item: "Pizza dough", amount: "1 lb", category: "base" },
+      {
+        item: "San Marzano tomatoes",
+        amount: "1 can (14 oz)",
+        category: "sauce",
+      },
+      { item: "Fresh mozzarella", amount: "8 oz", category: "cheese" },
+      { item: "Fresh basil leaves", amount: "1/4 cup", category: "herbs" },
+      { item: "Extra virgin olive oil", amount: "2 tbsp", category: "oil" },
+      { item: "Garlic", amount: "2 cloves", category: "aromatics" },
+      { item: "Salt", amount: "to taste", category: "seasoning" },
+      { item: "Black pepper", amount: "to taste", category: "seasoning" },
+    ],
+    instructions: [
+      {
+        step: 1,
+        instruction:
+          "Preheat your oven to 475°F (245°C). If you have a pizza stone, place it in the oven while preheating.",
+        time: "15 min",
+      },
+      {
+        step: 2,
+        instruction:
+          "Prepare the sauce by crushing the San Marzano tomatoes by hand and mixing with minced garlic, salt, and a drizzle of olive oil.",
+        time: "5 min",
+      },
+      {
+        step: 3,
+        instruction:
+          "Roll out the pizza dough on a floured surface to your desired thickness. Transfer to a pizza pan or parchment paper.",
+        time: "5 min",
+      },
+      {
+        step: 4,
+        instruction:
+          "Spread the tomato sauce evenly over the dough, leaving a 1-inch border for the crust.",
+        time: "2 min",
+      },
+      {
+        step: 5,
+        instruction:
+          "Tear the fresh mozzarella into small pieces and distribute evenly over the sauce.",
+        time: "3 min",
+      },
+      {
+        step: 6,
+        instruction:
+          "Bake for 12-15 minutes until the crust is golden and the cheese is bubbly and slightly browned.",
+        time: "15 min",
+      },
+      {
+        step: 7,
+        instruction:
+          "Remove from oven and immediately top with fresh basil leaves and a final drizzle of olive oil. Slice and serve hot.",
+        time: "2 min",
+      },
+    ],
   },
-  ingredients: [
-    { item: "Pizza dough", amount: "1 lb", category: "base" },
-    {
-      item: "San Marzano tomatoes",
-      amount: "1 can (14 oz)",
-      category: "sauce",
-    },
-    { item: "Fresh mozzarella", amount: "8 oz", category: "cheese" },
-    { item: "Fresh basil leaves", amount: "1/4 cup", category: "herbs" },
-    { item: "Extra virgin olive oil", amount: "2 tbsp", category: "oil" },
-    { item: "Garlic", amount: "2 cloves", category: "aromatics" },
-    { item: "Salt", amount: "to taste", category: "seasoning" },
-    { item: "Black pepper", amount: "to taste", category: "seasoning" },
-  ],
-  instructions: [
-    {
-      step: 1,
-      instruction:
-        "Preheat your oven to 475°F (245°C). If you have a pizza stone, place it in the oven while preheating.",
-      time: "15 min",
-    },
-    {
-      step: 2,
-      instruction:
-        "Prepare the sauce by crushing the San Marzano tomatoes by hand and mixing with minced garlic, salt, and a drizzle of olive oil.",
-      time: "5 min",
-    },
-    {
-      step: 3,
-      instruction:
-        "Roll out the pizza dough on a floured surface to your desired thickness. Transfer to a pizza pan or parchment paper.",
-      time: "5 min",
-    },
-    {
-      step: 4,
-      instruction:
-        "Spread the tomato sauce evenly over the dough, leaving a 1-inch border for the crust.",
-      time: "2 min",
-    },
-    {
-      step: 5,
-      instruction:
-        "Tear the fresh mozzarella into small pieces and distribute evenly over the sauce.",
-      time: "3 min",
-    },
-    {
-      step: 6,
-      instruction:
-        "Bake for 12-15 minutes until the crust is golden and the cheese is bubbly and slightly browned.",
-      time: "15 min",
-    },
-    {
-      step: 7,
-      instruction:
-        "Remove from oven and immediately top with fresh basil leaves and a final drizzle of olive oil. Slice and serve hot.",
-      time: "2 min",
-    },
-  ],
-};
+];
 
 export default function RecipePage() {
-  const [servings, setServings] = useState(recipe.servings);
+  const params = useParams();
+  const idStr = typeof params?.id === 'string' ? params.id : '';
+  const [recipe, setRecipe] = useState<any>(null);
+  const [servings, setServings] = useState(4);
   const [completedSteps, setCompletedSteps] = useState<Set<number>>(new Set());
   const [isFavorited, setIsFavorited] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
-  const servingMultiplier = servings / recipe.servings;
+  useEffect(() => {
+    setIsMounted(true);
+    const savedRecipes = localStorage.getItem("foodiety_recipes");
+    let selectedRecipe = null;
+    if (savedRecipes) {
+      try {
+        const parsed = JSON.parse(savedRecipes);
+        selectedRecipe = parsed.find((r: any) => r.id.toString() === idStr);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    if (!selectedRecipe) {
+      selectedRecipe = defaultRecipes.find((r: any) => r.id.toString() === idStr) || defaultRecipes[0];
+    }
+
+    // Add smart default values for custom recipes created in CMS that lack these fields
+    const finalRecipe = {
+      ...selectedRecipe,
+      prepTime: selectedRecipe.prepTime || "15 min",
+      reviews: selectedRecipe.reviews || (((selectedRecipe.id || 0) * 17) % 500 + 42),
+      nutrition: selectedRecipe.nutrition || {
+        protein: "15g",
+        carbs: "40g",
+        fat: "12g",
+        fiber: "4g"
+      },
+      ingredients: selectedRecipe.ingredients || [
+        { item: "Fresh main ingredients", amount: "1 lb", category: "base" },
+        { item: "Seasoning herbs and spices", amount: "to taste", category: "seasoning" },
+        { item: "Extra virgin olive oil", amount: "2 tbsp", category: "oil" },
+        { item: "Garlic cloves", amount: "2 cloves", category: "aromatics" },
+        { item: "Salt and pepper", amount: "to taste", category: "seasoning" },
+      ],
+      instructions: selectedRecipe.instructions || [
+        { step: 1, instruction: "Gather all ingredients and preheat your cooking oven/surface to optimal temperature.", time: "5 min" },
+        { step: 2, instruction: "Prep and clean the fresh ingredients. Chop or slice according to your preferred size.", time: "10 min" },
+        { step: 3, instruction: "Sauté the aromatics (like garlic) in olive oil until golden and fragrant.", time: "3 min" },
+        { step: 4, instruction: "Combine the prepared main ingredients and cook thoroughly over medium heat.", time: "15 min" },
+        { step: 5, instruction: "Season with fresh herbs, salt, and pepper to taste. Plate up beautifully and serve hot.", time: "2 min" },
+      ]
+    };
+
+    setRecipe(finalRecipe);
+    setServings(finalRecipe.servings || 4);
+  }, [idStr]);
+
+  const servingMultiplier = recipe ? servings / recipe.servings : 1;
 
   const toggleStepComplete = (stepNumber: number) => {
     const newCompleted = new Set(completedSteps);
@@ -130,6 +182,14 @@ export default function RecipePage() {
     const adjusted = (number * servingMultiplier).toFixed(1);
     return amount.replace(number.toString(), adjusted);
   };
+
+  if (!isMounted || !recipe) {
+    return (
+      <div className="pt-16 min-h-screen bg-background flex items-center justify-center">
+        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <div className="pt-16">
@@ -281,7 +341,7 @@ export default function RecipePage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {recipe.ingredients.map((ingredient, index) => (
+                    {recipe.ingredients.map((ingredient: any, index: number) => (
                       <div
                         key={index}
                         className="flex items-center justify-between py-2 border-b border-gray-100 last:border-b-0"
@@ -304,7 +364,7 @@ export default function RecipePage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
-                    {recipe.instructions.map((instruction) => (
+                    {recipe.instructions.map((instruction: any) => (
                       <div
                         key={instruction.step}
                         className="flex items-start space-x-4"
@@ -399,7 +459,7 @@ export default function RecipePage() {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {recipe.tags.map((tag) => (
+                      {recipe.tags.map((tag: string) => (
                         <Badge key={tag} variant="secondary">
                           {tag}
                         </Badge>

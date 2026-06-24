@@ -30,9 +30,35 @@ export default function ContactPage() {
     service: "",
     message: "",
   });
+  const [contactConfig, setContactConfig] = useState({
+    heroTitle: "Get In Touch",
+    heroSubtitle: "Ready to start your culinary journey? We're here to help bring your food dreams to life. Let's discuss your project and create something amazing together.",
+    email: "hello@foodiety.com",
+    phone: "+1 (555) 123-4567",
+    address: "123 Culinary Street\nSan Francisco, CA 94102",
+    hours: "Monday - Friday: 9:00 AM - 6:00 PM\nSaturday: 10:00 AM - 4:00 PM\nSunday: Closed"
+  });
 
   useEffect(() => {
     setIsMounted(true);
+    const savedConfig = localStorage.getItem("foodiety_site_config");
+    if (savedConfig) {
+      try {
+        const parsed = JSON.parse(savedConfig);
+        if (parsed.contact) {
+          setContactConfig({
+            heroTitle: parsed.contact.heroTitle || "Get In Touch",
+            heroSubtitle: parsed.contact.heroSubtitle || "Ready to start your culinary journey? We're here to help bring your food dreams to life.",
+            email: parsed.contact.email || "hello@foodiety.com",
+            phone: parsed.contact.phone || "+1 (555) 123-4567",
+            address: parsed.contact.address || "123 Culinary Street\nSan Francisco, CA 94102",
+            hours: parsed.contact.hours || "Monday - Friday: 9:00 AM - 6:00 PM\nSaturday: 10:00 AM - 4:00 PM\nSunday: Closed"
+          });
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -77,12 +103,10 @@ export default function ContactPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Get In Touch
+              {contactConfig.heroTitle}
             </h1>
             <p className="text-xl text-red-100 max-w-2xl mx-auto">
-              Ready to start your culinary journey? We're here to help bring
-              your food dreams to life. Let's discuss your project and create
-              something amazing together.
+              {contactConfig.heroSubtitle}
             </p>
           </motion.div>
         </div>
@@ -118,7 +142,7 @@ export default function ContactPage() {
                       <h3 className="font-semibold text-gray-900 mb-1">
                         Email Us
                       </h3>
-                      <p className="text-gray-600">hello@foodiety.com</p>
+                      <p className="text-gray-600">{contactConfig.email}</p>
                       <p className="text-sm text-gray-500">
                         We typically respond within 24 hours
                       </p>
@@ -133,7 +157,7 @@ export default function ContactPage() {
                       <h3 className="font-semibold text-gray-900 mb-1">
                         Call Us
                       </h3>
-                      <p className="text-gray-600">+1 (555) 123-4567</p>
+                      <p className="text-gray-600">{contactConfig.phone}</p>
                       <p className="text-sm text-gray-500">
                         Mon-Fri, 9am-6pm PST
                       </p>
@@ -148,8 +172,7 @@ export default function ContactPage() {
                       <h3 className="font-semibold text-gray-900 mb-1">
                         Visit Us
                       </h3>
-                      <p className="text-gray-600">123 Culinary Street</p>
-                      <p className="text-gray-600">San Francisco, CA 94102</p>
+                      <p className="text-gray-600 whitespace-pre-line">{contactConfig.address}</p>
                     </div>
                   </div>
 
@@ -161,13 +184,9 @@ export default function ContactPage() {
                       <h3 className="font-semibold text-gray-900 mb-1">
                         Business Hours
                       </h3>
-                      <p className="text-gray-600">
-                        Monday - Friday: 9:00 AM - 6:00 PM
+                      <p className="text-gray-600 whitespace-pre-line">
+                        {contactConfig.hours}
                       </p>
-                      <p className="text-gray-600">
-                        Saturday: 10:00 AM - 4:00 PM
-                      </p>
-                      <p className="text-gray-600">Sunday: Closed</p>
                     </div>
                   </div>
                 </div>

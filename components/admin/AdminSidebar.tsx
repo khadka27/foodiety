@@ -12,6 +12,7 @@ import {
   ChefHat,
   Menu,
   X,
+  BookOpen,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
@@ -22,18 +23,13 @@ const navigation = [
     icon: LayoutDashboard,
   },
   {
-    name: 'Users',
-    href: '/admin/users',
-    icon: Users,
+    name: 'Blog CMS',
+    href: '/admin/blogs',
+    icon: BookOpen,
   },
   {
-    name: 'Analytics',
-    href: '/admin/analytics',
-    icon: BarChart3,
-  },
-  {
-    name: 'Settings',
-    href: '/admin/settings',
+    name: 'Site CMS',
+    href: '/admin/cms',
     icon: Settings,
   },
 ];

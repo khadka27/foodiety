@@ -6,7 +6,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Heart, Users, Award, Globe, Target, Eye, Zap } from 'lucide-react';
 
-const timeline = [
+import { useState, useEffect } from 'react';
+
+const defaultTimeline = [
   {
     year: '2020',
     title: 'The Beginning',
@@ -39,7 +41,7 @@ const timeline = [
   },
 ];
 
-const team = [
+const defaultTeam = [
   {
     name: 'Sarah Chen',
     role: 'Founder & Head Chef',
@@ -89,6 +91,60 @@ export default function AboutPage() {
     threshold: 0.1,
   });
 
+  const [aboutConfig, setAboutConfig] = useState({
+    heroTitle: "About Foodiety",
+    heroSubtitle: "We're more than just a food platform – we're a community of passionate food lovers dedicated to making exceptional culinary experiences accessible to everyone.",
+    membersCount: "50K+",
+    recipesCount: "10K+",
+    restaurantsCount: "500+",
+    countriesCount: "25+",
+    mission: "To democratize exceptional food experiences by connecting people through authentic recipes, quality ingredients, and memorable dining adventures.",
+    vision: "A world where great food brings people together, cultural traditions are preserved, and culinary creativity knows no bounds.",
+    impact: "Empowering home cooks, supporting local restaurants, and fostering a global community passionate about food and culture.",
+  });
+  const [timeline, setTimeline] = useState<any[]>(defaultTimeline);
+  const [team, setTeam] = useState<any[]>(defaultTeam);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+    const savedConfig = localStorage.getItem("foodiety_site_config");
+    if (savedConfig) {
+      try {
+        const parsed = JSON.parse(savedConfig);
+        if (parsed.about) {
+          setAboutConfig({
+            heroTitle: parsed.about.heroTitle || "About Foodiety",
+            heroSubtitle: parsed.about.heroSubtitle || "We're more than just a food platform – we're a community of passionate food lovers.",
+            membersCount: parsed.about.membersCount || "50K+",
+            recipesCount: parsed.about.recipesCount || "10K+",
+            restaurantsCount: parsed.about.restaurantsCount || "500+",
+            countriesCount: parsed.about.countriesCount || "25+",
+            mission: parsed.about.mission || "To democratize exceptional food experiences by connecting people through authentic recipes, quality ingredients, and memorable dining adventures.",
+            vision: parsed.about.vision || "A world where great food brings people together, cultural traditions are preserved, and culinary creativity knows no bounds.",
+            impact: parsed.about.impact || "Empowering home cooks, supporting local restaurants, and fostering a global community passionate about food and culture.",
+          });
+          if (parsed.about.timeline && parsed.about.timeline.length > 0) {
+            setTimeline(parsed.about.timeline);
+          }
+          if (parsed.about.team && parsed.about.team.length > 0) {
+            setTeam(parsed.about.team);
+          }
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
+  if (!isMounted) {
+    return (
+      <div className="pt-16 min-h-screen flex items-center justify-center bg-background text-foreground">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="pt-16">
       {/* Hero Section */}
@@ -97,27 +153,26 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                About Foodiety
+                {aboutConfig.heroTitle}
               </h1>
               <p className="text-xl text-red-100 mb-8 leading-relaxed">
-                We're more than just a food platform – we're a community of passionate food lovers 
-                dedicated to making exceptional culinary experiences accessible to everyone.
+                {aboutConfig.heroSubtitle}
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold">50K+</div>
+                  <div className="text-3xl font-bold">{aboutConfig.membersCount}</div>
                   <div className="text-red-200">Community Members</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">10K+</div>
+                  <div className="text-3xl font-bold">{aboutConfig.recipesCount}</div>
                   <div className="text-red-200">Recipes Shared</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">500+</div>
+                  <div className="text-3xl font-bold">{aboutConfig.restaurantsCount}</div>
                   <div className="text-red-200">Partner Restaurants</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">25+</div>
+                  <div className="text-3xl font-bold">{aboutConfig.countriesCount}</div>
                   <div className="text-red-200">Countries Reached</div>
                 </div>
               </div>
@@ -138,7 +193,7 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section ref={ref} className="py-20 bg-white">
+      <section ref={ref} className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <motion.div
@@ -149,10 +204,9 @@ export default function AboutPage() {
               <Card className="h-full border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                   <Target className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Our Mission</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    To democratize exceptional food experiences by connecting people through 
-                    authentic recipes, quality ingredients, and memorable dining adventures.
+                  <h3 className="text-xl font-bold text-foreground mb-4">Our Mission</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {aboutConfig.mission}
                   </p>
                 </CardContent>
               </Card>
@@ -166,10 +220,9 @@ export default function AboutPage() {
               <Card className="h-full border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                   <Eye className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Our Vision</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    A world where great food brings people together, cultural traditions are preserved, 
-                    and culinary creativity knows no bounds.
+                  <h3 className="text-xl font-bold text-foreground mb-4">Our Vision</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {aboutConfig.vision}
                   </p>
                 </CardContent>
               </Card>
@@ -183,10 +236,9 @@ export default function AboutPage() {
               <Card className="h-full border-0 shadow-lg">
                 <CardContent className="p-8 text-center">
                   <Zap className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-gray-900 mb-4">Our Impact</h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    Empowering home cooks, supporting local restaurants, and fostering 
-                    a global community passionate about food and culture.
+                  <h3 className="text-xl font-bold text-foreground mb-4">Our Impact</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {aboutConfig.impact}
                   </p>
                 </CardContent>
               </Card>
@@ -196,7 +248,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -204,10 +256,10 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Our Values
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               These core principles guide everything we do and shape how we serve our community.
             </p>
           </motion.div>
@@ -227,10 +279,10 @@ export default function AboutPage() {
                         <value.icon className="h-6 w-6 text-red-600" />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-red-600 transition-colors">
+                        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-red-600 transition-colors">
                           {value.title}
                         </h3>
-                        <p className="text-gray-600 leading-relaxed">
+                        <p className="text-muted-foreground leading-relaxed">
                           {value.description}
                         </p>
                       </div>
@@ -244,7 +296,7 @@ export default function AboutPage() {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-background">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -252,10 +304,10 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Our Journey
             </h2>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-muted-foreground">
               From humble beginnings to a thriving community – here's how we've grown together.
             </p>
           </motion.div>
@@ -283,8 +335,8 @@ export default function AboutPage() {
                     <Card className="border-0 shadow-lg">
                       <CardContent className="p-6">
                         <Badge className="bg-red-600 text-white mb-3">{item.year}</Badge>
-                        <h3 className="text-xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                        <p className="text-gray-600">{item.description}</p>
+                        <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+                        <p className="text-muted-foreground">{item.description}</p>
                       </CardContent>
                     </Card>
                   </div>
@@ -296,7 +348,7 @@ export default function AboutPage() {
       </section>
 
       {/* Team */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-muted/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -304,10 +356,10 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Meet Our Team
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               The passionate individuals behind Foodiety who work tirelessly to bring you 
               the best culinary experiences and content.
             </p>
@@ -331,11 +383,11 @@ export default function AboutPage() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
                   <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-red-600 transition-colors">
+                    <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-red-600 transition-colors">
                       {member.name}
                     </h3>
                     <p className="text-red-600 font-medium mb-3">{member.role}</p>
-                    <p className="text-gray-600 text-sm leading-relaxed">{member.bio}</p>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
                   </CardContent>
                 </Card>
               </motion.div>

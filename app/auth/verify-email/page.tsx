@@ -9,10 +9,12 @@ import { CheckCircle, XCircle, Loader2, ChefHat } from "lucide-react";
 import Link from "next/link";
 import { useSafeToast } from "@/hooks/use-safe-toast";
 
+import nextDynamic from "next/dynamic";
+
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
-function VerifyEmailContent() {
+function VerifyEmailContentComponent() {
   const [status, setStatus] = useState<"loading" | "success" | "error">(
     "loading"
   );
@@ -134,6 +136,11 @@ function VerifyEmailContent() {
     </div>
   );
 }
+
+const VerifyEmailContent = nextDynamic(
+  () => Promise.resolve(VerifyEmailContentComponent),
+  { ssr: false }
+);
 
 export default function VerifyEmailPage() {
   return (

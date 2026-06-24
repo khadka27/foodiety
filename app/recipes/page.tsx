@@ -19,17 +19,6 @@ import Link from "next/link";
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
-const cuisineTypes = [
-  "All Cuisines",
-  "Italian",
-  "Asian",
-  "Mexican",
-  "American",
-  "French",
-  "Mediterranean",
-  "Indian",
-  "Thai",
-];
 const cookingTimes = [
   "Any Time",
   "Under 15 min",
@@ -39,7 +28,7 @@ const cookingTimes = [
 ];
 const difficulties = ["All Levels", "Beginner", "Intermediate", "Advanced"];
 
-const recipes = [
+const defaultRecipes = [
   {
     id: 1,
     title: "Homemade Pizza Margherita",
@@ -130,6 +119,7 @@ const recipes = [
 ];
 
 export default function RecipesPage() {
+  const [recipes, setRecipes] = useState<any[]>(defaultRecipes);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCuisine, setSelectedCuisine] = useState("All Cuisines");
   const [selectedTime, setSelectedTime] = useState("Any Time");
@@ -138,13 +128,29 @@ export default function RecipesPage() {
 
   useEffect(() => {
     setIsMounted(true);
+    const savedRecipes = localStorage.getItem("foodiety_recipes");
+    if (savedRecipes) {
+      try {
+        const parsed = JSON.parse(savedRecipes);
+        if (parsed && parsed.length > 0) {
+          setRecipes(parsed);
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
   }, []);
 
-  const filteredRecipes = recipes.filter((recipe) => {
+  const cuisineTypes = [
+    "All Cuisines",
+    ...Array.from(new Set(recipes.map((r: any) => r.cuisine))).filter(Boolean),
+  ];
+
+  const filteredRecipes = recipes.filter((recipe: any) => {
     const matchesSearch =
       recipe.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       recipe.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      recipe.tags.some((tag) =>
+      recipe.tags.some((tag: string) =>
         tag.toLowerCase().includes(searchTerm.toLowerCase())
       );
     const matchesCuisine =
@@ -178,10 +184,13 @@ export default function RecipesPage() {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case "Beginner":
+      case "Easy":
         return "bg-green-100 text-green-800";
       case "Intermediate":
+      case "Medium":
         return "bg-yellow-100 text-yellow-800";
       case "Advanced":
+      case "Hard":
         return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -219,7 +228,7 @@ export default function RecipesPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Search and Filters */}
           <div className="mb-12 space-y-6">
@@ -286,14 +295,14 @@ export default function RecipesPage() {
 
           {/* Results Count */}
           <div className="text-center mb-8">
-            <p className="text-gray-600">
+            <p className="text-muted-foreground">
               Showing {filteredRecipes.length} of {recipes.length} recipes
             </p>
           </div>
 
           {/* Recipe Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredRecipes.map((recipe, index) => (
+            {filteredRecipes.map((recipe: any, index: number) => (
               <motion.div
                 key={recipe.id}
                 initial={{ opacity: 0, y: 30 }}
@@ -316,35 +325,35 @@ export default function RecipesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="bg-white/90 hover:bg-white text-gray-700 rounded-full p-2"
+                        className="bg-background/90 hover:bg-background text-foreground rounded-full p-2"
                       >
                         <Heart className="h-4 w-4" />
                       </Button>
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="bg-white/90 hover:bg-white text-gray-700 rounded-full p-2"
+                        className="bg-background/90 hover:bg-background text-foreground rounded-full p-2"
                       >
                         <Bookmark className="h-4 w-4" />
                       </Button>
                     </div>
-                    <div className="absolute bottom-4 right-4 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center space-x-1">
+                    <div className="absolute bottom-4 right-4 bg-background/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center space-x-1">
                       <Star className="h-3 w-3 text-yellow-500 fill-current" />
-                      <span className="text-xs font-medium text-gray-700">
+                      <span className="text-xs font-medium text-foreground">
                         {recipe.rating}
                       </span>
                     </div>
                   </div>
 
                   <CardContent className="p-6 flex-1 flex flex-col">
-                    <h3 className="font-bold text-lg text-gray-900 mb-2 group-hover:text-red-600 transition-colors">
+                    <h3 className="font-bold text-lg text-foreground mb-2 group-hover:text-red-600 transition-colors">
                       {recipe.title}
                     </h3>
-                    <p className="text-gray-600 text-sm mb-4 flex-1">
+                    <p className="text-muted-foreground text-sm mb-4 flex-1">
                       {recipe.description}
                     </p>
 
-                    <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                    <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
                       <div className="flex items-center space-x-4">
                         <div className="flex items-center space-x-1">
                           <Clock className="h-4 w-4" />
@@ -361,7 +370,7 @@ export default function RecipesPage() {
                     </div>
 
                     <div className="flex flex-wrap gap-1 mb-4">
-                      {recipe.tags.slice(0, 2).map((tag) => (
+                      {recipe.tags.slice(0, 2).map((tag: string) => (
                         <Badge
                           key={tag}
                           variant="secondary"
@@ -390,7 +399,7 @@ export default function RecipesPage() {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-red-200 text-red-600 hover:bg-red-50 px-8 py-3 rounded-full"
+                className="border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30 px-8 py-3 rounded-full"
               >
                 Load More Recipes
               </Button>

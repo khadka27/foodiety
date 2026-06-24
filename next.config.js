@@ -8,8 +8,6 @@ const nextConfig = {
     // Help with SSR issues in Next.js 15
     forceSwcTransforms: true,
   },
-  // Updated property name for Next.js 15
-  serverExternalPackages: ['framer-motion'],
   // Disable static optimization for problematic routes
   staticPageGenerationTimeout: 120,
   // Disable static generation

@@ -6,21 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Sun, Moon, Monitor } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function ThemeToggle() {
-  const [mounted, setMounted] = useState(false);
+function ActiveThemeToggle() {
   const { theme, setTheme } = useTheme();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <Button variant="ghost" size="sm" className="w-9 h-9 p-0">
-        <div className="h-4 w-4 animate-pulse bg-gray-300 rounded" />
-      </Button>
-    );
-  }
 
   const getNextTheme = () => {
     switch (theme) {
@@ -80,4 +67,22 @@ export function ThemeToggle() {
       </AnimatePresence>
     </Button>
   );
+}
+
+export function ThemeToggle() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <Button variant="ghost" size="sm" className="w-9 h-9 p-0" disabled>
+        <div className="h-4 w-4 animate-pulse bg-gray-300 rounded" />
+      </Button>
+    );
+  }
+
+  return <ActiveThemeToggle />;
 }

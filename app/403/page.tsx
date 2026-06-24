@@ -5,13 +5,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Shield, Home, ArrowLeft, Lock } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
 export default function Forbidden() {
-  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-red-50 via-orange-50 to-yellow-50 dark:from-red-950/20 dark:via-orange-950/20 dark:to-yellow-950/20 flex items-center justify-center p-4">
@@ -59,7 +57,7 @@ export default function Forbidden() {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => router.back()}
+                  onClick={() => typeof window !== "undefined" && window.history.back()}
                   className="border-orange-200 text-orange-600 hover:bg-orange-50 dark:border-orange-800 dark:text-orange-400 dark:hover:bg-orange-950/30 px-8 py-3 rounded-full font-semibold transition-all duration-200 hover:scale-105"
                 >
                   <ArrowLeft className="h-5 w-5 mr-2" />

@@ -1,15 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ClientMotionDiv, ClientMotion } from "@/components/ui/client-motion";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Wrench, Home, RefreshCw, Clock } from "lucide-react";
 import Link from "next/link";
 
-// Force dynamic rendering to avoid SSR issues
-export const dynamic = "force-dynamic";
-
+// Removed invalid force-dynamic in use client component
 export default function ServiceUnavailable() {
   const [isMounted, setIsMounted] = useState(false);
 
@@ -34,51 +32,49 @@ export default function ServiceUnavailable() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-yellow-50 via-orange-50 to-red-50 dark:from-yellow-950/20 dark:via-orange-950/20 dark:to-red-950/20 flex items-center justify-center p-4">
       <div className="max-w-2xl mx-auto text-center">
-        <ClientMotionDiv
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
           {/* 503 Animation */}
           <div className="mb-8">
-            <ClientMotionDiv
+            <motion.div
               initial={{ scale: 0.5 }}
               animate={{ scale: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-8xl md:text-9xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-4"
             >
               503
-            </ClientMotionDiv>
+            </motion.div>
 
-            <ClientMotionDiv
+            <motion.div
               initial={{ rotate: -10, scale: 0 }}
               animate={{ rotate: 0, scale: 1 }}
               transition={{ duration: 0.5, delay: 0.4 }}
               className="w-24 h-24 mx-auto bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full flex items-center justify-center shadow-xl mb-6"
             >
-              <ClientMotionDiv
+              <motion.div
                 animate={{ rotate: [0, 15, -15, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
                 <Wrench className="h-12 w-12 text-white" />
-              </ClientMotionDiv>
-            </ClientMotionDiv>
+              </motion.div>
+            </motion.div>
           </div>
 
           <Card className="border-0 shadow-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm">
             <CardContent className="p-8">
-              <ClientMotion
-                as="h1"
+              <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4"
               >
                 Kitchen Under Maintenance
-              </ClientMotion>
+              </motion.h1>
 
-              <ClientMotion
-                as="p"
+              <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -87,10 +83,10 @@ export default function ServiceUnavailable() {
                 Our kitchen is temporarily closed for maintenance. We're
                 upgrading our equipment to serve you better. Please check back
                 in a few minutes!
-              </ClientMotion>
+              </motion.p>
 
               {/* Maintenance Progress */}
-              <ClientMotionDiv
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
@@ -104,17 +100,17 @@ export default function ServiceUnavailable() {
                 </div>
 
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                  <ClientMotionDiv
+                  <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: "60%" }}
                     transition={{ duration: 2, delay: 0.5 }}
                     className="h-full bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full"
-                  ></ClientMotionDiv>
+                  ></motion.div>
                 </div>
-              </ClientMotionDiv>
+              </motion.div>
 
               {/* Action Buttons */}
-              <ClientMotionDiv
+              <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
@@ -140,10 +136,10 @@ export default function ServiceUnavailable() {
                     <span>Visit Later</span>
                   </Link>
                 </Button>
-              </ClientMotionDiv>
+              </motion.div>
             </CardContent>
           </Card>
-        </ClientMotionDiv>
+        </motion.div>
       </div>
     </div>
   );

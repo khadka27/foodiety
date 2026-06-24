@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, RefreshCw, Home } from "lucide-react";
 
@@ -13,10 +13,25 @@ interface GlobalErrorProps {
 }
 
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
+    setIsMounted(true);
     // Log the error to an error reporting service
     console.error("Global Application Error:", error);
   }, [error]);
+
+  if (!isMounted) {
+    return (
+      <html>
+        <body>
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
+          </div>
+        </body>
+      </html>
+    );
+  }
 
   return (
     <html>

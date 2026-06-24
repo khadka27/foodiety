@@ -1,44 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 export function useSafeToast() {
-  const [isMounted, setIsMounted] = useState(false);
-  const [toast, setToast] = useState<any>(null);
-
-  useEffect(() => {
-    setIsMounted(true);
-    // Dynamically import toast to avoid SSR issues
-    if (typeof window !== "undefined") {
-      import("react-hot-toast").then((module) => {
-        setToast(module.toast);
-      });
-    }
-  }, []);
-
-  const safeToast = {
+  return {
     success: (message: string) => {
-      if (isMounted && typeof window !== "undefined" && toast) {
+      if (typeof window !== "undefined") {
         toast.success(message);
       }
     },
     error: (message: string) => {
-      if (isMounted && typeof window !== "undefined" && toast) {
+      if (typeof window !== "undefined") {
         toast.error(message);
       }
     },
     loading: (message: string) => {
-      if (isMounted && typeof window !== "undefined" && toast) {
+      if (typeof window !== "undefined") {
         return toast.loading(message);
       }
       return null;
     },
     dismiss: (toastId?: string) => {
-      if (isMounted && typeof window !== "undefined" && toast) {
+      if (typeof window !== "undefined") {
         toast.dismiss(toastId);
       }
     },
   };
-
-  return safeToast;
 }

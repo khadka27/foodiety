@@ -8,10 +8,12 @@ import { BlogPreviewSection } from "@/components/home/BlogPreviewSection";
 import { RecipePreviewSection } from "@/components/home/RecipePreviewSection";
 import { ContactCTASection } from "@/components/home/ContactCTASection";
 
+import nextDynamic from "next/dynamic";
+
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
-export default function Home() {
+function HomeComponent() {
   return (
     <div className="overflow-x-hidden">
       <HeroSection />
@@ -24,3 +26,10 @@ export default function Home() {
     </div>
   );
 }
+
+const Home = nextDynamic(
+  () => Promise.resolve(HomeComponent),
+  { ssr: false }
+);
+
+export default Home;

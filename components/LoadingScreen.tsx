@@ -2,24 +2,25 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChefHat, Utensils, Coffee } from 'lucide-react';
+import { ChefHat, Utensils, Coffee, Star } from 'lucide-react';
 
 interface LoadingScreenProps {
   isLoading: boolean;
   onComplete?: () => void;
 }
 
+const floatingIcons = [ChefHat, Utensils, Coffee, Star];
+
+const loadingTexts = [
+  'Preparing your culinary journey...',
+  'Gathering fresh ingredients...',
+  'Setting the perfect table...',
+  'Almost ready to serve!',
+];
+
 export function LoadingScreen({ isLoading, onComplete }: LoadingScreenProps) {
   const [progress, setProgress] = useState(0);
-  const [currentIcon, setCurrentIcon] = useState(0);
-
-  const icons = [ChefHat, Utensils, Coffee];
-  const loadingTexts = [
-    'Preparing your culinary journey...',
-    'Gathering fresh ingredients...',
-    'Setting the perfect table...',
-    'Almost ready to serve!'
-  ];
+  const [textIndex, setTextIndex] = useState(0);
 
   useEffect(() => {
     if (!isLoading) return;
@@ -28,29 +29,22 @@ export function LoadingScreen({ isLoading, onComplete }: LoadingScreenProps) {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(progressInterval);
-          setTimeout(() => onComplete?.(), 500);
+          setTimeout(() => onComplete?.(), 400);
           return 100;
         }
-        return prev + Math.random() * 15;
+        return Math.min(prev + Math.random() * 12, 100);
       });
-    }, 200);
+    }, 180);
 
-    const iconInterval = setInterval(() => {
-      setCurrentIcon(prev => (prev + 1) % icons.length);
-    }, 800);
+    const textInterval = setInterval(() => {
+      setTextIndex(prev => (prev + 1) % loadingTexts.length);
+    }, 900);
 
     return () => {
       clearInterval(progressInterval);
-      clearInterval(iconInterval);
+      clearInterval(textInterval);
     };
   }, [isLoading, onComplete]);
-
-  const getCurrentText = () => {
-    if (progress < 25) return loadingTexts[0];
-    if (progress < 50) return loadingTexts[1];
-    if (progress < 75) return loadingTexts[2];
-    return loadingTexts[3];
-  };
 
   return (
     <AnimatePresence>
@@ -58,121 +52,153 @@ export function LoadingScreen({ isLoading, onComplete }: LoadingScreenProps) {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-orange-50 via-red-50 to-yellow-50 dark:from-orange-950 dark:via-red-950 dark:to-yellow-950"
+          exit={{ opacity: 0, scale: 0.98 }}
+          transition={{ duration: 0.4 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
         >
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5 dark:opacity-10">
-            <div 
-              className="w-full h-full"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f97316' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-          </div>
+          {/* Layered Background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-950 via-red-950 to-gray-950" />
+          <div className="absolute inset-0 bg-dots-pattern opacity-30" />
 
-          <div className="relative z-10 text-center max-w-md mx-auto px-6">
-            {/* Logo Animation */}
+          {/* Background orbs */}
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-orange-500/20 rounded-full blur-[120px] animate-blob" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-[120px] animate-blob animation-delay-2000" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 rounded-full blur-[140px] animate-blob animation-delay-4000" />
+
+          {/* Floating Particle Icons */}
+          {floatingIcons.map((Icon, i) => (
             <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mb-8"
+              key={i}
+              className="absolute text-orange-400/20 pointer-events-none"
+              initial={{ opacity: 0 }}
+              animate={{
+                opacity: [0, 0.4, 0],
+                x: [Math.random() * 600 - 300, Math.random() * 600 - 300],
+                y: [Math.random() * 600 - 300, Math.random() * 600 - 300],
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 4 + Math.random() * 3,
+                repeat: Infinity,
+                delay: i * 0.7,
+                ease: 'linear',
+              }}
+              style={{ left: '50%', top: '50%' }}
             >
-              <div className="flex items-center justify-center space-x-3 mb-4">
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                  className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center shadow-lg"
-                >
-                  <ChefHat className="h-8 w-8 text-white" />
-                </motion.div>
-              </div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent">
-                Foodiety
-              </h1>
+              <Icon size={24 + i * 6} />
+            </motion.div>
+          ))}
+
+          {/* Main Content */}
+          <div className="relative z-10 flex flex-col items-center text-center max-w-sm mx-auto px-6">
+
+            {/* Logo + Ring Animation */}
+            <motion.div
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, type: 'spring', stiffness: 200 }}
+              className="relative mb-8"
+            >
+              {/* Rotating ring */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+                className="absolute -inset-3 rounded-full border-2 border-transparent"
+                style={{
+                  background: 'conic-gradient(from 0deg, rgba(249,115,22,0.8), rgba(239,68,68,0.8), transparent, rgba(249,115,22,0.8))',
+                  borderRadius: '50%',
+                  padding: '2px',
+                }}
+              >
+                <div className="w-full h-full rounded-full bg-transparent" />
+              </motion.div>
+
+              {/* Outer ring */}
+              <motion.div
+                animate={{ rotate: -360 }}
+                transition={{ duration: 5, repeat: Infinity, ease: 'linear' }}
+                className="absolute -inset-6 rounded-full border border-orange-500/20"
+              />
+
+              {/* Logo core */}
+              <motion.div
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+                className="relative w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-orange-500/40"
+              >
+                <ChefHat className="h-10 w-10 text-white drop-shadow-lg" />
+              </motion.div>
             </motion.div>
 
-            {/* Animated Icons */}
-            <div className="mb-8">
-              <AnimatePresence mode="wait">
-                {icons.map((Icon, index) => (
-                  currentIcon === index && (
-                    <motion.div
-                      key={index}
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      exit={{ scale: 0, rotate: 180 }}
-                      transition={{ duration: 0.4 }}
-                      className="w-12 h-12 mx-auto bg-orange-100 dark:bg-orange-900/30 rounded-full flex items-center justify-center"
-                    >
-                      <Icon className="h-6 w-6 text-orange-600 dark:text-orange-400" />
-                    </motion.div>
-                  )
-                ))}
-              </AnimatePresence>
-            </div>
+            {/* Brand Name */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="mb-2"
+            >
+              <h1 className="text-3xl font-black tracking-tight text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                Foodiety
+              </h1>
+              <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-orange-400 mt-0.5">
+                Taste & Discover
+              </p>
+            </motion.div>
 
             {/* Loading Text */}
-            <motion.p
-              key={getCurrentText()}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-              className="text-lg text-gray-700 dark:text-gray-300 mb-8 font-medium"
-            >
-              {getCurrentText()}
-            </motion.p>
+            <AnimatePresence mode="wait">
+              <motion.p
+                key={textIndex}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.35 }}
+                className="text-sm text-orange-200/80 mb-8 font-medium"
+              >
+                {loadingTexts[textIndex]}
+              </motion.p>
+            </AnimatePresence>
 
-            {/* Progress Bar */}
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-4 overflow-hidden">
-              <motion.div
-                initial={{ width: 0 }}
-                animate={{ width: `${Math.min(progress, 100)}%` }}
-                transition={{ duration: 0.3 }}
-                className="h-full bg-gradient-to-r from-orange-500 to-red-500 rounded-full shadow-sm"
-              />
+            {/* Progress Container */}
+            <div className="w-56 mb-3">
+              <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden backdrop-blur-sm">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${Math.min(progress, 100)}%` }}
+                  transition={{ duration: 0.25, ease: 'easeOut' }}
+                  className="h-full rounded-full bg-gradient-to-r from-orange-400 via-red-400 to-orange-400 relative"
+                >
+                  {/* Shimmer effect on bar */}
+                  <div className="absolute inset-0 shimmer opacity-60 rounded-full" />
+                </motion.div>
+              </div>
             </div>
 
-            {/* Progress Percentage */}
+            {/* Progress Number */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-sm text-gray-600 dark:text-gray-400 font-medium"
+              transition={{ delay: 0.6 }}
+              className="text-xs font-bold text-white/50 tabular-nums"
             >
               {Math.round(progress)}%
             </motion.div>
 
-            {/* Floating Food Icons */}
-            <div className="absolute inset-0 pointer-events-none">
-              {[...Array(6)].map((_, i) => {
-                const Icon = icons[i % icons.length];
-                return (
-                  <motion.div
-                    key={i}
-                    initial={{ 
-                      x: Math.random() * 400 - 200,
-                      y: Math.random() * 400 - 200,
-                      opacity: 0 
-                    }}
-                    animate={{ 
-                      x: Math.random() * 400 - 200,
-                      y: Math.random() * 400 - 200,
-                      opacity: [0, 0.3, 0] 
-                    }}
-                    transition={{ 
-                      duration: 3 + Math.random() * 2,
-                      repeat: Infinity,
-                      delay: Math.random() * 2 
-                    }}
-                    className="absolute text-orange-300 dark:text-orange-700"
-                  >
-                    <Icon size={20} />
-                  </motion.div>
-                );
-              })}
+            {/* Stars decoration */}
+            <div className="flex items-center gap-1.5 mt-6">
+              {[...Array(5)].map((_, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.8 + i * 0.1 }}
+                >
+                  <Star
+                    className="h-3.5 w-3.5 text-amber-400 fill-current"
+                    style={{ filter: 'drop-shadow(0 0 4px rgba(251,191,36,0.6))' }}
+                  />
+                </motion.div>
+              ))}
             </div>
           </div>
         </motion.div>

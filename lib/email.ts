@@ -49,9 +49,9 @@ export function generateVerificationEmailHTML(
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #dc2626, #f97316); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .header { background: linear-gradient(135deg, #FCDB56, #D97742); color: #2C2823; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-        .button { display: inline-block; background: #dc2626; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .button { display: inline-block; background: #D97742; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
         .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
       </style>
     </head>
@@ -94,9 +94,9 @@ export function generatePasswordResetEmailHTML(
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #dc2626, #f97316); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .header { background: linear-gradient(135deg, #FCDB56, #D97742); color: #2C2823; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-        .button { display: inline-block; background: #dc2626; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .button { display: inline-block; background: #D97742; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
         .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
         .warning { background: #fef2f2; border: 1px solid #fecaca; padding: 15px; border-radius: 5px; margin: 20px 0; }
       </style>
@@ -143,10 +143,10 @@ export function generateWelcomeEmailHTML(username: string) {
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #dc2626, #f97316); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
+        .header { background: linear-gradient(135deg, #FCDB56, #D97742); color: #2C2823; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-        .feature { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #dc2626; }
-        .button { display: inline-block; background: #dc2626; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
+        .feature { background: white; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #D97742; }
+        .button { display: inline-block; background: #D97742; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; margin: 20px 0; }
         .footer { text-align: center; margin-top: 30px; color: #666; font-size: 14px; }
       </style>
     </head>

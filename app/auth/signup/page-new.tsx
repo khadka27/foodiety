@@ -18,6 +18,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { checkPasswordStrength } from "@/lib/utils/password";
 import { useSafeToast } from "@/hooks/use-safe-toast";
 
+import nextDynamic from "next/dynamic";
+
 export const dynamic = "force-dynamic";
 
 // Simple signup form data interface
@@ -34,7 +36,7 @@ interface PasswordStrength {
   isValid: boolean;
 }
 
-export default function SignUpPage() {
+function SignUpPageComponent() {
   // Form state
   const [formData, setFormData] = useState<SignUpInput>({
     username: "",
@@ -479,3 +481,10 @@ export default function SignUpPage() {
     </div>
   );
 }
+
+const SignUpPage = nextDynamic(
+  () => Promise.resolve(SignUpPageComponent),
+  { ssr: false }
+);
+
+export default SignUpPage;

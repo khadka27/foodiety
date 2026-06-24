@@ -9,12 +9,19 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        outfit: ['var(--font-outfit)', 'Outfit', 'sans-serif'],
+        inter: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', 'sans-serif'],
+      },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fadeIn 0.5s ease-in-out',
         'slide-up': 'slideUp 0.5s ease-out',
         'bounce-gentle': 'bounceGentle 2s infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'blob': 'blob 7s infinite',
       },
       keyframes: {
         'accordion-down': {
@@ -36,6 +43,17 @@ const config: Config = {
         bounceGentle: {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
+        },
+        float: {
+          '0%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-20px)' },
+          '100%': { transform: 'translateY(0px)' },
+        },
+        blob: {
+          '0%': { transform: 'translate(0px, 0px) scale(1)' },
+          '33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+          '66%': { transform: 'translate(-20px, 20px) scale(0.9)' },
+          '100%': { transform: 'translate(0px, 0px) scale(1)' },
         },
       },
       backgroundImage: {
@@ -88,6 +106,32 @@ const config: Config = {
           '3': 'hsl(var(--chart-3) / <alpha-value>)',
           '4': 'hsl(var(--chart-4) / <alpha-value>)',
           '5': 'hsl(var(--chart-5) / <alpha-value>)',
+        },
+        orange: {
+          50: '#FFFEFA',
+          100: '#FAF6EC',
+          200: '#FFE471',
+          300: '#FFE471',
+          400: '#FCDB56',
+          500: '#FCDB56',
+          600: '#EBC63C',
+          700: '#D97742',
+          800: '#D97742',
+          900: '#3D3833',
+          950: '#141413',
+        },
+        red: {
+          50: '#FAF6EC',
+          100: '#FAF6EC',
+          200: '#FFE471',
+          300: '#D85645',
+          400: '#D85645',
+          500: '#D85645',
+          600: '#D97742',
+          700: '#D97742',
+          800: '#3D3833',
+          900: '#1A1716',
+          950: '#141413',
         },
       },
     },

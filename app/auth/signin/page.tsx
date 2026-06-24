@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema, type SignInInput } from "@/lib/validations/auth";
+import { signInSchema } from "@/lib/validations/auth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -18,48 +16,44 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Eye, EyeOff, Loader2, ChefHat } from "lucide-react";
 
-// Force dynamic rendering to avoid SSR issues
+import nextDynamic from "next/dynamic";
+
 export const dynamic = "force-dynamic";
 
-export default function SignInPage() {
+function SignInPageComponent() {
+  const [identifier, setIdentifier] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
-  const [nextAuth, setNextAuth] = useState<any>(null);
+  const [errors, setErrors] = useState<{ identifier?: string; password?: string }>({});
   const router = useRouter();
 
-  useEffect(() => {
-    setIsMounted(true);
-    // Dynamically import NextAuth to avoid SSR issues
-    if (typeof window !== "undefined") {
-      import("next-auth/react").then((module) => {
-        setNextAuth(module);
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    setErrors({});
+
+    const validationResult = signInSchema.safeParse({ identifier, password });
+    if (!validationResult.success) {
+      const fieldErrors: { identifier?: string; password?: string } = {};
+      validationResult.error.errors.forEach((err) => {
+        const path = err.path[0] as "identifier" | "password";
+        if (path) {
+          fieldErrors[path] = err.message;
+        }
       });
-    }
-  }, []);
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInInput>({
-    resolver: zodResolver(signInSchema),
-  });
-
-  const onSubmit = async (data: SignInInput) => {
-    if (!nextAuth) {
-      setError("Authentication system not ready. Please try again.");
+      setErrors(fieldErrors);
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
-    setError("");
-
     try {
-      const result = await nextAuth.signIn("credentials", {
-        email: data.identifier,
-        password: data.password,
+      const { signIn, getSession } = await import("next-auth/react");
+      const result = await signIn("credentials", {
+        identifier: identifier,
+        password: password,
         redirect: false,
       });
 
@@ -67,27 +61,19 @@ export default function SignInPage() {
         setError(result.error);
       } else {
         // Get session to check user role
-        const session = await nextAuth.getSession();
+        const session = await getSession();
         if (session?.user?.role === "ADMIN") {
           router.push("/admin");
         } else {
           router.push("/dashboard");
         }
       }
-    } catch (error) {
+    } catch (err) {
       setError("An unexpected error occurred");
     } finally {
       setIsLoading(false);
     }
   };
-
-  if (!isMounted || !nextAuth) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-red-50 flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-950/20 dark:to-orange-950/20 p-4">
@@ -101,7 +87,7 @@ export default function SignInPage() {
           <CardDescription>Sign in to your account to continue</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4">
             {error && (
               <Alert variant="destructive">
                 <AlertDescription>{error}</AlertDescription>
@@ -116,12 +102,13 @@ export default function SignInPage() {
                 id="identifier"
                 type="text"
                 placeholder="Enter your email or username"
-                {...register("identifier")}
+                value={identifier}
+                onChange={(e) => setIdentifier(e.target.value)}
                 className={errors.identifier ? "border-red-500" : ""}
               />
               {errors.identifier && (
                 <p className="text-sm text-red-500">
-                  {errors.identifier.message}
+                  {errors.identifier}
                 </p>
               )}
             </div>
@@ -135,7 +122,8 @@ export default function SignInPage() {
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  {...register("password")}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className={errors.password ? "border-red-500 pr-10" : "pr-10"}
                 />
                 <button
@@ -148,7 +136,7 @@ export default function SignInPage() {
               </div>
               {errors.password && (
                 <p className="text-sm text-red-500">
-                  {errors.password.message}
+                  {errors.password}
                 </p>
               )}
             </div>
@@ -194,3 +182,11 @@ export default function SignInPage() {
     </div>
   );
 }
+
+const SignInPage = nextDynamic(
+  () => Promise.resolve(SignInPageComponent),
+  { ssr: false }
+);
+
+export default SignInPage;
+

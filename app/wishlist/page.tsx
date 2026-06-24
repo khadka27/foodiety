@@ -13,10 +13,12 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { Heart, Clock, Users, Star, MapPin, ChefHat } from "lucide-react";
 import Link from "next/link";
 
+import nextDynamic from "next/dynamic";
+
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
-export default function WishlistPage() {
+function WishlistPageComponent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const { wishlistItems, isLoading, refetch } = useWishlist();
@@ -250,3 +252,10 @@ export default function WishlistPage() {
     </div>
   );
 }
+
+const WishlistPage = nextDynamic(
+  () => Promise.resolve(WishlistPageComponent),
+  { ssr: false }
+);
+
+export default WishlistPage;

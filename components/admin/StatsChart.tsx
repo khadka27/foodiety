@@ -40,9 +40,9 @@ export function StatsChart({ data }: StatsChartProps) {
         <Line
           type="monotone"
           dataKey="count"
-          stroke="#dc2626"
+          stroke="#D97742"
           strokeWidth={2}
-          dot={{ fill: '#dc2626' }}
+          dot={{ fill: '#D97742' }}
         />
       </LineChart>
     </ResponsiveContainer>

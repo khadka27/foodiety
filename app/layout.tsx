@@ -1,14 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Navigation } from "@/components/Navigation";
-import { Footer } from "@/components/Footer";
-import { Providers } from "@/components/Providers";
+import { Inter, Outfit } from "next/font/google";
+import { Providers, ClientNavigation, ClientFooter } from "@/components/Providers";
 import { ClientToaster } from "@/components/ui/client-toaster";
-import { LoadingScreen } from "@/components/LoadingScreen";
 import { Suspense } from "react";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit", weight: ["300", "400", "500", "600", "700", "800", "900"] });
 
 export const metadata: Metadata = {
   title: "Foodiety - Discover Amazing Food Experiences",
@@ -41,15 +39,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+      <body className={`${inter.variable} ${outfit.variable} ${inter.className}`} suppressHydrationWarning>
         <Providers>
-          <Navigation />
-          <Suspense fallback={<LoadingScreen isLoading={true} />}>
+          <ClientNavigation />
+          <Suspense fallback={
+            <div className="pt-16 min-h-screen flex items-center justify-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+            </div>
+          }>
             <main className="min-h-screen bg-background text-foreground">
               {children}
             </main>
           </Suspense>
-          <Footer />
+          <ClientFooter />
           <ClientToaster />
         </Providers>
       </body>
