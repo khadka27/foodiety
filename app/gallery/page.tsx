@@ -194,10 +194,10 @@ export default function GalleryPage() {
  animate={{ opacity: 1, scale: 1, y: 0 }}
  exit={{ opacity: 0, scale: 0.9 }}
  transition={{ duration: 0.4, delay: index * 0.04 }}
- className="group"
+ className="group hover:scale-[1.01] transition-transform duration-300 will-change-transform"
  >
  <div
- className="relative overflow-hidden rounded-2xl cursor-pointer glass-card border border-white/15 dark:border-white/5 hover:scale-[1.01] hover:shadow-2xl transition-all duration-400"
+ className="relative overflow-hidden rounded-2xl cursor-pointer glass-card border border-white/15 dark:border-white/5 hover:shadow-2xl transition-shadow duration-300"
  onClick={() => setSelectedImage(image)}
  >
  <img

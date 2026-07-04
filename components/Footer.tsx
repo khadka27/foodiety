@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ChefHat, Facebook, Instagram, Twitter, Youtube, Mail, Phone, MapPin, ArrowRight, Heart, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { useState } from 'react';
 
 interface FooterLink {
@@ -61,7 +60,7 @@ export function Footer() {
  <div className="absolute top-0 right-1/4 w-80 h-80 bg-red-500/5 rounded-full blur-[100px] pointer-events-none -z-0" />
 
  {/* Newsletter Banner */}
- <div className="relative z-10 border-b border-border/60 /60 /40 dark:/20 dark:/10">
+ <div className="relative z-10 border-b border-border/60 dark:border-border/20">
  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
  <div className="flex flex-col md:flex-row items-center justify-between gap-6">
  <div className="text-center md:text-left">
@@ -86,11 +85,11 @@ export function Footer() {
  onChange={e => setEmail(e.target.value)}
  placeholder="Your email address"
  required
- className="flex-1 px-4 py-2.5 rounded-full text-sm border border-border bg-background focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-all"
+ className="flex-1 px-4 py-2.5 rounded-full text-sm border border-border bg-background focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-400 transition-[border-color,box-shadow]"
  />
  <button
  type="submit"
- className="btn-premium px-5 py-2.5 text-sm flex items-center gap-1.5 flex-shrink-0"
+ className="px-5 py-2.5 text-sm flex items-center gap-1.5 flex-shrink-0 rounded-full bg-orange-500 text-white font-semibold shadow-lg shadow-orange-500/25 transition-[background-color,box-shadow,color] duration-200 hover:bg-orange-600 hover:shadow-orange-500/35 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:ring-offset-2 focus:ring-offset-background"
  >
  Subscribe
  <ArrowRight className="h-3.5 w-3.5" />
@@ -109,7 +108,7 @@ export function Footer() {
  {/* Brand Column */}
  <div className="sm:col-span-2 lg:col-span-2">
  <Link href="/" className="flex items-center gap-2.5 mb-5 group w-fit">
- <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30 group-hover:scale-110 transition-transform">
+ <div className="w-9 h-9 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/30 transition-colors">
  <ChefHat className="h-5 w-5 text-white" />
  </div>
  <div>
@@ -144,18 +143,16 @@ export function Footer() {
  {/* Social Links */}
  <div className="flex gap-2">
  {socialLinks.map((social) => (
- <motion.a
+ <a
  key={social.name}
  href={social.href}
  target="_blank"
  rel="noopener noreferrer"
- whileHover={{ scale: 1.05 }}
- whileTap={{ scale: 0.95 }}
- className={`w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground transition-all duration-200 ${social.color}`}
+ className={`w-9 h-9 rounded-xl border border-border flex items-center justify-center text-muted-foreground transition-[background-color,border-color,color] duration-200 ${social.color}`}
  aria-label={social.name}
  >
  <social.icon className="h-4 w-4" />
- </motion.a>
+ </a>
  ))}
  </div>
  </div>

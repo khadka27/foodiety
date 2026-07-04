@@ -122,7 +122,7 @@ export function ContactCTASection() {
  initial={{ opacity: 0, y: 20 }}
  animate={inView ? { opacity: 1, y: 0 } : {}}
  transition={{ duration: 0.5, delay: 0.2 + i * 0.08 }}
- className="flex items-center gap-3 p-3.5 rounded-2xl bg-stone-950/5 dark:bg-white/10 hover:bg-stone-950/10 dark:hover:bg-white/15 border border-stone-950/10 dark:border-white/15 hover:border-stone-950/20 dark:hover:border-white/25 transition-all duration-200 backdrop-blur-sm group cursor-pointer"
+ className="flex items-center gap-3 p-3.5 rounded-2xl bg-stone-950/5 dark:bg-white/10 hover:bg-stone-950/10 dark:hover:bg-white/15 border border-stone-950/10 dark:border-white/15 hover:border-stone-950/20 dark:hover:border-white/25 transition-[background-color,border-color] duration-200 backdrop-blur-sm group cursor-pointer"
  >
  <div className={`w-9 h-9 rounded-xl ${card.color} flex items-center justify-center flex-shrink-0 shadow-lg`}>
  <card.icon className="h-4 w-4 text-white" />
@@ -137,12 +137,12 @@ export function ContactCTASection() {
 
  {/* CTA Buttons */}
  <div className="flex flex-col sm:flex-row gap-3">
- <Link href="/contact" className="bg-stone-950 hover:bg-stone-900 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 border-0 rounded-full px-7 py-3 font-bold text-sm shadow-xl hover:scale-[1.02] transition-all duration-200 flex items-center justify-center gap-2">
+ <Link href="/contact" className="bg-stone-950 hover:bg-stone-900 text-white dark:bg-white dark:hover:bg-stone-100 dark:text-stone-950 border-0 rounded-full px-7 py-3 font-bold text-sm shadow-xl transition-[background-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 flex items-center justify-center gap-2">
  <MessageSquare className="h-4 w-4" />
  {contactCTA.btnText}
  <ArrowRight className="h-4 w-4" />
  </Link>
- <Link href="/services" className="border border-stone-950/20 dark:border-white/20 text-stone-900 dark:text-white hover:bg-stone-900/5 dark:hover:bg-white/5 rounded-full px-7 py-3 font-semibold text-sm flex items-center justify-center gap-2 transition-all duration-200">
+ <Link href="/services" className="border border-stone-950/20 dark:border-white/20 text-stone-900 dark:text-white hover:bg-stone-900/5 dark:hover:bg-white/5 rounded-full px-7 py-3 font-semibold text-sm flex items-center justify-center gap-2 transition-[background-color,border-color,color] duration-200">
  <Sparkles className="h-4 w-4" />
  View Services
  </Link>
@@ -196,7 +196,7 @@ export function ContactCTASection() {
  initial={{ opacity: 0, y: 15 }}
  animate={inView ? { opacity: 1, y: 0 } : {}}
  transition={{ delay: 0.6 + i * 0.1 }}
- className="flex items-start gap-3 p-4 rounded-2xl bg-stone-950/5 dark:bg-white/10 hover:bg-stone-950/10 dark:hover:bg-white/15 border border-stone-950/10 dark:border-white/15 backdrop-blur-sm transition-all duration-200"
+ className="flex items-start gap-3 p-4 rounded-2xl bg-stone-950/5 dark:bg-white/10 hover:bg-stone-950/10 dark:hover:bg-white/15 border border-stone-950/10 dark:border-white/15 backdrop-blur-sm transition-[background-color] duration-200"
  >
  <div className="w-10 h-10 rounded-full from-[#c05c31] to-[#e87a43] flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
  {t.avatar}

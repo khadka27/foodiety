@@ -74,10 +74,10 @@ export function BlogPreviewSection() {
  Dive into food stories, cooking tips, and culinary adventures from around the world.
  </p>
  </div>
- <Button asChild variant="outline" className="flex-shrink-0 rounded-full px-6 border-orange-200 dark:border-orange-800/50 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/30 hover:border-orange-400 transition-all">
+ <Button asChild variant="outline" className="flex-shrink-0 rounded-full px-6 border-orange-200 dark:border-orange-800/50 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/30 hover:border-orange-400 transition-[background-color,border-color,color]">
  <Link href="/blogs" className="flex items-center gap-2">
  All Articles
- <ArrowRight className="h-4 w-4" />
+		<ArrowRight className="h-4 w-4 transition-colors" />
  </Link>
  </Button>
  </motion.div>
@@ -94,16 +94,15 @@ export function BlogPreviewSection() {
  initial={{ opacity: 0, y: 40 }}
  animate={inView ? { opacity: 1, y: 0 } : {}}
  transition={{ duration: 0.6, delay: index * 0.12 }}
- className={`group ${isFeatured ? 'md:col-span-1' : ''}`}
+ className={`group transition-[box-shadow] duration-300 ${isFeatured ? 'md:col-span-1' : ''}`}
  >
- <article className="glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full flex flex-col hover:scale-[1.01] hover:shadow-2xl transition-all duration-400">
+ <article className="glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full flex flex-col hover:shadow-2xl transition-shadow duration-300">
  {/* Image */}
  <div className="relative overflow-hidden h-52">
  <img
  src={post.image}
  alt={post.title}
- className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
- style={{ transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1)' }}
+ className="w-full h-full object-cover"
  />
  <div className="absolute inset-0 /40 " />
 
@@ -157,9 +156,9 @@ export function BlogPreviewSection() {
  className="text-sm font-semibold text-orange-500 hover:text-orange-600 flex items-center gap-1.5 group/link"
  >
  Read Article
- <ArrowRight className="h-3.5 w-3.5 group-hover/link:translate-x-1 transition-transform" />
+		<ArrowRight className="h-3.5 w-3.5 transition-colors" />
  </Link>
- <button className="w-8 h-8 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-orange-500 hover:border-orange-300 border border-border transition-all">
+ <button className="w-8 h-8 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-orange-500 hover:border-orange-300 border border-border transition-[background-color,border-color,color]">
  <Share2 className="h-3.5 w-3.5" />
  </button>
  </div>
@@ -178,7 +177,7 @@ export function BlogPreviewSection() {
  className="text-center mt-12"
  >
  <p className="text-muted-foreground text-sm mb-4">Discover hundreds of food stories & expert guides</p>
- <Button asChild className="btn-premium px-8 py-3 shadow-xl shadow-orange-500/25">
+ <Button asChild className="px-8 py-3 rounded-full bg-orange-500 text-white shadow-xl shadow-orange-500/25 transition-[background-color,box-shadow,color] duration-200 hover:bg-orange-600 hover:shadow-orange-500/35">
  <Link href="/blogs" className="flex items-center gap-2">
  Explore All Blogs
  <ArrowRight className="h-4 w-4" />

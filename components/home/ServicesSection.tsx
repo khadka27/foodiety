@@ -123,10 +123,10 @@ export function ServicesSection() {
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, amount: 0.15 }}
-                className="group"
+                className="group transition-[box-shadow] duration-300 hover:shadow-2xl"
               >
                 <div
-                  className="relative h-full rounded-3xl p-7 border transition-all duration-300 group-hover:scale-[1.01] group-hover:border-[var(--hover-border)] group-hover:shadow-[var(--hover-shadow)]"
+                  className="relative h-full rounded-3xl p-7 border transition-[border-color,box-shadow] duration-300 group-hover:border-[var(--hover-border)] group-hover:shadow-[var(--hover-shadow)]"
                   style={{
                     background: 'hsl(var(--card))',
                     borderColor: `${accent.border}22`,
@@ -148,7 +148,7 @@ export function ServicesSection() {
 
                   {/* Icon */}
                   <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-colors duration-300"
                     style={{ background: `${accent.icon}15` }}
                   >
                     <div
@@ -192,14 +192,11 @@ export function ServicesSection() {
                   {/* CTA */}
                   <Link
                     href="/services"
-                    className="inline-flex items-center gap-2 text-sm font-semibold transition-all duration-200 group-hover:gap-3"
+                    className="inline-flex items-center gap-2 text-sm font-semibold transition-colors duration-200"
                     style={{ color: accent.text }}
                   >
                     Learn More
-                    <ArrowRight
-                      className="transition-transform duration-200 group-hover:translate-x-1"
-                      style={{ width: 16, height: 16 }}
-                    />
+                    <ArrowRight className="transition-colors duration-200" style={{ width: 16, height: 16 }} />
                   </Link>
                 </div>
               </motion.div>
@@ -215,7 +212,7 @@ export function ServicesSection() {
           transition={{ duration: 0.5 }}
           className="text-center mt-12"
         >
-          <Button asChild className="btn-premium px-8 py-3 shadow-xl shadow-orange-500/25 text-base">
+          <Button asChild className="px-8 py-3 rounded-full bg-orange-500 text-white shadow-xl shadow-orange-500/25 text-base transition-[background-color,box-shadow,color] duration-200 hover:bg-orange-600 hover:shadow-orange-500/35">
             <Link href="/services" className="flex items-center gap-2">
               Explore All Services
               <ArrowRight className="h-4 w-4" />

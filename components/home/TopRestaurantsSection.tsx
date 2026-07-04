@@ -99,7 +99,7 @@ export function TopRestaurantsSection() {
  Explore the best restaurants in town, handpicked by our passionate community of food lovers.
  </p>
  </div>
- <Button asChild variant="outline" className="flex-shrink-0 rounded-full px-6 border-[#c05c31]/20 dark:border-[#ebc63c]/20 text-[#c05c31] dark:text-[#ebc63c] hover:bg-[#c05c31]/5 dark:hover:bg-[#ebc63c]/5 transition-all">
+ <Button asChild variant="outline" className="flex-shrink-0 rounded-full px-6 border-[#c05c31]/20 dark:border-[#ebc63c]/20 text-[#c05c31] dark:text-[#ebc63c] hover:bg-[#c05c31]/5 dark:hover:bg-[#ebc63c]/5 transition-[background-color,border-color,color]">
  <Link href="/restaurants" className="flex items-center gap-2">
  All Restaurants
  <ArrowRight className="h-4 w-4" />
@@ -115,15 +115,15 @@ export function TopRestaurantsSection() {
  initial={{ opacity: 0, y: 40 }}
  animate={inView ? { opacity: 1, y: 0 } : {}}
  transition={{ duration: 0.6, delay: index * 0.1 }}
- className="group"
+ className="group transition-[box-shadow] duration-300 hover:shadow-2xl"
  >
- <div className="glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full flex flex-col hover:scale-[1.01] hover:shadow-2xl transition-all duration-400">
+ <div className="glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full flex flex-col hover:shadow-2xl transition-shadow duration-300">
  {/* Image */}
  <div className="relative overflow-hidden h-52">
  <img
  src={est.image}
  alt={est.name}
- className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+ className="w-full h-full object-cover"
  />
  <div className="absolute inset-0 /40 " />
 

@@ -1,13 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: { unoptimized: true },
-  experimental: {
-    // Help with SSR issues in Next.js 15
-    forceSwcTransforms: true,
-  },
   // Disable static optimization for problematic routes
   staticPageGenerationTimeout: 120,
   // Disable static generation

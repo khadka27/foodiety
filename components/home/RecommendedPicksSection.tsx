@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { Button } from '@/components/ui/button';
 import { Star, Clock, Users, ChevronLeft, ChevronRight, MapPin, ArrowRight, Flame } from 'lucide-react';
@@ -182,17 +182,15 @@ export function RecommendedPicksSection() {
  <div className="flex items-center gap-4">
  {/* Prev Button */}
  <motion.button
- whileHover={{ scale: 1.05 }}
- whileTap={{ scale: 0.95 }}
+ whileTap={{ scale: 0.98 }}
  onClick={prev}
- className="hidden md:flex w-11 h-11 rounded-full glass-card border border-orange-200/40 dark:border-orange-800/20 items-center justify-center flex-shrink-0 hover:border-orange-400/60 hover:shadow-lg transition-all duration-200"
+ className="hidden md:flex w-11 h-11 rounded-full glass-card border border-orange-200/40 dark:border-orange-800/20 items-center justify-center flex-shrink-0 hover:border-orange-400/60 hover:shadow-lg transition-[background-color,border-color,box-shadow] duration-200"
  >
  <ChevronLeft className="h-5 w-5 text-orange-500" />
  </motion.button>
 
  {/* Cards */}
  <div className="grid grid-cols-1 md:grid-cols-3 gap-5 flex-1">
- <AnimatePresence mode="popLayout">
  {getVisible().map((item: any, index: number) => {
  if (!item) return null;
  const chef = item.chef || 'Chef Sarah';
@@ -204,24 +202,22 @@ export function RecommendedPicksSection() {
 
  return (
  <motion.div
- key={`${item.id}-${currentIndex}-${activeCategory}`}
- initial={{ opacity: 0, scale: 0.92, y: 15 }}
+ key={item.id}
+ initial={{ opacity: 0, y: 15 }}
  animate={{
  opacity: 1,
- scale: index === 1 ? 1.03 : 1,
  y: 0,
  }}
- exit={{ opacity: 0, scale: 0.92, y: -15 }}
- transition={{ duration: 0.45, delay: index * 0.08 }}
- className="group"
+ transition={{ duration: 0.35, delay: index * 0.08 }}
+ className="group transition-[box-shadow] duration-300 hover:shadow-2xl"
  >
- <div className={`glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full hover:scale-[1.01] hover:shadow-2xl transition-all duration-400 ${index === 1 ? 'ring-2 ring-orange-400/30' : ''}`}>
+ <div className={`glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full hover:shadow-2xl transition-shadow duration-300 ${index === 1 ? 'ring-2 ring-orange-400/30' : ''}`}>
  {/* Image */}
  <div className="relative overflow-hidden h-52">
  <img
  src={item.image}
  alt={item.title}
- className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+ className="w-full h-full object-cover"
  />
  <div className="absolute inset-0 /50 " />
 
@@ -278,7 +274,7 @@ export function RecommendedPicksSection() {
  </div>
 
  {/* Button */}
- <Button className="w-full btn-premium text-sm py-2.5 rounded-xl">
+ <Button asChild className="w-full text-sm py-2.5 rounded-xl bg-orange-500 text-white shadow-lg shadow-orange-500/25 transition-[background-color,box-shadow,color] duration-200 hover:bg-orange-600 hover:shadow-orange-500/35">
  <Link href={`/recipes/${item.id}`} className="flex items-center justify-center gap-2">
  View Recipe
  <ArrowRight className="h-3.5 w-3.5" />
@@ -289,15 +285,14 @@ export function RecommendedPicksSection() {
  </motion.div>
  );
  })}
- </AnimatePresence>
+ 
  </div>
 
  {/* Next Button */}
  <motion.button
- whileHover={{ scale: 1.05 }}
- whileTap={{ scale: 0.95 }}
+ whileTap={{ scale: 0.98 }}
  onClick={next}
- className="hidden md:flex w-11 h-11 rounded-full glass-card border border-orange-200/40 dark:border-orange-800/20 items-center justify-center flex-shrink-0 hover:border-orange-400/60 hover:shadow-lg transition-all duration-200"
+ className="hidden md:flex w-11 h-11 rounded-full glass-card border border-orange-200/40 dark:border-orange-800/20 items-center justify-center flex-shrink-0 hover:border-orange-400/60 hover:shadow-lg transition-[background-color,border-color,box-shadow] duration-200"
  >
  <ChevronRight className="h-5 w-5 text-orange-500" />
  </motion.button>
@@ -319,7 +314,7 @@ export function RecommendedPicksSection() {
  <button
  key={i}
  onClick={() => setCurrentIndex(i)}
- className={`rounded-full transition-all duration-300 ${
+ className={`rounded-full transition-[background-color,width,height] duration-300 ${
  i === currentIndex % filtered.length
  ? 'w-6 h-2.5 bg-orange-500'
  : 'w-2.5 h-2.5 bg-muted hover:bg-muted-foreground/40'

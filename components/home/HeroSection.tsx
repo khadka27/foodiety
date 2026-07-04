@@ -63,19 +63,19 @@ export function HeroSection() {
           transition={{ duration: 0.8, delay: 0.3, ease: 'easeOut' }}
           className="flex items-center justify-center flex-wrap gap-x-2 gap-y-2 mb-16 text-xs sm:text-sm font-semibold tracking-[0.18em] text-stone-500/80 dark:text-stone-400/80 font-outfit"
         >
-          <Link href="/blogs" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-all duration-300 hover:scale-105">
+          <Link href="/blogs" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-[color,transform] duration-300 hover:-translate-y-0.5">
             BLOGS
           </Link>
           <span className="text-stone-300 dark:text-stone-700 mx-2 select-none">/</span>
-          <Link href="/recipes" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-all duration-300 hover:scale-105">
+          <Link href="/recipes" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-[color,transform] duration-300 hover:-translate-y-0.5">
             RECIPES
           </Link>
           <span className="text-stone-300 dark:text-stone-700 mx-2 select-none">/</span>
-          <Link href="/restaurants" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-all duration-300 hover:scale-105">
+          <Link href="/restaurants" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-[color,transform] duration-300 hover:-translate-y-0.5">
             RESTAURANTS
           </Link>
           <span className="text-stone-300 dark:text-stone-700 mx-2 select-none">/</span>
-          <Link href="/gallery" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-all duration-300 hover:scale-105">
+          <Link href="/gallery" className="hover:text-[#c05c31] dark:hover:text-[#ebc63c] transition-[color,transform] duration-300 hover:-translate-y-0.5">
             GALLERY
           </Link>
         </motion.div>
@@ -86,7 +86,7 @@ export function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: 'easeOut' }}
         >
-          <button className="border border-stone-300 dark:border-stone-800 px-7 py-3 text-stone-600 dark:text-stone-400 hover:border-[#c05c31] dark:hover:border-[#ebc63c] hover:text-[#c05c31] dark:hover:text-[#ebc63c] hover:bg-stone-100/50 dark:hover:bg-stone-900/50 rounded-none transition-all duration-300 flex items-center gap-2.5 group text-xs font-bold uppercase tracking-wider font-outfit">
+          <button className="border border-stone-300 dark:border-stone-800 px-7 py-3 text-stone-600 dark:text-stone-400 hover:border-[#c05c31] dark:hover:border-[#ebc63c] hover:text-[#c05c31] dark:hover:text-[#ebc63c] hover:bg-stone-100/50 dark:hover:bg-stone-900/50 rounded-none transition-[background-color,border-color,color] duration-300 flex items-center gap-2.5 group text-xs font-bold uppercase tracking-wider font-outfit">
             Subscribe to the Journal
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1.5 duration-300" />
           </button>

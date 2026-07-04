@@ -182,8 +182,8 @@ export function OurStorySection() {
                   <motion.div
                     key={stat.label}
                     variants={itemVariants}
-                    whileHover={{ scale: 1.03 }}
-                    className="rounded-2xl p-4 border transition-all duration-300"
+                    
+                    className="rounded-2xl p-4 border transition-[background-color,border-color,box-shadow] duration-300"
                     style={{
                       background: 'hsl(var(--card))',
                       borderColor: `${stat.color}33`,
@@ -223,7 +223,7 @@ export function OurStorySection() {
               <img
                 src={ourStory.image}
                 alt="Culinary team"
-                className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                className="w-full h-full object-cover"
               />
               {/* Dark overlay at bottom */}
               <div

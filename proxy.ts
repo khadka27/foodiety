@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // Add security headers
   const response = NextResponse.next();
-  
+
   // Security headers
   response.headers.set('X-Frame-Options', 'DENY');
   response.headers.set('X-Content-Type-Options', 'nosniff');
@@ -26,12 +26,12 @@ export function middleware(request: NextRequest) {
 
   // Handle error pages routing
   const pathname = request.nextUrl.pathname;
-  
+
   // Custom error page redirects
   if (pathname === '/forbidden') {
     return NextResponse.redirect(new URL('/403', request.url));
   }
-  
+
   if (pathname === '/maintenance') {
     return NextResponse.redirect(new URL('/503', request.url));
   }

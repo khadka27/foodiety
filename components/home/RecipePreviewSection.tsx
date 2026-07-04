@@ -106,7 +106,7 @@ export function RecipePreviewSection() {
  Master these crowd-favorite recipes that our community can't stop making.
  </p>
  </div>
- <Button asChild variant="outline" className="flex-shrink-0 rounded-full px-6 border-orange-200 dark:border-orange-800/50 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/30 hover:border-orange-400 transition-all">
+ <Button asChild variant="outline" className="flex-shrink-0 rounded-full px-6 border-orange-200 dark:border-orange-800/50 text-orange-600 dark:text-orange-400 hover:bg-orange-50 dark:hover:bg-orange-950/30 hover:border-orange-400 transition-[background-color,border-color,color]">
  <Link href="/recipes" className="flex items-center gap-2">
  All Recipes
  <ArrowRight className="h-4 w-4" />
@@ -129,15 +129,15 @@ export function RecipePreviewSection() {
  initial={{ opacity: 0, y: 40 }}
  animate={inView ? { opacity: 1, y: 0 } : {}}
  transition={{ duration: 0.6, delay: index * 0.1 }}
- className="group"
+ className="group transition-[box-shadow] duration-300 hover:shadow-lg"
  >
- <div className="glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full flex flex-col hover:scale-[1.01] hover:shadow-2xl transition-all duration-400">
+ <div className="glass-card rounded-3xl overflow-hidden border border-white/20 dark:border-white/5 h-full flex flex-col transition-shadow duration-300 hover:shadow-lg">
  {/* Image */}
  <div className="relative overflow-hidden h-48">
  <img
  src={recipe.image}
  alt={recipe.title}
- className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+ className="w-full h-full object-cover"
  />
  <div className="absolute inset-0 /40 " />
 
@@ -203,7 +203,7 @@ export function RecipePreviewSection() {
  {/* CTA */}
  <Link
  href={`/recipes/${recipe.id}`}
- className="mt-auto w-full py-2.5 rounded-xl text-sm font-semibold text-center transition-all duration-300 text-white hover:shadow-lg hover:shadow-orange-500/30 hover:scale-[1.02] flex items-center justify-center gap-2"
+ className="mt-auto w-full py-2.5 rounded-xl text-sm font-semibold text-center transition-[background-color,box-shadow] duration-300 text-white bg-orange-500 hover:bg-orange-600 hover:shadow-lg hover:shadow-orange-500/30 flex items-center justify-center gap-2"
  >
  <ChefHat className="h-3.5 w-3.5" />
  Cook Now
@@ -231,7 +231,7 @@ export function RecipePreviewSection() {
  Browse our library of 10,000+ recipes from cuisines around the world.
  </p>
  </div>
- <Button asChild className="btn-premium px-8 py-3 flex-shrink-0 shadow-xl shadow-orange-500/25">
+ <Button asChild className="px-8 py-3 flex-shrink-0 rounded-full bg-orange-500 text-white shadow-xl shadow-orange-500/25 transition-[background-color,box-shadow,color] duration-200 hover:bg-orange-600 hover:shadow-orange-500/35">
  <Link href="/recipes" className="flex items-center gap-2">
  Browse All Recipes
  <ArrowRight className="h-4 w-4" />
