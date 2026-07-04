@@ -22,11 +22,11 @@ export function AdminHeader() {
   };
 
   return (
-    <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-      <div className="flex items-center justify-between h-16 px-6">
+    <header className="bg-white/70 dark:bg-stone-900/70 backdrop-blur-md border-b border-stone-200/40 dark:border-stone-800/40 shadow-sm sticky top-0 z-30">
+      <div className="flex items-center justify-between h-20 px-6">
         <div className="flex items-center">
-          <h1 className="text-xl font-semibold text-gray-900 dark:text-white ml-12 lg:ml-0">
-            Admin Dashboard
+          <h1 className="text-xl font-extrabold font-outfit text-stone-900 dark:text-white ml-12 lg:ml-0 tracking-tight">
+            Admin Portal
           </h1>
         </div>
 
@@ -35,38 +35,38 @@ export function AdminHeader() {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                <Avatar className="h-8 w-8">
-                  <AvatarFallback className="bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400">
+              <Button variant="ghost" className="relative h-10 w-10 rounded-full border border-stone-200/60 dark:border-stone-800/60 shadow-sm hover:scale-105 active:scale-95 transition-all">
+                <Avatar className="h-10 w-10">
+                  <AvatarFallback className="bg-[#c05c31]/10 text-[#c05c31] dark:bg-[#c05c31]/25 dark:text-[#ebc63c] font-bold">
                     {session?.user?.name?.charAt(0)?.toUpperCase() || 'A'}
                   </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56" align="end" forceMount>
-              <DropdownMenuLabel className="font-normal">
+            <DropdownMenuContent className="w-56 rounded-2xl p-2 bg-white/95 dark:bg-stone-900/95 backdrop-blur-md border border-stone-200/60 dark:border-stone-800/60 shadow-xl" align="end" forceMount>
+              <DropdownMenuLabel className="font-normal px-2.5 py-2">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">
+                  <p className="text-sm font-bold text-stone-900 dark:text-white">
                     {session?.user?.name || 'Admin User'}
                   </p>
-                  <p className="text-xs leading-none text-muted-foreground">
+                  <p className="text-xs text-muted-foreground truncate">
                     {session?.user?.email}
                   </p>
                 </div>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <User className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+              <DropdownMenuSeparator className="bg-stone-200/60 dark:bg-stone-800/60" />
+              <DropdownMenuItem className="rounded-xl px-2.5 py-2 hover:bg-[#c05c31]/10 focus:bg-[#c05c31]/10 cursor-pointer">
+                <User className="mr-2.5 h-4 w-4 text-stone-500" />
+                <span className="font-semibold text-xs">Profile</span>
               </DropdownMenuItem>
-              <DropdownMenuItem>
-                <Settings className="mr-2 h-4 w-4" />
-                <span>Settings</span>
+              <DropdownMenuItem className="rounded-xl px-2.5 py-2 hover:bg-[#c05c31]/10 focus:bg-[#c05c31]/10 cursor-pointer">
+                <Settings className="mr-2.5 h-4 w-4 text-stone-500" />
+                <span className="font-semibold text-xs">Settings</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+              <DropdownMenuSeparator className="bg-stone-200/60 dark:bg-stone-800/60" />
+              <DropdownMenuItem onClick={handleSignOut} className="rounded-xl px-2.5 py-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 focus:bg-red-50 focus:text-red-600 cursor-pointer">
+                <LogOut className="mr-2.5 h-4 w-4" />
+                <span className="font-bold text-xs">Log out</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

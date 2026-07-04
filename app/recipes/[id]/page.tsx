@@ -186,7 +186,7 @@ export default function RecipePage() {
   if (!isMounted || !recipe) {
     return (
       <div className="pt-16 min-h-screen bg-background flex items-center justify-center">
-        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-accent animate-pulse" />
+        <div className="w-12 h-12 rounded-2xl bg-[#c05c31] animate-pulse" />
       </div>
     );
   }

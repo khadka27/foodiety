@@ -125,20 +125,44 @@ export default function RecipesPage() {
   const [selectedTime, setSelectedTime] = useState("Any Time");
   const [selectedDifficulty, setSelectedDifficulty] = useState("All Levels");
   const [isMounted, setIsMounted] = useState(false);
+  const [banner, setBanner] = useState({
+    title: "Recipe Collection",
+    subtitle: "Discover amazing recipes from around the world. Filter by cuisine, cooking time, and difficulty to find the perfect dish for any occasion."
+  });
+  const [categories, setCategories] = useState<any[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   useEffect(() => {
     setIsMounted(true);
-    const savedRecipes = localStorage.getItem("foodiety_recipes");
-    if (savedRecipes) {
-      try {
-        const parsed = JSON.parse(savedRecipes);
-        if (parsed && parsed.length > 0) {
-          setRecipes(parsed);
+    fetch("/api/recipes")
+      .then(res => res.json())
+      .then(res => {
+        if (res.success && res.data && res.data.length > 0) {
+          setRecipes(res.data);
         }
-      } catch (e) {
-        console.error(e);
-      }
-    }
+      })
+      .catch(err => console.error(err));
+
+    fetch("/api/config")
+      .then(res => res.json())
+      .then(res => {
+        if (res.success && res.data && res.data.recipesPage) {
+          setBanner({
+            title: res.data.recipesPage.bannerTitle || "Recipe Collection",
+            subtitle: res.data.recipesPage.bannerSubtitle || "Discover amazing recipes from around the world. Filter by cuisine, cooking time, and difficulty to find the perfect dish for any occasion."
+          });
+        }
+      })
+      .catch(err => console.error(err));
+
+    fetch("/api/categories?type=RECIPE")
+      .then(res => res.json())
+      .then(res => {
+        if (res.success && res.data) {
+          setCategories(res.data);
+        }
+      })
+      .catch(err => console.error(err));
   }, []);
 
   const cuisineTypes = [
@@ -158,6 +182,8 @@ export default function RecipesPage() {
     const matchesDifficulty =
       selectedDifficulty === "All Levels" ||
       recipe.difficulty === selectedDifficulty;
+    const matchesCategory =
+      selectedCategory === "All" || recipe.category === selectedCategory;
 
     let matchesTime = true;
     if (selectedTime !== "Any Time") {
@@ -178,7 +204,7 @@ export default function RecipesPage() {
       }
     }
 
-    return matchesSearch && matchesCuisine && matchesDifficulty && matchesTime;
+    return matchesSearch && matchesCuisine && matchesDifficulty && matchesTime && matchesCategory;
   });
 
   const getDifficultyColor = (difficulty: string) => {
@@ -220,12 +246,10 @@ export default function RecipesPage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="font-playfair font-bold text-4xl md:text-5xl text-stone-900 dark:text-white mb-6 leading-tight">
-              Recipe Collection
+              {banner.title}
             </h1>
             <p className="text-lg text-stone-700 dark:text-stone-200 max-w-2xl mx-auto leading-relaxed">
-              Discover amazing recipes from around the world. Filter by cuisine,
-              cooking time, and difficulty to find the perfect dish for any
-              occasion.
+              {banner.subtitle}
             </p>
           </motion.div>
         </div>
@@ -293,6 +317,33 @@ export default function RecipesPage() {
                   ))}
                 </SelectContent>
               </Select>
+            </div>
+
+            {/* Category Filter Tabs */}
+            <div className="flex flex-wrap justify-center gap-2 pt-4">
+              <button
+                onClick={() => setSelectedCategory("All")}
+                className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-full border transition-all duration-200 ${
+                  selectedCategory === "All"
+                    ? "bg-[#c05c31] text-white border-[#c05c31] shadow-md shadow-orange-500/10"
+                    : "border-border text-muted-foreground hover:bg-muted"
+                }`}
+              >
+                All categories
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.slug)}
+                  className={`px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-full border transition-all duration-200 ${
+                    selectedCategory === cat.slug
+                      ? "bg-[#c05c31] text-white border-[#c05c31] shadow-md shadow-orange-500/10"
+                      : "border-border text-muted-foreground hover:bg-muted"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              ))}
             </div>
           </div>
 

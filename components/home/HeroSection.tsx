@@ -21,7 +21,7 @@ export function HeroSection() {
       <div className="absolute inset-0 bg-noise opacity-[0.02] pointer-events-none" />
 
       {/* Main Content Container */}
-      <div className="relative z-10 flex flex-col items-center justify-center max-w-5xl mx-auto px-6 text-center select-none pt-24 pb-16">
+      <div className="relative z-10 flex flex-col items-center justify-center max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center select-none pt-24 pb-16">
         
         {/* Date Tag */}
         <motion.div

@@ -1,8 +1,58 @@
-import { prisma } from "../lib/prisma";
+// @ts-ignore
+import { loadEnvConfig } from "@next/env";
+loadEnvConfig(process.cwd());
+
 import bcrypt from "bcryptjs";
 
 async function main() {
   console.log("🌱 Seeding database...");
+  const { prisma } = await import("../lib/prisma");
+
+  console.log("Creating default categories...");
+  const categoriesToSeed = [
+    // Recipes
+    { name: "Appetizer", slug: "APPETIZER", type: "RECIPE" },
+    { name: "Main Course", slug: "MAIN_COURSE", type: "RECIPE" },
+    { name: "Dessert", slug: "DESSERT", type: "RECIPE" },
+    { name: "Beverage", slug: "BEVERAGE", type: "RECIPE" },
+    { name: "Snack", slug: "SNACK", type: "RECIPE" },
+    { name: "Breakfast", slug: "BREAKFAST", type: "RECIPE" },
+    { name: "Lunch", slug: "LUNCH", type: "RECIPE" },
+    { name: "Dinner", slug: "DINNER", type: "RECIPE" },
+    
+    // Restaurants
+    { name: "Italian", slug: "ITALIAN", type: "RESTAURANT" },
+    { name: "Chinese", slug: "CHINESE", type: "RESTAURANT" },
+    { name: "Mexican", slug: "MEXICAN", type: "RESTAURANT" },
+    { name: "Indian", slug: "INDIAN", type: "RESTAURANT" },
+    { name: "American", slug: "AMERICAN", type: "RESTAURANT" },
+    { name: "French", slug: "FRENCH", type: "RESTAURANT" },
+    { name: "Japanese", slug: "JAPANESE", type: "RESTAURANT" },
+    { name: "Thai", slug: "THAI", type: "RESTAURANT" },
+    { name: "Mediterranean", slug: "MEDITERRANEAN", type: "RESTAURANT" },
+    { name: "Fast Food / Cafe", slug: "FAST_FOOD", type: "RESTAURANT" },
+    
+    // Gallery
+    { name: "Dishes", slug: "dishes", type: "GALLERY" },
+    { name: "Events", slug: "events", type: "GALLERY" },
+    { name: "Behind the Scenes", slug: "behind-the-scenes", type: "GALLERY" },
+    { name: "Restaurants", slug: "restaurants", type: "GALLERY" },
+    { name: "Desserts", slug: "desserts", type: "GALLERY" },
+    
+    // Services
+    { name: "Catering", slug: "catering", type: "SERVICE" },
+    { name: "Chef Services", slug: "chef-services", type: "SERVICE" },
+    { name: "Consulting", slug: "consulting", type: "SERVICE" },
+    { name: "Creative Services", slug: "creative-services", type: "SERVICE" }
+  ];
+
+  for (const cat of categoriesToSeed) {
+    await prisma.category.upsert({
+      where: { slug: cat.slug },
+      update: {},
+      create: cat
+    });
+  }
 
   // Create admin user
   const adminPassword = await bcrypt.hash("admin123", 12);
@@ -287,5 +337,6 @@ main()
     process.exit(1);
   })
   .finally(async () => {
+    const { prisma } = await import("../lib/prisma");
     await prisma.$disconnect();
   });

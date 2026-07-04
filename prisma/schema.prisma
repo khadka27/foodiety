@@ -14,29 +14,6 @@ enum Role {
   ADMIN
 }
 
-enum RecipeCategory {
-  APPETIZER
-  MAIN_COURSE
-  DESSERT
-  BEVERAGE
-  SNACK
-  BREAKFAST
-  LUNCH
-  DINNER
-}
-
-enum RestaurantCategory {
-  ITALIAN
-  CHINESE
-  MEXICAN
-  INDIAN
-  AMERICAN
-  FRENCH
-  JAPANESE
-  THAI
-  MEDITERRANEAN
-  FAST_FOOD
-}
 
 model User {
   id                String   @id @default(cuid())
@@ -83,7 +60,7 @@ model Recipe {
   cookTime        Int            // in minutes
   servings        Int
   difficulty      String         // Easy, Medium, Hard
-  category        RecipeCategory
+  category        String
   cuisine         String?
   tags            String[]
   image           String?
@@ -120,7 +97,7 @@ model Restaurant {
   phone           String?
   email           String?
   website         String?
-  category        RestaurantCategory
+  category        String
   cuisine         String[]
   priceRange      String             // $, $$, $$$, $$$$
   hours           Json               // Operating hours
@@ -333,4 +310,15 @@ model SiteConfig {
   updatedAt DateTime @updatedAt
 
   @@map("site_config")
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  type      String   // "RECIPE" | "RESTAURANT" | "GALLERY" | "SERVICE"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("categories")
 }

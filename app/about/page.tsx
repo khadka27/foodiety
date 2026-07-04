@@ -9,392 +9,392 @@ import { Heart, Users, Award, Globe, Target, Eye, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 const defaultTimeline = [
-  {
-    year: '2020',
-    title: 'The Beginning',
-    description: 'Started as a passion project by three food enthusiasts sharing family recipes.',
-  },
-  {
-    year: '2021',
-    title: 'Community Growth',
-    description: 'Reached 1,000 members and launched our first cooking workshops.',
-  },
-  {
-    year: '2022',
-    title: 'Service Expansion',
-    description: 'Added catering services and food photography to our offerings.',
-  },
-  {
-    year: '2023',
-    title: 'Restaurant Partnerships',
-    description: 'Partnered with 100+ restaurants and launched our restaurant directory.',
-  },
-  {
-    year: '2024',
-    title: 'AI Integration',
-    description: 'Introduced Foodiety AI for personalized recipe recommendations.',
-  },
-  {
-    year: '2025',
-    title: 'Global Expansion',
-    description: 'Expanding internationally with localized content and partnerships.',
-  },
+ {
+ year: '2020',
+ title: 'The Beginning',
+ description: 'Started as a passion project by three food enthusiasts sharing family recipes.',
+ },
+ {
+ year: '2021',
+ title: 'Community Growth',
+ description: 'Reached 1,000 members and launched our first cooking workshops.',
+ },
+ {
+ year: '2022',
+ title: 'Service Expansion',
+ description: 'Added catering services and food photography to our offerings.',
+ },
+ {
+ year: '2023',
+ title: 'Restaurant Partnerships',
+ description: 'Partnered with 100+ restaurants and launched our restaurant directory.',
+ },
+ {
+ year: '2024',
+ title: 'AI Integration',
+ description: 'Introduced Foodiety AI for personalized recipe recommendations.',
+ },
+ {
+ year: '2025',
+ title: 'Global Expansion',
+ description: 'Expanding internationally with localized content and partnerships.',
+ },
 ];
 
 const defaultTeam = [
-  {
-    name: 'Sarah Chen',
-    role: 'Founder & Head Chef',
-    image: 'https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=400',
-    bio: 'Culinary Institute graduate with 15 years of experience in fine dining and food innovation.',
-  },
-  {
-    name: 'Marco Rodriguez',
-    role: 'Creative Director',
-    image: 'https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=400',
-    bio: 'Award-winning food photographer and visual storyteller with a passion for authentic cuisine.',
-  },
-  {
-    name: 'Elena Thompson',
-    role: 'Community Manager',
-    image: 'https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=400',
-    bio: 'Food blogger and nutritionist dedicated to building inclusive culinary communities.',
-  },
+ {
+ name: 'Sarah Chen',
+ role: 'Founder & Head Chef',
+ image: 'https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=400',
+ bio: 'Culinary Institute graduate with 15 years of experience in fine dining and food innovation.',
+ },
+ {
+ name: 'Marco Rodriguez',
+ role: 'Creative Director',
+ image: 'https://images.pexels.com/photos/3184183/pexels-photo-3184183.jpeg?auto=compress&cs=tinysrgb&w=400',
+ bio: 'Award-winning food photographer and visual storyteller with a passion for authentic cuisine.',
+ },
+ {
+ name: 'Elena Thompson',
+ role: 'Community Manager',
+ image: 'https://images.pexels.com/photos/3184460/pexels-photo-3184460.jpeg?auto=compress&cs=tinysrgb&w=400',
+ bio: 'Food blogger and nutritionist dedicated to building inclusive culinary communities.',
+ },
 ];
 
 const values = [
-  {
-    icon: Heart,
-    title: 'Passion First',
-    description: 'Every recipe, every story, and every service comes from genuine love for food and cooking.',
-  },
-  {
-    icon: Users,
-    title: 'Community Driven',
-    description: 'We believe the best food experiences are shared, and our community is at the heart of everything we do.',
-  },
-  {
-    icon: Award,
-    title: 'Quality Excellence',
-    description: 'From ingredients to execution, we maintain the highest standards in everything we create and recommend.',
-  },
-  {
-    icon: Globe,
-    title: 'Cultural Respect',
-    description: 'We celebrate diverse culinary traditions while honoring their origins and authenticity.',
-  },
+ {
+ icon: Heart,
+ title: 'Passion First',
+ description: 'Every recipe, every story, and every service comes from genuine love for food and cooking.',
+ },
+ {
+ icon: Users,
+ title: 'Community Driven',
+ description: 'We believe the best food experiences are shared, and our community is at the heart of everything we do.',
+ },
+ {
+ icon: Award,
+ title: 'Quality Excellence',
+ description: 'From ingredients to execution, we maintain the highest standards in everything we create and recommend.',
+ },
+ {
+ icon: Globe,
+ title: 'Cultural Respect',
+ description: 'We celebrate diverse culinary traditions while honoring their origins and authenticity.',
+ },
 ];
 
 export default function AboutPage() {
-  const [ref, inView] = useInView({
-    triggerOnce: true,
-    threshold: 0.1,
-  });
+ const [ref, inView] = useInView({
+ triggerOnce: true,
+ threshold: 0.1,
+ });
 
-  const [aboutConfig, setAboutConfig] = useState({
-    heroTitle: "About Foodiety",
-    heroSubtitle: "We're more than just a food platform – we're a community of passionate food lovers dedicated to making exceptional culinary experiences accessible to everyone.",
-    membersCount: "50K+",
-    recipesCount: "10K+",
-    restaurantsCount: "500+",
-    countriesCount: "25+",
-    mission: "To democratize exceptional food experiences by connecting people through authentic recipes, quality ingredients, and memorable dining adventures.",
-    vision: "A world where great food brings people together, cultural traditions are preserved, and culinary creativity knows no bounds.",
-    impact: "Empowering home cooks, supporting local restaurants, and fostering a global community passionate about food and culture.",
-  });
-  const [timeline, setTimeline] = useState<any[]>(defaultTimeline);
-  const [team, setTeam] = useState<any[]>(defaultTeam);
-  const [isMounted, setIsMounted] = useState(false);
+ const [aboutConfig, setAboutConfig] = useState({
+ heroTitle: "About Foodiety",
+ heroSubtitle: "We're more than just a food platform – we're a community of passionate food lovers dedicated to making exceptional culinary experiences accessible to everyone.",
+ membersCount: "50K+",
+ recipesCount: "10K+",
+ restaurantsCount: "500+",
+ countriesCount: "25+",
+ mission: "To democratize exceptional food experiences by connecting people through authentic recipes, quality ingredients, and memorable dining adventures.",
+ vision: "A world where great food brings people together, cultural traditions are preserved, and culinary creativity knows no bounds.",
+ impact: "Empowering home cooks, supporting local restaurants, and fostering a global community passionate about food and culture.",
+ });
+ const [timeline, setTimeline] = useState<any[]>(defaultTimeline);
+ const [team, setTeam] = useState<any[]>(defaultTeam);
+ const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    setIsMounted(true);
-    const savedConfig = localStorage.getItem("foodiety_site_config");
-    if (savedConfig) {
-      try {
-        const parsed = JSON.parse(savedConfig);
-        if (parsed.about) {
-          setAboutConfig({
-            heroTitle: parsed.about.heroTitle || "About Foodiety",
-            heroSubtitle: parsed.about.heroSubtitle || "We're more than just a food platform – we're a community of passionate food lovers.",
-            membersCount: parsed.about.membersCount || "50K+",
-            recipesCount: parsed.about.recipesCount || "10K+",
-            restaurantsCount: parsed.about.restaurantsCount || "500+",
-            countriesCount: parsed.about.countriesCount || "25+",
-            mission: parsed.about.mission || "To democratize exceptional food experiences by connecting people through authentic recipes, quality ingredients, and memorable dining adventures.",
-            vision: parsed.about.vision || "A world where great food brings people together, cultural traditions are preserved, and culinary creativity knows no bounds.",
-            impact: parsed.about.impact || "Empowering home cooks, supporting local restaurants, and fostering a global community passionate about food and culture.",
-          });
-          if (parsed.about.timeline && parsed.about.timeline.length > 0) {
-            setTimeline(parsed.about.timeline);
-          }
-          if (parsed.about.team && parsed.about.team.length > 0) {
-            setTeam(parsed.about.team);
-          }
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    }
-  }, []);
+ useEffect(() => {
+ setIsMounted(true);
+ const savedConfig = localStorage.getItem("foodiety_site_config");
+ if (savedConfig) {
+ try {
+ const parsed = JSON.parse(savedConfig);
+ if (parsed.about) {
+ setAboutConfig({
+ heroTitle: parsed.about.heroTitle || "About Foodiety",
+ heroSubtitle: parsed.about.heroSubtitle || "We're more than just a food platform – we're a community of passionate food lovers.",
+ membersCount: parsed.about.membersCount || "50K+",
+ recipesCount: parsed.about.recipesCount || "10K+",
+ restaurantsCount: parsed.about.restaurantsCount || "500+",
+ countriesCount: parsed.about.countriesCount || "25+",
+ mission: parsed.about.mission || "To democratize exceptional food experiences by connecting people through authentic recipes, quality ingredients, and memorable dining adventures.",
+ vision: parsed.about.vision || "A world where great food brings people together, cultural traditions are preserved, and culinary creativity knows no bounds.",
+ impact: parsed.about.impact || "Empowering home cooks, supporting local restaurants, and fostering a global community passionate about food and culture.",
+ });
+ if (parsed.about.timeline && parsed.about.timeline.length > 0) {
+ setTimeline(parsed.about.timeline);
+ }
+ if (parsed.about.team && parsed.about.team.length > 0) {
+ setTeam(parsed.about.team);
+ }
+ }
+ } catch (e) {
+ console.error(e);
+ }
+ }
+ }, []);
 
-  if (!isMounted) {
-    return (
-      <div className="pt-16 min-h-screen flex items-center justify-center bg-background text-foreground">
-        Loading...
-      </div>
-    );
-  }
+ if (!isMounted) {
+ return (
+ <div className="pt-16 min-h-screen flex items-center justify-center bg-background text-foreground">
+ Loading...
+ </div>
+ );
+ }
 
-  return (
-    <div className="pt-16">
-      {/* Hero Section */}
-      <section className="py-20 bg-gradient-to-r from-red-600 to-orange-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-4xl md:text-5xl font-bold mb-6">
-                {aboutConfig.heroTitle}
-              </h1>
-              <p className="text-xl text-red-100 mb-8 leading-relaxed">
-                {aboutConfig.heroSubtitle}
-              </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold">{aboutConfig.membersCount}</div>
-                  <div className="text-red-200">Community Members</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold">{aboutConfig.recipesCount}</div>
-                  <div className="text-red-200">Recipes Shared</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold">{aboutConfig.restaurantsCount}</div>
-                  <div className="text-red-200">Partner Restaurants</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold">{aboutConfig.countriesCount}</div>
-                  <div className="text-red-200">Countries Reached</div>
-                </div>
-              </div>
-            </div>
-            
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img
-                  src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=800"
-                  alt="Our team"
-                  className="w-full h-96 object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+ return (
+ <div className="pt-16">
+ {/* Hero Section */}
+ <section className="py-20 text-white">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+ <div>
+ <h1 className="text-4xl md:text-5xl font-bold mb-6">
+ {aboutConfig.heroTitle}
+ </h1>
+ <p className="text-xl text-red-100 mb-8 leading-relaxed">
+ {aboutConfig.heroSubtitle}
+ </p>
+ <div className="grid grid-cols-2 gap-6">
+ <div className="text-center">
+ <div className="text-3xl font-bold">{aboutConfig.membersCount}</div>
+ <div className="text-red-200">Community Members</div>
+ </div>
+ <div className="text-center">
+ <div className="text-3xl font-bold">{aboutConfig.recipesCount}</div>
+ <div className="text-red-200">Recipes Shared</div>
+ </div>
+ <div className="text-center">
+ <div className="text-3xl font-bold">{aboutConfig.restaurantsCount}</div>
+ <div className="text-red-200">Partner Restaurants</div>
+ </div>
+ <div className="text-center">
+ <div className="text-3xl font-bold">{aboutConfig.countriesCount}</div>
+ <div className="text-red-200">Countries Reached</div>
+ </div>
+ </div>
+ </div>
+ 
+ <div className="relative">
+ <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+ <img
+ src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=800"
+ alt="Our team"
+ className="w-full h-96 object-cover"
+ />
+ <div className="absolute inset-0 /30 " />
+ </div>
+ </div>
+ </div>
+ </div>
+ </section>
 
-      {/* Mission & Vision */}
-      <section ref={ref} className="py-20 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8 }}
-            >
-              <Card className="h-full border-0 shadow-lg">
-                <CardContent className="p-8 text-center">
-                  <Target className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-foreground mb-4">Our Mission</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {aboutConfig.mission}
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
+ {/* Mission & Vision */}
+ <section ref={ref} className="py-20 bg-background">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+ <motion.div
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.8 }}
+ >
+ <Card className="h-full border-0 shadow-lg">
+ <CardContent className="p-8 text-center">
+ <Target className="h-12 w-12 text-red-600 mx-auto mb-4" />
+ <h3 className="text-xl font-bold text-foreground mb-4">Our Mission</h3>
+ <p className="text-muted-foreground leading-relaxed">
+ {aboutConfig.mission}
+ </p>
+ </CardContent>
+ </Card>
+ </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.1 }}
-            >
-              <Card className="h-full border-0 shadow-lg">
-                <CardContent className="p-8 text-center">
-                  <Eye className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-foreground mb-4">Our Vision</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {aboutConfig.vision}
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
+ <motion.div
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.8, delay: 0.1 }}
+ >
+ <Card className="h-full border-0 shadow-lg">
+ <CardContent className="p-8 text-center">
+ <Eye className="h-12 w-12 text-red-600 mx-auto mb-4" />
+ <h3 className="text-xl font-bold text-foreground mb-4">Our Vision</h3>
+ <p className="text-muted-foreground leading-relaxed">
+ {aboutConfig.vision}
+ </p>
+ </CardContent>
+ </Card>
+ </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              <Card className="h-full border-0 shadow-lg">
-                <CardContent className="p-8 text-center">
-                  <Zap className="h-12 w-12 text-red-600 mx-auto mb-4" />
-                  <h3 className="text-xl font-bold text-foreground mb-4">Our Impact</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    {aboutConfig.impact}
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
-        </div>
-      </section>
+ <motion.div
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.8, delay: 0.2 }}
+ >
+ <Card className="h-full border-0 shadow-lg">
+ <CardContent className="p-8 text-center">
+ <Zap className="h-12 w-12 text-red-600 mx-auto mb-4" />
+ <h3 className="text-xl font-bold text-foreground mb-4">Our Impact</h3>
+ <p className="text-muted-foreground leading-relaxed">
+ {aboutConfig.impact}
+ </p>
+ </CardContent>
+ </Card>
+ </motion.div>
+ </div>
+ </div>
+ </section>
 
-      {/* Values */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Our Values
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              These core principles guide everything we do and shape how we serve our community.
-            </p>
-          </motion.div>
+ {/* Values */}
+ <section className="py-20 bg-muted/30">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <motion.div
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.8 }}
+ className="text-center mb-16"
+ >
+ <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+ Our Values
+ </h2>
+ <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+ These core principles guide everything we do and shape how we serve our community.
+ </p>
+ </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {values.map((value, index) => (
-              <motion.div
-                key={value.title}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg h-full">
-                  <CardContent className="p-8">
-                    <div className="flex items-start space-x-4">
-                      <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                        <value.icon className="h-6 w-6 text-red-600" />
-                      </div>
-                      <div>
-                        <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-red-600 transition-colors">
-                          {value.title}
-                        </h3>
-                        <p className="text-muted-foreground leading-relaxed">
-                          {value.description}
-                        </p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+ <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+ {values.map((value, index) => (
+ <motion.div
+ key={value.title}
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.6, delay: index * 0.1 }}
+ >
+ <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg h-full">
+ <CardContent className="p-8">
+ <div className="flex items-start space-x-4">
+ <div className="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
+ <value.icon className="h-6 w-6 text-red-600" />
+ </div>
+ <div>
+ <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-red-600 transition-colors">
+ {value.title}
+ </h3>
+ <p className="text-muted-foreground leading-relaxed">
+ {value.description}
+ </p>
+ </div>
+ </div>
+ </CardContent>
+ </Card>
+ </motion.div>
+ ))}
+ </div>
+ </div>
+ </section>
 
-      {/* Timeline */}
-      <section className="py-20 bg-background">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Our Journey
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              From humble beginnings to a thriving community – here's how we've grown together.
-            </p>
-          </motion.div>
+ {/* Timeline */}
+ <section className="py-20 bg-background">
+ <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+ <motion.div
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.8 }}
+ className="text-center mb-16"
+ >
+ <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+ Our Journey
+ </h2>
+ <p className="text-lg text-muted-foreground">
+ From humble beginnings to a thriving community – here's how we've grown together.
+ </p>
+ </motion.div>
 
-          <div className="relative">
-            {/* Timeline Line */}
-            <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-red-200" />
+ <div className="relative">
+ {/* Timeline Line */}
+ <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-red-200" />
 
-            <div className="space-y-12">
-              {timeline.map((item, index) => (
-                <motion.div
-                  key={item.year}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className={`relative flex items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Timeline Node */}
-                  <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-600 rounded-full border-4 border-white shadow-lg z-10" />
+ <div className="space-y-12">
+ {timeline.map((item, index) => (
+ <motion.div
+ key={item.year}
+ initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+ animate={inView ? { opacity: 1, x: 0 } : {}}
+ transition={{ duration: 0.6, delay: index * 0.1 }}
+ className={`relative flex items-center ${
+ index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
+ }`}
+ >
+ {/* Timeline Node */}
+ <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 w-4 h-4 bg-red-600 rounded-full border-4 border-white shadow-lg z-10" />
 
-                  {/* Content */}
-                  <div className={`ml-12 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
-                    <Card className="border-0 shadow-lg">
-                      <CardContent className="p-6">
-                        <Badge className="bg-red-600 text-white mb-3">{item.year}</Badge>
-                        <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
-                        <p className="text-muted-foreground">{item.description}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+ {/* Content */}
+ <div className={`ml-12 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12' : 'md:pl-12'}`}>
+ <Card className="border-0 shadow-lg">
+ <CardContent className="p-6">
+ <Badge className="bg-red-600 text-white mb-3">{item.year}</Badge>
+ <h3 className="text-xl font-bold text-foreground mb-2">{item.title}</h3>
+ <p className="text-muted-foreground">{item.description}</p>
+ </CardContent>
+ </Card>
+ </div>
+ </motion.div>
+ ))}
+ </div>
+ </div>
+ </div>
+ </section>
 
-      {/* Team */}
-      <section className="py-20 bg-muted/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Meet Our Team
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              The passionate individuals behind Foodiety who work tirelessly to bring you 
-              the best culinary experiences and content.
-            </p>
-          </motion.div>
+ {/* Team */}
+ <section className="py-20 bg-muted/30">
+ <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+ <motion.div
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.8 }}
+ className="text-center mb-16"
+ >
+ <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+ Meet Our Team
+ </h2>
+ <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+ The passionate individuals behind Foodiety who work tirelessly to bring you 
+ the best culinary experiences and content.
+ </p>
+ </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <motion.div
-                key={member.name}
-                initial={{ opacity: 0, y: 30 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
-                  <div className="relative overflow-hidden">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </div>
-                  <CardContent className="p-6 text-center">
-                    <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-red-600 transition-colors">
-                      {member.name}
-                    </h3>
-                    <p className="text-red-600 font-medium mb-3">{member.role}</p>
-                    <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+ <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+ {team.map((member, index) => (
+ <motion.div
+ key={member.name}
+ initial={{ opacity: 0, y: 30 }}
+ animate={inView ? { opacity: 1, y: 0 } : {}}
+ transition={{ duration: 0.6, delay: index * 0.1 }}
+ >
+ <Card className="group hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden">
+ <div className="relative overflow-hidden">
+ <img
+ src={member.image}
+ alt={member.name}
+ className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+ />
+ <div className="absolute inset-0 /50 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+ </div>
+ <CardContent className="p-6 text-center">
+ <h3 className="text-xl font-bold text-foreground mb-1 group-hover:text-red-600 transition-colors">
+ {member.name}
+ </h3>
+ <p className="text-red-600 font-medium mb-3">{member.role}</p>
+ <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
+ </CardContent>
+ </Card>
+ </motion.div>
+ ))}
+ </div>
+ </div>
+ </section>
+ </div>
+ );
 }
