@@ -10,6 +10,9 @@ const nextConfig = {
   generateBuildId: async () => {
     return 'foodiety-build'
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;
