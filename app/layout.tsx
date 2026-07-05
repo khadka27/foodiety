@@ -1,7 +1,8 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Outfit, Playfair_Display } from "next/font/google";
-import { Providers, ClientNavigation, ClientFooter } from "@/components/Providers";
+import { Providers } from "@/components/Providers";
+import { ClientNavigation, ClientFooter } from "@/components/ClientComponents";
 import { ClientToaster } from "@/components/ui/client-toaster";
 import { Suspense } from "react";
 

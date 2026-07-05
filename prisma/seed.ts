@@ -31,6 +31,10 @@ async function main() {
     { name: "Thai", slug: "THAI", type: "RESTAURANT" },
     { name: "Mediterranean", slug: "MEDITERRANEAN", type: "RESTAURANT" },
     { name: "Fast Food / Cafe", slug: "FAST_FOOD", type: "RESTAURANT" },
+    { name: "Hotel", slug: "HOTEL", type: "RESTAURANT" },
+    { name: "Hostel", slug: "HOSTEL", type: "RESTAURANT" },
+    { name: "Motel", slug: "MOTEL", type: "RESTAURANT" },
+    { name: "Cafe", slug: "CAFE", type: "RESTAURANT" },
     
     // Gallery
     { name: "Dishes", slug: "dishes", type: "GALLERY" },

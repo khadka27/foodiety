@@ -2,34 +2,13 @@
 
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { ReactNode, useState, useEffect } from "react";
-import nextDynamic from "next/dynamic";
-
-export const ClientNavigation = nextDynamic(
-  () => import("./Navigation").then((mod) => mod.Navigation),
-  { ssr: false }
-);
-
-export const ClientFooter = nextDynamic(
-  () => import("./Footer").then((mod) => mod.Footer),
-  { ssr: false }
-);
+import { ReactNode } from "react";
 
 interface ProvidersProps {
   children: ReactNode;
 }
 
 export function Providers({ children }: ProvidersProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return <SessionProvider>{children}</SessionProvider>;
-  }
-
   return (
     <SessionProvider>
       <ThemeProvider
@@ -43,4 +22,3 @@ export function Providers({ children }: ProvidersProps) {
     </SessionProvider>
   );
 }
-

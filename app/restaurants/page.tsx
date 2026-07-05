@@ -32,37 +32,55 @@ import {
  Check,
 } from "lucide-react";
 import { toast } from "sonner";
+import nextDynamic from "next/dynamic";
 
 // Force dynamic rendering to avoid SSR issues
 export const dynamic = "force-dynamic";
 
+const ClientMap = nextDynamic(
+  () => import("@/components/Map"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[450px] rounded-3xl bg-muted/25 border border-border/40 animate-pulse flex items-center justify-center">
+        <span className="text-muted-foreground text-sm font-medium">Initializing Map...</span>
+      </div>
+    )
+  }
+);
+
 interface Review {
- id: number;
- author: string;
- avatar: string;
- rating: number;
- date: string;
- title: string;
- comment: string;
- likes: number;
- likedByUser?: boolean;
+  id: string | number;
+  author: string;
+  avatar: string;
+  rating: number;
+  date: string;
+  title: string;
+  comment: string;
+  likes: number;
+  likedByUser?: boolean;
 }
 
 interface Establishment {
- id: number;
- name: string;
- category: string;
- cuisine: string; // Style of food or venue
- image: string;
- rating: number;
- priceRange: string;
- address: string;
- phone: string;
- hours: string;
- specialties: string[];
- description: string;
- distance: string;
- reviews: Review[];
+  id: string | number;
+  name: string;
+  category: string;
+  cuisine: string; // Style of food or venue
+  image: string;
+  rating: number;
+  priceRange: string;
+  address: string;
+  phone: string;
+  hours: string;
+  specialties: string[];
+  description: string;
+  distance: string;
+  reviews: Review[];
+  isOsm?: boolean;
+  location?: {
+    lat: number;
+    lon: number;
+  };
 }
 
 const initialEstablishments: Establishment[] = [
@@ -287,97 +305,123 @@ const getCategoryIcon = (slug: string) => {
 const priceRanges = ["All Prices", "$", "$$", "$$$", "$$$$"];
 
 export default function RestaurantsPage() {
- const [establishments, setEstablishments] = useState<Establishment[]>(initialEstablishments);
- const [selectedCategory, setSelectedCategory] = useState<string>("all");
- const [dbCategories, setDbCategories] = useState<any[]>([]);
- const [searchTerm, setSearchTerm] = useState("");
- const [selectedCuisine, setSelectedCuisine] = useState("All Styles");
- const [selectedPrice, setSelectedPrice] = useState("All Prices");
- const [favorites, setFavorites] = useState<number[]>([]);
- const [selectedItem, setSelectedItem] = useState<Establishment | null>(null);
- 
- // Review form states
- const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
- const [formTargetId, setFormTargetId] = useState<number | null>(null);
- const [formAuthor, setFormAuthor] = useState("");
- const [formTitle, setFormTitle] = useState("");
- const [formComment, setFormComment] = useState("");
- const [formRating, setFormRating] = useState(5);
- const [formRatingHover, setFormRatingHover] = useState(0);
- const [isSubmitting, setIsSubmitting] = useState(false);
- const [isSubmittedSuccess, setIsSubmittedSuccess] = useState(false);
+  const [establishments, setEstablishments] = useState<Establishment[]>(initialEstablishments);
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [dbCategories, setDbCategories] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [location, setLocation] = useState("Nepal");
+  const [locationInput, setLocationInput] = useState("Nepal");
+  const [isLoading, setIsLoading] = useState(false);
+  const [selectedCuisine, setSelectedCuisine] = useState("All Styles");
+  const [selectedPrice, setSelectedPrice] = useState("All Prices");
+  const [favorites, setFavorites] = useState<(string | number)[]>([]);
+  const [selectedItem, setSelectedItem] = useState<Establishment | null>(null);
+  
+  // Review form states
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+  const [formTargetId, setFormTargetId] = useState<string | number | null>(null);
+  const [formAuthor, setFormAuthor] = useState("");
+  const [formTitle, setFormTitle] = useState("");
+  const [formComment, setFormComment] = useState("");
+  const [formRating, setFormRating] = useState(5);
+  const [formRatingHover, setFormRatingHover] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmittedSuccess, setIsSubmittedSuccess] = useState(false);
 
- const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
- useEffect(() => {
- setIsMounted(true);
- // Load establishments from database
- fetch("/api/restaurants")
- .then(res => res.json())
- .then(res => {
- if (res.success && res.data) {
- const mapped = res.data.map((item: any) => {
- const cat = item.category || "ITALIAN";
- 
- let hoursStr = "Mon-Sun: 9:00 AM - 10:00 PM";
- if (item.hours && typeof item.hours === "object") {
- const keys = Object.keys(item.hours);
- if (keys.length > 0) {
- hoursStr = `${keys[0].charAt(0).toUpperCase() + keys[0].slice(1)}-${keys[keys.length - 1].charAt(0).toUpperCase() + keys[keys.length - 1].slice(1)}: ${item.hours[keys[0]]}`;
- }
- } else if (typeof item.hours === "string") {
- hoursStr = item.hours;
- }
+  useEffect(() => {
+    setIsMounted(true);
+    // Fetch categories
+    fetch("/api/categories?type=RESTAURANT")
+      .then(res => res.json())
+      .then(res => {
+        if (res.success && res.data) {
+          setDbCategories(res.data);
+        }
+      })
+      .catch(err => console.error(err));
 
- return {
- ...item,
- category: cat,
- cuisine: item.cuisine ? item.cuisine[0] : "Global",
- specialties: item.features || [],
- hours: hoursStr
- };
- });
- if (mapped.length > 0) {
- setEstablishments(mapped);
- }
- }
- })
- .catch(err => console.error(err));
+    // Load favorites from local storage if client-side
+    const saved = localStorage.getItem("foodiety_favs");
+    if (saved) {
+      try {
+        setFavorites(JSON.parse(saved));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
 
- // Fetch categories
- fetch("/api/categories?type=RESTAURANT")
- .then(res => res.json())
- .then(res => {
- if (res.success && res.data) {
- setDbCategories(res.data);
- }
- })
- .catch(err => console.error(err));
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(`/api/restaurants?location=${encodeURIComponent(location)}`)
+      .then(res => res.json())
+      .then(res => {
+        if (res.success && res.data) {
+          const mapped = res.data.map((item: any) => {
+            const cat = item.category || "ITALIAN";
+            
+            let hoursStr = "Mon-Sun: 9:00 AM - 10:00 PM";
+            if (item.hours && typeof item.hours === "object") {
+              const keys = Object.keys(item.hours);
+              if (keys.length > 0) {
+                hoursStr = `${keys[0].charAt(0).toUpperCase() + keys[0].slice(1)}-${keys[keys.length - 1].charAt(0).toUpperCase() + keys[keys.length - 1].slice(1)}: ${item.hours[keys[0]]}`;
+              }
+            } else if (typeof item.hours === "string") {
+              hoursStr = item.hours;
+            }
 
- // Load favorites from local storage if client-side
- const saved = localStorage.getItem("foodiety_favs");
- if (saved) {
- try {
- setFavorites(JSON.parse(saved));
- } catch (e) {
- console.error(e);
- }
- }
- }, []);
+            // Map sub-object user fields inside reviews to flat Review layout if they exist
+            const formattedReviews = (item.reviews || []).map((rev: any) => {
+              if (rev.user) {
+                return {
+                  id: rev.id,
+                  author: `${rev.user.firstName || ""} ${rev.user.lastName || ""}`.trim() || rev.user.username || "Anonymous",
+                  avatar: rev.user.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${rev.user.username}`,
+                  rating: rev.rating,
+                  date: new Date(rev.createdAt).toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric"
+                  }),
+                  title: rev.title || "Review",
+                  comment: rev.content,
+                  likes: rev.likes || 0
+                };
+              }
+              return rev;
+            });
 
- const toggleFavorite = (id: number, e: React.MouseEvent) => {
- e.stopPropagation();
- let updated;
- if (favorites.includes(id)) {
- updated = favorites.filter((f) => f !== id);
- toast.info("Removed from saved list");
- } else {
- updated = [...favorites, id];
- toast.success("Saved to your wishlist!");
- }
- setFavorites(updated);
- localStorage.setItem("foodiety_favs", JSON.stringify(updated));
- };
+            return {
+              ...item,
+              category: cat,
+              cuisine: item.cuisine ? (Array.isArray(item.cuisine) ? item.cuisine[0] : item.cuisine) : "Global",
+              specialties: item.features || [],
+              hours: hoursStr,
+              reviews: formattedReviews
+            };
+          });
+          setEstablishments(mapped);
+        }
+      })
+      .catch(err => console.error(err))
+      .finally(() => setIsLoading(false));
+  }, [location]);
+
+  const toggleFavorite = (id: string | number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    let updated;
+    if (favorites.includes(id)) {
+      updated = favorites.filter((f) => f !== id);
+      toast.info("Removed from saved list");
+    } else {
+      updated = [...favorites, id];
+      toast.success("Saved to your wishlist!");
+    }
+    setFavorites(updated);
+    localStorage.setItem("foodiety_favs", JSON.stringify(updated));
+  };
 
  // Extract unique cuisines based on active category
  const activeEstablishments = establishments.filter(
@@ -407,43 +451,43 @@ export default function RestaurantsPage() {
  return matchesSearch && matchesCuisine && matchesPrice;
  });
 
- const handleLikeReview = (establishmentId: number, reviewId: number, e: React.MouseEvent) => {
- e.stopPropagation();
- setEstablishments((prev) =>
- prev.map((est) => {
- if (est.id !== establishmentId) return est;
- const updatedReviews = est.reviews.map((rev) => {
- if (rev.id !== reviewId) return rev;
- const liked = !rev.likedByUser;
- return {
- ...rev,
- likedByUser: liked,
- likes: liked ? rev.likes + 1 : rev.likes - 1,
- };
- });
- 
- // Update selectedItem if it's currently open
- if (selectedItem && selectedItem.id === establishmentId) {
- const updatedEst = { ...est, reviews: updatedReviews };
- // Defer update slightly or direct set
- setTimeout(() => setSelectedItem(updatedEst), 0);
- }
+  const handleLikeReview = (establishmentId: string | number, reviewId: string | number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEstablishments((prev) =>
+      prev.map((est) => {
+        if (est.id !== establishmentId) return est;
+        const updatedReviews = est.reviews.map((rev) => {
+          if (rev.id !== reviewId) return rev;
+          const liked = !rev.likedByUser;
+          return {
+            ...rev,
+            likedByUser: liked,
+            likes: liked ? rev.likes + 1 : rev.likes - 1,
+          };
+        });
+        
+        // Update selectedItem if it's currently open
+        if (selectedItem && selectedItem.id === establishmentId) {
+          const updatedEst = { ...est, reviews: updatedReviews };
+          // Defer update slightly or direct set
+          setTimeout(() => setSelectedItem(updatedEst), 0);
+        }
 
- return { ...est, reviews: updatedReviews };
- })
- );
- };
+        return { ...est, reviews: updatedReviews };
+      })
+    );
+  };
 
- const handleOpenReviewModal = (id: number, e: React.MouseEvent) => {
- e.stopPropagation();
- setFormTargetId(id);
- setIsReviewModalOpen(true);
- // Reset fields
- setFormAuthor("");
- setFormTitle("");
- setFormComment("");
- setFormRating(5);
- };
+  const handleOpenReviewModal = (id: string | number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setFormTargetId(id);
+    setIsReviewModalOpen(true);
+    // Reset fields
+    setFormAuthor("");
+    setFormTitle("");
+    setFormComment("");
+    setFormRating(5);
+  };
 
  const handleReviewSubmit = async (e: React.FormEvent) => {
  e.preventDefault();
@@ -586,16 +630,39 @@ export default function RestaurantsPage() {
  {/* Search & Select Grid */}
  <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 items-center">
  
- {/* Search input (6/12 cols) */}
- <div className="lg:col-span-6 relative">
+ {/* Search input (4/12 cols) */}
+ <div className="lg:col-span-4 relative">
  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
  <Input
  type="text"
- placeholder="Search names, culinary styles, specialty dishes..."
+ placeholder="Search names, cuisines..."
  value={searchTerm}
  onChange={(e) => setSearchTerm(e.target.value)}
  className="pl-11 pr-4 py-6 rounded-2xl bg-background/50 border-border/80 focus-visible:ring-[#c05c31] focus-visible:border-[#c05c31] text-sm"
  />
+ </div>
+
+ {/* Location input (3/12 cols) */}
+ <div className="lg:col-span-3 relative">
+ <MapPin className="absolute left-4 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+ <Input
+ type="text"
+ placeholder="Location (e.g. Nepal)"
+ value={locationInput}
+ onChange={(e) => setLocationInput(e.target.value)}
+ onKeyDown={(e) => {
+   if (e.key === "Enter") {
+     setLocation(locationInput);
+   }
+ }}
+ className="pl-11 pr-12 py-6 rounded-2xl bg-background/50 border-border/80 focus-visible:ring-[#c05c31] focus-visible:border-[#c05c31] text-sm"
+ />
+ <button 
+   onClick={() => setLocation(locationInput)}
+   className="absolute right-3 top-1/2 -translate-y-1/2 px-2.5 py-1 rounded-lg bg-[#c05c31] hover:bg-[#c05c31]/90 text-white transition-all text-xs font-semibold"
+ >
+   Go
+ </button>
  </div>
 
  {/* Style select (3/12 cols) */}
@@ -614,8 +681,8 @@ export default function RestaurantsPage() {
  </Select>
  </div>
 
- {/* Price select (3/12 cols) */}
- <div className="lg:col-span-3">
+ {/* Price select (2/12 cols) */}
+ <div className="lg:col-span-2">
  <Select value={selectedPrice} onValueChange={setSelectedPrice}>
  <SelectTrigger className="rounded-2xl py-6 bg-background/50 border-border/80 text-sm">
  <SelectValue placeholder="Price Range" />
@@ -695,182 +762,190 @@ export default function RestaurantsPage() {
 
  </div>
 
- {/* Empty Results State */}
- {filteredEstablishments.length === 0 && (
- <motion.div
- initial={{ opacity: 0, scale: 0.95 }}
- animate={{ opacity: 1, scale: 1 }}
- className="glass p-16 text-center max-w-xl mx-auto rounded-3xl border border-border/80 space-y-4"
- >
- <div className="w-16 h-16 bg-[#c05c31]/10 rounded-full flex items-center justify-center mx-auto text-[#c05c31]">
- <Search className="h-8 w-8" />
- </div>
- <h3 className="text-xl font-bold font-playfair">No Hubs Found</h3>
- <p className="text-muted-foreground text-sm">
- We couldn't find any match for your search term or filters. Try adjusting your query or resetting the cuisine selector.
- </p>
- <Button
- variant="outline"
- className="rounded-xl border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5"
- onClick={() => {
- setSearchTerm("");
- setSelectedCuisine("All Styles");
- setSelectedPrice("All Prices");
- setSelectedCategory("all");
- }}
- >
- Clear All Filters
- </Button>
- </motion.div>
- )}
+  {/* Loading State */}
+  {isLoading && (
+    <div className="flex flex-col items-center justify-center py-20 space-y-4">
+      <div className="w-12 h-12 rounded-full border-4 border-[#c05c31]/20 border-t-[#c05c31] animate-spin" />
+      <p className="text-muted-foreground text-sm font-semibold animate-pulse">Fetching venues in {location}...</p>
+    </div>
+  )}
 
- {/* Grid Layout */}
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
- {filteredEstablishments.map((est, index) => {
- const isFav = favorites.includes(est.id);
- return (
- <motion.div
- key={est.id}
- layout
- initial={{ opacity: 0, y: 30 }}
- animate={{ opacity: 1, y: 0 }}
- exit={{ opacity: 0, scale: 0.9 }}
- transition={{ duration: 0.5, delay: index * 0.05 }}
- onClick={() => setSelectedItem(est)}
- className="cursor-pointer"
- >
- <div className="glass-card glass-hover h-full flex flex-col rounded-3xl overflow-hidden group border border-border/60">
- 
- {/* Header Image with badges */}
- <div className="relative h-56 w-full overflow-hidden">
- <img
- src={est.image}
- alt={est.name}
- className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
- />
- {/* Black fade gradient */}
- <div className="absolute inset-0 /60 /20" />
- 
- {/* Absolute Top Badges */}
- <div className="absolute top-4 left-4 flex flex-wrap gap-2">
- <Badge className="bg-white/95 text-gray-900 border-none backdrop-blur-md px-2.5 py-1 text-xs font-semibold uppercase flex items-center space-x-1 shadow-md">
- {(() => {
- const Icon = getCategoryIcon(est.category);
- return <Icon className="h-3 w-3 text-[#c05c31]" />;
- })()}
- <span>{est.category.replace("_", " ")}</span>
- </Badge>
- <Badge className="bg-[#c05c31] text-white border-none px-2.5 py-1 text-xs font-semibold shadow-md">
- {est.priceRange}
- </Badge>
- </div>
+  {/* Empty Results State */}
+  {!isLoading && filteredEstablishments.length === 0 && (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="glass p-16 text-center max-w-xl mx-auto rounded-3xl border border-border/80 space-y-4"
+    >
+      <div className="w-16 h-16 bg-[#c05c31]/10 rounded-full flex items-center justify-center mx-auto text-[#c05c31]">
+        <Search className="h-8 w-8" />
+      </div>
+      <h3 className="text-xl font-bold font-playfair">No Hubs Found</h3>
+      <p className="text-muted-foreground text-sm">
+        We couldn't find any match for your search term or filters. Try adjusting your query or resetting the cuisine selector.
+      </p>
+      <Button
+        variant="outline"
+        className="rounded-xl border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5"
+        onClick={() => {
+          setSearchTerm("");
+          setSelectedCuisine("All Styles");
+          setSelectedPrice("All Prices");
+          setSelectedCategory("all");
+          setLocationInput("Nepal");
+          setLocation("Nepal");
+        }}
+      >
+        Clear All Filters
+      </Button>
+    </motion.div>
+  )}
 
- {/* Bookmark button */}
- <button
- onClick={(e) => toggleFavorite(est.id, e)}
- className="absolute top-4 right-4 p-2.5 rounded-full bg-white/90 dark:bg-black/80 text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:scale-110 active:scale-95 transition-all duration-200 shadow-md border border-white/20"
- >
- <Heart className={`h-4.5 w-4.5 transition-colors ${isFav ? "fill-red-500 text-red-500" : ""}`} />
- </button>
+  {/* Grid Layout */}
+  {!isLoading && filteredEstablishments.length > 0 && (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {filteredEstablishments.map((est, index) => {
+        const isFav = favorites.includes(est.id);
+        return (
+          <motion.div
+            key={est.id}
+            layout
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{ duration: 0.5, delay: index * 0.05 }}
+            onClick={() => setSelectedItem(est)}
+            className="cursor-pointer"
+          >
+            <div className="glass-card glass-hover h-full flex flex-col rounded-3xl overflow-hidden group border border-border/60">
+              {/* Header Image with badges */}
+              <div className="relative h-56 w-full overflow-hidden">
+                <img
+                  src={est.image}
+                  alt={est.name}
+                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+                <div className="absolute inset-0 /60 /20" />
+                
+                {/* Absolute Top Badges */}
+                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                  <Badge className="bg-white/95 text-gray-900 border-none backdrop-blur-md px-2.5 py-1 text-xs font-semibold uppercase flex items-center space-x-1 shadow-md">
+                    {(() => {
+                      const Icon = getCategoryIcon(est.category);
+                      return <Icon className="h-3 w-3 text-[#c05c31]" />;
+                    })()}
+                    <span>{est.category.replace("_", " ")}</span>
+                  </Badge>
+                  <Badge className="bg-[#c05c31] text-white border-none px-2.5 py-1 text-xs font-semibold shadow-md">
+                    {est.priceRange}
+                  </Badge>
+                  {est.isOsm && (
+                    <Badge className="bg-emerald-600 text-white border-none px-2.5 py-1 text-xs font-semibold shadow-md">
+                      OSM
+                    </Badge>
+                  )}
+                </div>
 
- {/* Distance overlay */}
- <div className="absolute bottom-4 left-4 text-white text-xs font-semibold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full flex items-center space-x-1.5 border border-white/10">
- <MapPin className="h-3.5 w-3.5 text-[#ebc63c]" />
- <span>{est.distance}</span>
- </div>
+                {/* Bookmark button */}
+                <button
+                  onClick={(e) => toggleFavorite(est.id, e)}
+                  className="absolute top-4 right-4 p-2.5 rounded-full bg-white/90 dark:bg-black/80 text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:scale-110 active:scale-95 transition-all duration-200 shadow-md border border-white/20"
+                >
+                  <Heart className={`h-4.5 w-4.5 transition-colors ${isFav ? "fill-red-500 text-red-500" : ""}`} />
+                </button>
 
- {/* Rating overlay */}
- <div className="absolute bottom-4 right-4 text-white text-xs font-semibold bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center space-x-1 border border-white/10 shadow-lg">
- <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
- <span className="font-bold">{est.rating}</span>
- <span className="text-gray-300 text-[10px]">({est.reviews.length})</span>
- </div>
+                {/* Distance overlay */}
+                <div className="absolute bottom-4 left-4 text-white text-xs font-semibold bg-black/40 backdrop-blur-md px-3 py-1 rounded-full flex items-center space-x-1.5 border border-white/10">
+                  <MapPin className="h-3.5 w-3.5 text-[#ebc63c]" />
+                  <span>{est.distance || "1.5 miles"}</span>
+                </div>
 
- </div>
+                {/* Rating overlay */}
+                <div className="absolute bottom-4 right-4 text-white text-xs font-semibold bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center space-x-1 border border-white/10 shadow-lg">
+                  <Star className="h-3.5 w-3.5 text-amber-400 fill-amber-400" />
+                  <span className="font-bold">{est.rating}</span>
+                  <span className="text-gray-300 text-[10px]">({est.reviews.length})</span>
+                </div>
+              </div>
 
- {/* Content Section */}
- <div className="p-6 flex-1 flex flex-col justify-between">
- <div className="space-y-4">
- <div className="flex items-start justify-between">
- <div>
- <span className="text-xs font-bold text-[#c05c31] dark:text-[#ebc63c] uppercase tracking-widest">{est.cuisine}</span>
- <h3 className="text-xl font-bold font-playfair tracking-tight text-stone-900 dark:text-stone-100 mt-0.5 group-hover:text-[#c05c31] dark:group-hover:text-[#ebc63c] transition-colors">
- {est.name}
- </h3>
- </div>
- </div>
+              {/* Content Section */}
+              <div className="p-6 flex-1 flex flex-col justify-between">
+                <div className="space-y-4">
+                  <div className="flex items-start justify-between">
+                    <div>
+                      <span className="text-xs font-bold text-[#c05c31] dark:text-[#ebc63c] uppercase tracking-widest">{est.cuisine}</span>
+                      <h3 className="text-xl font-bold font-playfair tracking-tight text-stone-900 dark:text-stone-100 mt-0.5 group-hover:text-[#c05c31] dark:group-hover:text-[#ebc63c] transition-colors">
+                        {est.name}
+                      </h3>
+                    </div>
+                  </div>
 
- <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
- {est.description}
- </p>
+                  <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
+                    {est.description}
+                  </p>
 
- {/* Specialties Badges */}
- <div className="flex flex-wrap gap-1.5 pt-1">
- {est.specialties.map((s) => (
- <span
- key={s}
- className="text-[10px] font-semibold bg-[#c05c31]/5 text-[#c05c31] dark:text-[#ebc63c] border border-[#c05c31]/10 px-2 py-0.5 rounded-md"
- >
- {s}
- </span>
- ))}
- </div>
+                  {/* Specialties Badges */}
+                  <div className="flex flex-wrap gap-1.5 pt-1">
+                    {est.specialties.map((s) => (
+                      <span
+                        key={s}
+                        className="text-[10px] font-semibold bg-[#c05c31]/5 text-[#c05c31] dark:text-[#ebc63c] border border-[#c05c31]/10 px-2 py-0.5 rounded-md"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
 
- {/* Quick Contact Details */}
- <div className="pt-3 border-t border-border/40 space-y-2 text-xs text-muted-foreground">
- <div className="flex items-center space-x-2">
- <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[#c05c31]/60 dark:text-[#ebc63c]/60" />
- <span className="truncate">{est.address}</span>
- </div>
- <div className="flex items-center space-x-2">
- <Clock className="h-3.5 w-3.5 flex-shrink-0 text-[#c05c31]/60 dark:text-[#ebc63c]/60" />
- <span>{est.hours}</span>
- </div>
- </div>
- </div>
+                  {/* Quick Contact Details */}
+                  <div className="pt-3 border-t border-border/40 space-y-2 text-xs text-muted-foreground">
+                    <div className="flex items-center space-x-2">
+                      <MapPin className="h-3.5 w-3.5 flex-shrink-0 text-[#c05c31]/60 dark:text-[#ebc63c]/60" />
+                      <span className="truncate">{est.address}</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Clock className="h-3.5 w-3.5 flex-shrink-0 text-[#c05c31]/60 dark:text-[#ebc63c]/60" />
+                      <span>{est.hours}</span>
+                    </div>
+                  </div>
+                </div>
 
- {/* Action buttons */}
- <div className="flex space-x-3 pt-6">
- <Button
- variant="default"
- className="flex-1 from-[#c05c31] to-[#ebc63c] hover:opacity-90 text-white rounded-xl text-xs font-bold py-5 shadow-md shadow-[#c05c31]/10"
- >
- View Reviews
- </Button>
- <Button
- variant="outline"
- onClick={(e) => handleOpenReviewModal(est.id, e)}
- className="border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5 hover:text-[#a64b25] rounded-xl px-3.5 py-5 flex items-center justify-center transition-all duration-300"
- >
- <Plus className="h-4.5 w-4.5" />
- </Button>
- </div>
+                {/* Action buttons */}
+                <div className="flex space-x-3 pt-6">
+                  <Button
+                    variant="default"
+                    className="flex-1 from-[#c05c31] to-[#ebc63c] hover:opacity-90 text-white rounded-xl text-xs font-bold py-5 shadow-md shadow-[#c05c31]/10"
+                  >
+                    View Reviews
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={(e) => handleOpenReviewModal(est.id, e)}
+                    className="border-[#c05c31]/20 text-[#c05c31] hover:bg-[#c05c31]/5 hover:text-[#a64b25] rounded-xl px-3.5 py-5 flex items-center justify-center transition-all duration-300"
+                  >
+                    <Plus className="h-4.5 w-4.5" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+    </div>
+  )}
 
- </div>
- </div>
- </motion.div>
- );
- })}
- </div>
-
- {/* Interactive Map/Footer Banner */}
- <div className="mt-20">
- <div className="glass p-8 rounded-3xl border border-border/80 shadow-2xl relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-8">
- <div className="absolute top-0 right-0 w-[300px] h-[300px] rounded-full bg-orange-500/5 blur-[80px] pointer-events-none" />
- <div className="space-y-3 max-w-xl text-center md:text-left">
- <div className="w-12 h-12 bg-orange-500/10 rounded-2xl flex items-center justify-center text-orange-500 mx-auto md:mx-0">
- <MapPin className="h-6 w-6" />
- </div>
- <h3 className="text-2xl font-bold">Interactive Explorer Map</h3>
- <p className="text-muted-foreground text-sm leading-relaxed">
- Foodiety directory incorporates mapped reviews to show real-time dining checkins. Connect your favorite mapping provider to visualize nearby cafes and hotels instantly.
- </p>
- </div>
- <Button className="bg-foreground hover:bg-foreground/90 text-background rounded-2xl font-bold py-6 px-8 shadow-xl">
- Open Explorer Map
- </Button>
- </div>
- </div>
+  {/* Interactive Map Section */}
+  <div className="mt-20 space-y-6">
+    <div>
+      <h3 className="text-2xl font-bold font-playfair flex items-center gap-2">
+        <MapPin className="h-6 w-6 text-[#c05c31]" />
+        <span>Interactive Explorer Map</span>
+      </h3>
+      <p className="text-muted-foreground text-sm mt-1">
+        Visualize hotels, cafes, and restaurants in <strong>{location}</strong> dynamically on the interactive map.
+      </p>
+    </div>
+    <ClientMap establishments={filteredEstablishments} />
+  </div>
 
  </div>
  </section>
