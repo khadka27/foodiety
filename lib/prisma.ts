@@ -7,7 +7,15 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const getPrismaClient = () => {
-  const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+  const connectionString = process.env.DATABASE_URL;
+  const isProd = process.env.NODE_ENV === 'production';
+  const hasSslQuery = connectionString?.includes('sslmode=');
+  const isRemote = connectionString && !connectionString.includes('localhost') && !connectionString.includes('127.0.0.1');
+
+  const pool = new pg.Pool({
+    connectionString,
+    ssl: isProd || hasSslQuery || isRemote ? { rejectUnauthorized: false } : undefined
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({
     adapter,
